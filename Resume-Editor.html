@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/death.png">
+    <title>Resume Builder</title>
+    <link rel="stylesheet" href="Resume-Editor.css">
+</head>
+<body>
+    <header>
+        <a href="index.html" style="text-decoration: none;"><h1>Resume Builder</h1></a>
+        <nav>
+            <ul>
+                <li><a href="#">Features</a></li>
+                <li><a href="#templates">Templates</a></li>
+                <li><a href="#" id="login-btn">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="feature">
+        <h2>Build Your Professional Resume</h2>
+        <p>Get started with our easy-to-use resume builder. Create a professional resume in minutes.</p>
+        <a href="#resume-editor" class="cta">Start Building</a>
+    </section>
+    <!-- Resume Editing Interface -->
+    <section id="resume-editor">
+        <h2>Resume Editor</h2>
+        <form id="resume-form">
+            <!-- Form fields for personal information -->
+            <div class="form-group">
+                <label for="full_name">Full Name</label>
+                <input type="text" name="full_name" id="full_name" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="Enter your email" autocomplete="email" required="">
+
+
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" name="phone" id="phone" placeholder="Enter your phone number" autocomplete="tel">
+            </div>
+            
+        <!-- Form fields for education -->
+<h3>Education</h3>
+<div class="form-group">
+    <label for="education_degree">Degree:</label>
+    <input type="text" name="education_degree" id="education_degree" placeholder="Enter your degree">
+    <div id="education-degree-suggestions" class="suggestions"></div>
+</div>
+<div class="form-group">
+    <label for="education_major">Major:</label>
+    <input type="text" name="education_major" id="education_major" placeholder="Enter your major">
+    <div id="education-major-suggestions" class="suggestions"></div>
+</div>
+<div class="form-group">
+    <label for="education_school">School/University:</label>
+    <input type="text" name="education_school" id="education_school" placeholder="Enter your school/university">
+    <div id="education-school-suggestions" class="suggestions"></div>
+</div>
+<div class="form-group">
+    <label for="education_year">Year of Graduation:</label>
+    <input type="text" name="education_year" id="education_year" placeholder="Enter your year of graduation">
+    <div id="education-year-suggestions" class="suggestions"></div>
+</div>
+
+            
+       <!-- Form fields for work experience -->
+<div class="form-group">
+    <h3>Work Experience</h3>
+    <label for="work_position">Position:</label>
+    <input type="text" name="work_position" id="work_position">
+    <!-- Suggestions for work position -->
+    <div id="work-position-suggestions" class="suggestions"></div>
+
+    <label for="work_company">Company:</label>
+    <input type="text" name="work_company" id="work_company">
+    <!-- Suggestions for work company -->
+    <div id="work-company-suggestions" class="suggestions"></div>
+
+    <label for="work_duration">Duration:</label>
+    <input type="text" name="work_duration" id="work_duration">
+    <!-- Suggestions for work duration -->
+    <div id="work-duration-suggestions" class="suggestions"></div>
+
+    <label for="work_description">Description:</label>
+    <textarea name="work_description" id="work_description"></textarea>
+</div>
+
+           <!-- Form fields for skills --> 
+<div class="form-group">
+    <h3>Skills</h3>
+    <label for="skill1">Skill 1:</label>
+    <input type="text" name="skill1" id="skill1">
+    <div id="skill-suggestions-1" class="suggestions"></div>
+    <label for="skill2">Skill 2:</label>
+    <input type="text" name="skill2" id="skill2">
+    <div id="skill-suggestions-2" class="suggestions"></div>
+    <label for="skill3">Skill 3:</label>
+    <input type="text" name="skill3" id="skill3">
+    <div id="skill-suggestions-3" class="suggestions"></div>
+</div>
+            <!-- Save button -->
+            <button type="submit">Save</button>
+        </form>
+    </section>
+<!-- Templates -->
+<div class="container">
+    <h2>Template Selection</h2>
+    <div class="form-group">
+        <label for="template-select">Select Template:</label>
+        <select name="template" id="template-select">
+            <option value="">Select Template</option>
+            <option value="template1">Template 1</option>
+            <option value="template2">Template 2</option>
+            <option value="template3">Template 3</option>
+        </select>
+    </div>
+</div>
+<!-- Real-time preview -->
+<div id="real-time-preview" class="real-time-preview template1">
+    <!-- Preview of the entire resume will be updated dynamically -->
+</div>
+
+<!-- Preview Page -->
+<section id="finished-resume-preview-page">
+    <h2>Preview Your Resume</h2>
+    <div id="finished-resume-preview">
+        <!-- Preview of completed resume will be dynamically generated here -->
+        <!-- Example: -->
+        <div class="resume-content">
+            <h3>John Doe</h3>
+            <p>Email: johndoe@example.com</p>
+            <p>Phone: +123456789</p>
+            <p>Education: Bachelor of Science in Computer Science</p>
+            <p>Work Experience: Software Engineer at ABC Inc.</p>
+            <p>Skills: JavaScript, HTML, CSS</p>
+        </div>
+    </div>
+    <div class="actions">
+        <a href="#" class="download-btn">Download</a>
+        <a href="#" class="share-btn">Share</a>
+    </div>
+</section>
+
+
+<!-- User Dashboard -->
+<section id="user-dashboard" class="dashboard-container">
+    <h2>User Dashboard</h2>
+    <div class="resume-list">
+        <!-- List of saved resumes -->
+        <div class="resume-item">
+            <h3>Resume Title</h3>
+            <p>Created: January 1, 2024</p>
+            <p>Last Modified: January 5, 2024</p>
+            <div class="resume-actions">
+                <button class="edit-btn">Edit</button>
+                <button class="download-btn">Download</button>
+                <button class="delete-btn">Delete</button>
+            </div>
+        </div>
+        <!-- More resume items can be added dynamically -->
+    </div>
+    <div class="profile-settings">
+        <!-- Profile settings and account management -->
+        <h3>Profile Settings</h3>
+        <ul>
+            <li><a href="#">Update Personal Information</a></li>
+            <li><a href="#">Change Password</a></li>
+            <li><a href="#">Manage Subscription</a></li>
+        </ul>
+        <!-- Integration with third-party services -->
+        <div class="third-party-integration">
+            <h3>Third-Party Integration</h3>
+            <a href="#" class="linkedin-btn">Connect with LinkedIn</a>
+            <!-- Add more third-party integration options as needed -->
+        </div>
+    </div>
+</section>
+
+    
+<footer class="footer">
+    <p>&copy; 2024 Resume Builder. All rights reserved.</p>
+</footer>
+<!-- Login section (popup) -->
+<div id="login-popup" class="popup">
+    <div class="popup-content">
+        <span class="close">&times;</span>
+        <h2>Login / Registration</h2>
+        <form id="login-form">
+            <!-- Login/registration form fields -->
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="email" required="">
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+        <p class="register-link">Don't have an account? <a href="#registration">Register</a></p>
+    </div>
+</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the login button
+            const loginBtn = document.getElementById('login-btn');
+            // Get the login popup
+            const loginPopup = document.getElementById('login-popup');
+            // Get the close button inside the popup
+            const closeBtn = loginPopup.querySelector('.close');
+    
+            // Function to open the login popup
+            function openLoginPopup(event) {
+                event.preventDefault();
+                loginPopup.style.display = 'block';
+            }
+    
+            // Function to close the login popup
+            function closeLoginPopup() {
+                loginPopup.style.display = 'none';
+            }
+    
+            // Event listener for login button click
+            loginBtn.addEventListener('click', openLoginPopup);
+    
+            // Event listener for close button click
+            closeBtn.addEventListener('click', closeLoginPopup);
+    
+            // Close the popup if the user clicks outside of it
+            window.addEventListener('click', function(event) {
+                if (event.target == loginPopup) {
+                    closeLoginPopup();
+                }
+            });
+        });
+    </script>
+    
+
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="templates.js"></script>
+
+    <script src="suggestions.js"></script>
+</body>
+</html>

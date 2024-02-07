@@ -1,0 +1,518 @@
+/* Reset CSS */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Body Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    background-color: #121212; /* Dark background */
+    color: #ffffff; /* White text */
+    font-size: 16px;
+}
+
+/* Header Styles */
+header {
+    background-image: url('https://media.giphy.com/media/9bTjZrytydVRK/giphy.gif');
+    background-size: cover;
+    background-position: center;
+    color: #ffffff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+    margin-right: auto;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 0 10px #CCCCCC, 0 0 15px #CCCCCC, 0 0 25px #CCCCCC; /* Glowing effect */
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 20px;
+}
+
+nav ul li:first-child {
+    margin-left: 0;
+}
+
+nav ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #ffd700; /* Yellow on hover */
+}
+
+/* Section Styles */
+section {
+    padding: 40px 20px;
+}
+
+h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #ffffff;
+    font-weight: 700;
+    font-family: 'Roboto Slab', serif;
+}
+
+p {
+    margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #ffffff; /* White text */
+}
+
+/* CTA Button Styles */
+.cta,
+button[type="submit"],
+.download-btn,
+.share-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ffd700; /* Yellow button */
+    color: #121212; /* Dark text */
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.cta:hover,
+button[type="submit"]:hover,
+.download-btn:hover,
+.share-btn:hover {
+    background-color: #ffffff; /* White on hover */
+    color: #121212; /* Dark text */
+}
+
+/* Form Styles */
+form {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #121212; /* Dark background */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* White box shadow */
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #8e8d8d; /* White text */
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ffffff; /* White border */
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 5px;
+    background-color: transparent; /* Transparent background */
+    color: #fd3737ac;
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="#ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-position: right 10px center;
+    background-repeat: no-repeat;
+    padding-right: 30px;
+}
+/* Section Styles */
+section#resume-editor {
+    padding: 40px 20px;
+}
+
+/* Heading Styles */
+h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    font-family: 'Roboto Slab', serif;
+}
+
+/* Paragraph Styles */
+section#resume-editor p {
+    margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Real-time preview styles */
+#real-time-preview {
+    border: 2px solid #4caf4f94; /* Green border */
+    padding: 20px;
+    min-height: 300px;
+    background: linear-gradient(135deg, #1f1f1f, #333); /* Gradient background */
+    border-radius: 10px; /* Increased border radius */
+    margin-bottom: 20px;
+    font-size: 18px; /* Slightly larger font size */
+    line-height: 1.8; /* Increased line height for better readability */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* Added box shadow */
+    transition: transform 0.3s ease; /* Added transition for transform */
+}
+
+/* Template 1 styles */
+.template1 #real-time-preview {
+    background-color: #f0f0f0; /* Light gray background */
+    color: #57078f; /* Purple text color */
+}
+
+.template1 #real-time-preview h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.template1 #real-time-preview p {
+    margin-bottom: 15px;
+}
+
+/* Template 2 styles */
+.template2 #real-time-preview {
+    background-color: #f5f5f5; /* Light gray background */
+    color: #af1c1c; /* Red text color */
+}
+
+.template2 #real-time-preview h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.template2 #real-time-preview p {
+    margin-bottom: 15px;
+}
+
+/* Template 3 styles */
+.template3 #real-time-preview {
+    background-color: #f9f9f9;  /* Light gray background */
+    color: #16b439; /* Green text color */
+}
+
+.template3 #real-time-preview h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.template3 #real-time-preview p {
+    margin-bottom: 15px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    header h1 {
+        margin-bottom: 10px;
+    }
+
+    nav ul {
+        flex-direction: column;
+    }
+
+    nav ul li {
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
+    form {
+        padding: 10px;
+    }
+
+    input,
+    textarea,
+    select {
+        font-size: 14px;
+    }
+}
+
+/* Suggestion Styles */
+.suggestions {
+    position: absolute;
+    background-color: #121212; /* Dark background */
+    border: 1px solid #ffffff; /* White border */
+    border-radius: 5px;
+    max-height: 150px;
+    overflow-y: auto;
+    box-shadow: 0px 2px 5px rgba(255, 255, 255, 0.2); /* White box shadow */
+    z-index: 1000;
+}
+
+.suggestion {
+    padding: 5px 10px;
+    cursor: pointer;
+    color: #ffffff; /* White text */
+}
+
+.suggestion:hover {
+    background-color: #ffffff; /* White on hover */
+    color: #121212; /* Dark text */
+}
+
+.suggestion strong {
+    font-weight: bold;
+    color: #ffd700; /* Yellow text */
+}
+
+/* User Dashboard Styles */
+.dashboard-container {
+    background-color: #121212; /* Dark background */
+    color: #ffffff; /* White text */
+    padding: 40px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* White box shadow */
+}
+
+.dashboard-container h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.resume-list {
+    margin-bottom: 20px;
+}
+
+.resume-item {
+    border-bottom: 1px solid #ffffff; /* White border */
+    padding: 20px 0;
+}
+
+.resume-item:last-child {
+    border-bottom: none;
+}
+
+.resume-item h3 {
+    margin-bottom: 5px;
+}
+
+.resume-item p {
+    margin-bottom: 10px;
+}
+
+.resume-actions button {
+    background-color: #ffd700; /* Yellow button */
+    color: #121212; /* Dark text */
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.resume-actions button:hover {
+    background-color: #ffffff; /* White on hover */
+    color: #121212; /* Dark text */
+}
+
+.profile-settings {
+    margin-top: 20px;
+}
+
+.profile-settings h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.profile-settings ul {
+    list-style-type: none;
+}
+
+.profile-settings ul li {
+    margin-bottom: 10px;
+}
+
+.profile-settings ul li a {
+    color: #ffffff; /* White text */
+    text-decoration: none;
+}
+
+.profile-settings ul li a:hover {
+    color: #ffd700; /* Yellow on hover */
+}
+
+.third-party-integration a {
+    background-color: #ffd700; /* Yellow button */
+    color: #121212; /* Dark text */
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.third-party-integration a:hover {
+    background-color: #ffffff; /* White on hover */
+    color: #121212; /* Dark text */
+}
+
+/* Footer Styles */
+.footer {
+    background-color: #121212; /* Dark background */
+    color: #ffffff; /* White text */
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.footer p {
+    margin: 0;
+}
+
+.footer p a {
+    color: #ffd700; /* Yellow link */
+    text-decoration: none;
+}
+
+.footer p a:hover {
+    text-decoration: underline;
+}
+
+/* Popup styles */
+.popup {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scrolling if needed */
+    background-color: rgba(18, 18, 18, 0.5); /* Dark background with opacity */
+    backdrop-filter: blur(3px); /* Apply 3px blur to the background */
+}
+
+/* Popup content size */
+.popup-content {
+    background-color: #8e8d8d; /* White background */
+    margin: 10% auto; /* Centered with a bit more space from the top */
+    padding: 20px;
+    border: 1px solid #ffffff; /* White border */
+    max-width: 400px; /* Limiting the maximum width */
+    width: calc(100% - 40px); /* Set width to 100% of the viewport width minus padding */
+    border-radius: 10px;
+    animation: zoomIn 0.5s ease; /* Zoom in animation */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* White box shadow */
+    overflow-y: hidden; /* Hide vertical scrollbar for the form */
+}
+
+/* Close button */
+.close {
+    color: #ffffff; /* White text */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    transition: color 0.3s ease;
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+.close:hover,
+.close:focus {
+    color: #aaaaaa; /* Light gray on hover */
+}
+
+/* Login form styles */
+.login-form {
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #8e8d8d; /* White text */
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #8e8d8d; /* White border */
+    border-radius: 5px;
+    transition: border-color 0.3s ease; /* Add transition for border color */
+    background-color: transparent; /* Transparent background */
+    color: #8e8d8d; /* White text */
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #ffd700; /* Yellow border on focus */
+}
+
+button.login-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #ffd700; /* Yellow button */
+    color: #121212; /* Dark text */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Add transition for background color and transform */
+}
+
+button.login-btn:hover {
+    background-color: #170202; /* White on hover */
+    color: #121212; /* Dark text */
+    transform: translateY(-2px); /* Move button slightly on hover */
+}
+
+/* Registration link styles */
+.register-link {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.register-link a {
+    color: #ffd700; /* Yellow link */
+    text-decoration: none;
+    transition: color 0.3s ease; /* Add transition for link color */
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+    color: #8e8d8d; /* White on hover */
+}

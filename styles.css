@@ -1,0 +1,169 @@
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.parallax-section {
+    height: 100vh;
+    /*background-color: rgba(255, 255, 255, 0.1);  Light background color with opacity */
+    background-color: #121212;
+    backdrop-filter: blur(10px); /* Apply blur effect */
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Hide overflow to prevent scrollbars */
+    position: relative; /* Required for z-index */
+}
+
+.section-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #121212;
+   /* background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.2));  Overlay gradient */
+}
+
+/* Example: Apply glass effect to #home section */
+#home {
+    background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/37f002aa-032d-480b-9aa7-474adef47ed6/daqohse-f79cb156-0096-4748-9f7e-39b15cf2e86e.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM3ZjAwMmFhLTAzMmQtNDgwYi05YWE3LTQ3NGFkZWY0N2VkNlwvZGFxb2hzZS1mNzljYjE1Ni0wMDk2LTQ3NDgtOWY3ZS0zOWIxNWNmMmU4NmUuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.J-x32M2EVAjG7wBPe_hvxGgyKH1dUGhBaoYqYjhUXW4'); /* Replace with your image */
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+
+.section-content {
+    text-align: center;
+}
+
+.section-heading {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+.section-description {
+    font-size: 1.2em;
+    margin-bottom: 40px;
+}
+
+.features {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.feature {
+    width: 300px;
+    margin: 20px;
+}
+
+.feature img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.testimonials {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.testimonial {
+    width: 300px;
+    margin: 20px;
+}
+
+.testimonial img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.contact-info {
+    margin-top: 40px;
+}
+
+.contact-info p {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.header-content {
+    text-align: center;
+}
+
+.hero-heading {
+    font-size: 3em;
+    margin-bottom: 20px;
+    color: #000000; /* Text color */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 215, 0, 0.9), 0 0 70px rgba(255, 215, 0, 0.9), 0 0 80px rgba(255, 215, 0, 0.9), 0 0 100px rgba(255, 215, 0, 0.9), 0 0 150px rgba(255, 215, 0, 0.9); /* Adjust the color and size of the glow as needed */
+    animation: neon-animation 1.5s infinite alternate; /* Apply animation to create a flickering effect */
+}
+
+
+.hero-subheading {
+    font-size: 1.25em;
+    margin-bottom: 30px;
+    color: #ffffff; /* Text color */
+    white-space: nowrap; /* Prevent line breaks */
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ffd700; /* Neon orange */
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.btn:hover {
+    background-color: #ff6a00; /* Darker orange on hover */
+}
+
+/* Neon glow animation */
+@keyframes neon-animation {
+    0% {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 215, 0, 0.9), 0 0 70px rgba(255, 215, 0, 0.9), 0 0 80px rgba(255, 215, 0, 0.9), 0 0 100px rgba(255, 215, 0, 0.9), 0 0 150px rgba(255, 215, 0, 0.9); /* Initial shadow */
+    }
+    50% {
+        text-shadow: none; /* No shadow at 50% */
+    }
+    100% {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 215, 0, 0.9), 0 0 70px rgba(255, 215, 0, 0.9), 0 0 80px rgba(255, 215, 0, 0.9), 0 0 100px rgba(255, 215, 0, 0.9), 0 0 150px rgba(255, 215, 0, 0.9); /* Final shadow */
+    }
+}
+
+
+#features {
+    background-image: url('features-background.jpg');
+    /*background-color: rgba(0, 0, 0, 0.5);  Semi-transparent overlay */
+}
+
+#testimonials {
+    background-image: url('testimonials-background.jpg');
+    /*background-color: rgba(0, 0, 0, 0.5);  Semi-transparent overlay */
+}
+
+#contact {
+    background-image: url('contact-background.jpg');
+    /*background-color: rgba(0, 0, 0, 0.5);  Semi-transparent overlay */
+
+}
