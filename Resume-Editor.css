@@ -288,12 +288,26 @@ section#resume-editor p {
 }
 
 .template1-design .contact-info {
-    font-size: 14px;
+    font-size: 13px;
     color: #666;
+    margin: 5px 0;
 }
 
 .template1-design .contact-info span {
-    margin: 0 15px;
+    margin: 0 12px;
+    white-space: nowrap;
+}
+
+.template1-design .contact-links {
+    margin-top: 8px;
+    font-size: 12px;
+}
+
+.template1-design .summary-text {
+    color: #333;
+    line-height: 1.7;
+    text-align: justify;
+    font-size: 15px;
 }
 
 .template1-design .section-title {
@@ -1210,4 +1224,84 @@ button.loading::after {
         height: 45px !important;
         font-size: 20px !important;
     }
+}
+
+/* Languages Section Styles - Shared across all templates */
+.languages-list .language-item,
+.languages-grid .language-item {
+    margin-bottom: 10px;
+    color: #333;
+    line-height: 1.5;
+}
+
+.template1-design .languages-list .language-item {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.template2-design .resume-sidebar .languages-list .language-item {
+    margin-bottom: 12px;
+    color: white;
+}
+
+.template2-design .resume-main .summary-text {
+    color: #333;
+    line-height: 1.7;
+    text-align: justify;
+    font-size: 15px;
+}
+
+.template3-design .languages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+}
+
+.template3-design .languages-grid .language-item {
+    background: #f5f5f5;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border-left: 3px solid #16b439;
+}
+
+.template3-design .summary-text {
+    color: #333;
+    line-height: 1.7;
+    text-align: justify;
+    font-size: 15px;
+}
+
+/* Project and Certification specific styles */
+.section-item h3 {
+    margin: 0 0 8px 0;
+    color: inherit;
+    border: none;
+    padding: 0;
+}
+
+/* Character counter for textareas */
+.char-counter {
+    text-align: right;
+    font-size: 12px;
+    color: #888;
+    margin-top: 5px;
+}
+
+/* Enhanced project entry and certification entry styles */
+.project-entry,
+.certification-entry,
+.language-entry {
+    border: 2px solid #2196F3;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background: rgba(33, 150, 243, 0.05);
+    transition: all 0.3s ease;
+}
+
+.project-entry:hover,
+.certification-entry:hover,
+.language-entry:hover {
+    background: rgba(33, 150, 243, 0.08);
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
 }
