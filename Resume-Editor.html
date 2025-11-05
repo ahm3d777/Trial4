@@ -68,7 +68,49 @@
                 </label>
                 <input type="tel" name="phone" id="phone" placeholder="+1 (555) 123-4567" autocomplete="tel" aria-label="Phone Number">
             </div>
-            
+            <div class="form-group">
+                <label for="location">
+                    Location
+                    <span class="tooltip-icon" data-tooltip="City and State/Country (e.g., San Francisco, CA)">ⓘ</span>
+                </label>
+                <input type="text" name="location" id="location" placeholder="San Francisco, CA" aria-label="Location">
+            </div>
+            <div class="form-group">
+                <label for="linkedin">
+                    LinkedIn Profile
+                    <span class="tooltip-icon" data-tooltip="Your LinkedIn profile URL">ⓘ</span>
+                </label>
+                <input type="text" name="linkedin" id="linkedin" placeholder="linkedin.com/in/yourprofile" aria-label="LinkedIn Profile">
+            </div>
+            <div class="form-group">
+                <label for="website">
+                    Portfolio/Website
+                    <span class="tooltip-icon" data-tooltip="Your personal website or portfolio URL">ⓘ</span>
+                </label>
+                <input type="text" name="website" id="website" placeholder="yourportfolio.com" aria-label="Portfolio Website">
+            </div>
+            <div class="form-group">
+                <label for="github">
+                    GitHub Profile
+                    <span class="tooltip-icon" data-tooltip="Your GitHub username or profile URL">ⓘ</span>
+                </label>
+                <input type="text" name="github" id="github" placeholder="github.com/yourusername" aria-label="GitHub Profile">
+            </div>
+
+        <!-- Professional Summary -->
+        <h3>Professional Summary</h3>
+        <p style="color: #888; font-size: 14px; margin-bottom: 15px;">Write a brief summary highlighting your key qualifications and career objectives.</p>
+        <div class="form-group">
+            <label for="professional_summary">
+                Summary
+                <span class="tooltip-icon" data-tooltip="2-3 sentences about your professional background and goals">ⓘ</span>
+            </label>
+            <textarea name="professional_summary" id="professional_summary" placeholder="Experienced software engineer with 5+ years developing scalable web applications. Passionate about creating elegant solutions to complex problems..." rows="4" maxlength="500" aria-label="Professional Summary"></textarea>
+            <div class="char-counter" style="text-align: right; font-size: 12px; color: #888; margin-top: 5px;">
+                <span id="professional_summary-count">0</span>/500 characters
+            </div>
+        </div>
+
         <!-- Form fields for education -->
 <h3>Education</h3>
 <div id="education-container">
@@ -89,9 +131,27 @@
             <div id="education-school-suggestions" class="suggestions"></div>
         </div>
         <div class="form-group">
+            <label for="education_location">Location</label>
+            <input type="text" name="education_location" id="education_location" placeholder="e.g., Stanford, CA">
+        </div>
+        <div class="form-group">
             <label for="education_year">Graduation Year</label>
             <input type="text" name="education_year" id="education_year" placeholder="e.g., 2024">
             <div id="education-year-suggestions" class="suggestions"></div>
+        </div>
+        <div class="form-group">
+            <label for="education_gpa">
+                GPA (Optional)
+                <span class="tooltip-icon" data-tooltip="Include if 3.5 or higher">ⓘ</span>
+            </label>
+            <input type="text" name="education_gpa" id="education_gpa" placeholder="e.g., 3.8/4.0">
+        </div>
+        <div class="form-group">
+            <label for="education_honors">
+                Honors & Awards (Optional)
+                <span class="tooltip-icon" data-tooltip="e.g., Summa Cum Laude, Dean's List">ⓘ</span>
+            </label>
+            <input type="text" name="education_honors" id="education_honors" placeholder="e.g., Magna Cum Laude">
         </div>
     </div>
 </div>
@@ -112,6 +172,11 @@
             <label for="work_company">Company Name</label>
             <input type="text" name="work_company" id="work_company" placeholder="e.g., Google Inc.">
             <div id="work-company-suggestions" class="suggestions"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="work_location">Location</label>
+            <input type="text" name="work_location" id="work_location" placeholder="e.g., Mountain View, CA">
         </div>
 
         <div class="form-group">
@@ -162,6 +227,79 @@
 </div>
 <button type="button" id="add-skill-btn" class="add-entry-btn">+ Add Another Skill</button>
 
+            <!-- Projects Section -->
+<h3>Projects (Optional)</h3>
+<p style="color: #888; font-size: 14px; margin-bottom: 15px;">Showcase your personal projects, open-source contributions, or significant work.</p>
+<div id="projects-container">
+    <div class="project-entry">
+        <div class="form-group">
+            <label for="project_name">Project Name</label>
+            <input type="text" name="project_name[]" placeholder="e.g., E-commerce Platform">
+        </div>
+        <div class="form-group">
+            <label for="project_description">
+                Description
+                <span class="tooltip-icon" data-tooltip="Brief description of what the project does and your role">ⓘ</span>
+            </label>
+            <textarea name="project_description[]" placeholder="Describe the project, your role, and impact..." rows="3" maxlength="500"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="project_technologies">Technologies Used</label>
+            <input type="text" name="project_technologies[]" placeholder="e.g., React, Node.js, MongoDB">
+        </div>
+        <div class="form-group">
+            <label for="project_link">Project Link (Optional)</label>
+            <input type="text" name="project_link[]" placeholder="e.g., github.com/username/project">
+        </div>
+    </div>
+</div>
+<button type="button" id="add-project-btn" class="add-entry-btn">+ Add Another Project</button>
+
+            <!-- Certifications Section -->
+<h3>Certifications (Optional)</h3>
+<p style="color: #888; font-size: 14px; margin-bottom: 15px;">List your professional certifications and credentials.</p>
+<div id="certifications-container">
+    <div class="certification-entry">
+        <div class="form-group">
+            <label for="cert_name">Certification Name</label>
+            <input type="text" name="cert_name[]" placeholder="e.g., AWS Certified Solutions Architect">
+        </div>
+        <div class="form-group">
+            <label for="cert_issuer">Issuing Organization</label>
+            <input type="text" name="cert_issuer[]" placeholder="e.g., Amazon Web Services">
+        </div>
+        <div class="form-group">
+            <label for="cert_date">Date Obtained</label>
+            <input type="text" name="cert_date[]" placeholder="e.g., January 2024">
+        </div>
+    </div>
+</div>
+<button type="button" id="add-certification-btn" class="add-entry-btn">+ Add Another Certification</button>
+
+            <!-- Languages Section -->
+<h3>Languages (Optional)</h3>
+<p style="color: #888; font-size: 14px; margin-bottom: 15px;">List the languages you speak and your proficiency level.</p>
+<div id="languages-container">
+    <div class="language-entry">
+        <div class="form-group">
+            <label for="language_name">Language</label>
+            <input type="text" name="language_name[]" placeholder="e.g., English">
+        </div>
+        <div class="form-group">
+            <label for="language_proficiency">Proficiency Level</label>
+            <select name="language_proficiency[]">
+                <option value="">Select proficiency</option>
+                <option value="Native">Native</option>
+                <option value="Fluent">Fluent</option>
+                <option value="Professional">Professional Working Proficiency</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Basic">Basic</option>
+            </select>
+        </div>
+    </div>
+</div>
+<button type="button" id="add-language-btn" class="add-entry-btn">+ Add Another Language</button>
+
             <!-- Action buttons -->
             <div class="form-actions" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 30px;">
                 <button type="submit" id="save-resume-btn" class="btn-primary" aria-label="Save Resume">
@@ -189,9 +327,9 @@
     <div class="form-group">
         <label for="template-select">Resume Template</label>
         <select name="template" id="template-select">
-            <option value="template1">Classic Professional - Purple accent, centered layout</option>
-            <option value="template2">Modern Minimal - Red sidebar, clean design</option>
-            <option value="template3">Creative Bold - Green header, dynamic layout</option>
+            <option value="template1">Classic Professional - Elegant purple design, ideal for traditional industries</option>
+            <option value="template2">Modern Minimal - Contemporary sidebar layout, perfect for tech and creative fields</option>
+            <option value="template3">Creative Bold - Eye-catching green design, great for standing out</option>
         </select>
     </div>
 </div>
