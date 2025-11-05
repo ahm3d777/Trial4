@@ -152,6 +152,7 @@ form {
 
 .form-group {
     margin-bottom: 20px;
+    position: relative; /* Ensure suggestions dropdown is positioned relative to form-group */
 }
 
 label {
@@ -935,6 +936,7 @@ section#resume-editor p {
 
 .form-group {
     margin-bottom: 20px;
+    position: relative; /* Ensure suggestions dropdown is positioned relative to form-group */
 }
 
 label {
