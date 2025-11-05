@@ -1403,3 +1403,481 @@ button.loading::after {
     background: rgba(33, 150, 243, 0.08);
     box-shadow: 0 2px 8px rgba(33, 150, 243, 0.2);
 }
+/* ====================================================================
+   MOBILE RESPONSIVENESS & MEDIA QUERIES
+   ==================================================================== */
+
+/* Tablet screens (768px and below) */
+@media screen and (max-width: 768px) {
+    header {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    header h1 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav ul li {
+        margin: 5px 0;
+    }
+
+    form {
+        padding: 25px;
+    }
+
+    h2 {
+        font-size: 26px;
+    }
+
+    h3 {
+        font-size: 20px;
+    }
+
+    section#feature h2 {
+        font-size: 28px;
+    }
+
+    section#feature p {
+        font-size: 16px;
+    }
+
+    section {
+        padding: 30px 15px;
+    }
+
+    /* Form actions grid */
+    .form-actions {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+
+    /* Dashboard and resume list */
+    .dashboard-container {
+        padding: 20px;
+    }
+
+    .resume-item {
+        padding: 15px;
+    }
+
+    /* Real-time preview */
+    #real-time-preview {
+        padding: 15px;
+        min-height: 300px;
+    }
+
+    /* Template designs */
+    .template1-design,
+    .template2-design,
+    .template3-design,
+    .template4-design,
+    .template5-design,
+    .template6-design {
+        padding: 20px !important;
+    }
+
+    /* Resume header in templates */
+    .resume-name {
+        font-size: 24px !important;
+    }
+
+    .contact-info {
+        font-size: 11px !important;
+    }
+
+    .section-title {
+        font-size: 18px !important;
+    }
+
+    /* Skill tags */
+    .skill-tag {
+        font-size: 11px !important;
+        padding: 4px 10px !important;
+    }
+
+    /* Back to top button */
+    #back-to-top {
+        bottom: 20px !important;
+        right: 20px !important;
+        width: 45px !important;
+        height: 45px !important;
+        font-size: 20px !important;
+    }
+
+    /* Shortcuts button */
+    #shortcuts-help-btn {
+        bottom: 75px !important;
+        right: 20px !important;
+        width: 45px !important;
+        height: 45px !important;
+    }
+
+    /* Popup and modal adjustments */
+    .popup-content {
+        width: 90% !important;
+        margin: 10% auto !important;
+        padding: 25px !important;
+    }
+
+    /* Progress container */
+    .progress-container {
+        margin-bottom: 20px !important;
+    }
+
+    /* Resume tips grid */
+    .tips-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Entry headers */
+    .entry-header {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+
+    .entry-header h4 {
+        margin-bottom: 10px;
+    }
+
+    .entry-header .remove-entry-btn {
+        width: 100%;
+    }
+}
+
+/* Mobile screens (480px and below) */
+@media screen and (max-width: 480px) {
+    body {
+        font-size: 14px;
+    }
+
+    header h1 {
+        font-size: 18px;
+    }
+
+    form {
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    h3 {
+        font-size: 18px;
+    }
+
+    section#feature {
+        padding: 50px 15px;
+    }
+
+    section#feature h2 {
+        font-size: 24px;
+    }
+
+    section#feature p {
+        font-size: 14px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea,
+    select {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    label {
+        font-size: 13px;
+    }
+
+    .cta,
+    button[type="submit"],
+    .download-btn,
+    .share-btn,
+    .btn-primary,
+    .btn-secondary {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
+    .add-entry-btn {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+
+    /* Resume templates mobile adjustments */
+    .resume-name {
+        font-size: 20px !important;
+    }
+
+    .contact-info {
+        font-size: 10px !important;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .contact-info span {
+        margin: 3px 0 !important;
+        display: block !important;
+    }
+
+    .section-title {
+        font-size: 16px !important;
+    }
+
+    .item-description,
+    .summary-text {
+        font-size: 12px !important;
+    }
+
+    /* Two column layouts to single column */
+    .template2-design .resume-container {
+        grid-template-columns: 1fr !important;
+    }
+
+    .template4-design .resume-container {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Dashboard */
+    .resume-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .resume-actions button {
+        width: 100%;
+    }
+
+    /* Back to top button - smaller on mobile */
+    #back-to-top {
+        bottom: 15px !important;
+        right: 15px !important;
+        width: 40px !important;
+        height: 40px !important;
+        font-size: 18px !important;
+    }
+
+    #shortcuts-help-btn {
+        bottom: 65px !important;
+        right: 15px !important;
+        width: 40px !important;
+        height: 40px !important;
+        font-size: 16px !important;
+    }
+
+    /* Popups full screen on mobile */
+    .popup-content {
+        width: 95% !important;
+        max-width: none !important;
+        margin: 5% auto !important;
+        padding: 20px !important;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    /* Tooltip adjustments */
+    .tooltip-icon {
+        font-size: 14px;
+        padding: 2px 6px;
+    }
+
+    /* Notification adjustments */
+    .notification {
+        right: 10px !important;
+        left: 10px !important;
+        max-width: none !important;
+    }
+
+    /* Character counter */
+    .char-counter {
+        font-size: 11px;
+    }
+
+    /* Progress bar text */
+    .progress-header {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+
+    .progress-header span {
+        margin-bottom: 5px;
+    }
+
+    /* Skill tags wrap better */
+    .skills-list,
+    .template1-design .skills-list {
+        gap: 6px !important;
+    }
+
+    .skill-tag {
+        font-size: 10px !important;
+        padding: 3px 8px !important;
+    }
+
+    /* Form grid to single column */
+    .skill-input-group {
+        flex-direction: column;
+    }
+
+    .skill-input-group input {
+        margin-bottom: 8px;
+    }
+
+    .remove-skill-btn {
+        width: 100%;
+    }
+}
+
+/* Very small screens (360px and below) */
+@media screen and (max-width: 360px) {
+    header {
+        padding: 10px;
+    }
+
+    form {
+        padding: 15px;
+    }
+
+    section#feature {
+        padding: 40px 10px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    .template1-design,
+    .template2-design,
+    .template3-design,
+    .template4-design,
+    .template5-design,
+    .template6-design {
+        padding: 15px !important;
+    }
+
+    .resume-name {
+        font-size: 18px !important;
+    }
+
+    button,
+    .btn-primary,
+    .btn-secondary {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+}
+
+/* Landscape mode on mobile devices */
+@media screen and (max-height: 600px) and (orientation: landscape) {
+    header {
+        padding: 10px 20px;
+    }
+
+    section#feature {
+        padding: 40px 20px;
+    }
+
+    form {
+        padding: 25px;
+    }
+
+    .popup-content {
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+}
+
+/* Print styles for PDF generation */
+@media print {
+    header,
+    nav,
+    footer,
+    .form-actions,
+    .add-entry-btn,
+    .remove-entry-btn,
+    #back-to-top,
+    #shortcuts-help-btn,
+    .progress-container,
+    .tooltip-icon {
+        display: none !important;
+    }
+
+    body {
+        background: white;
+        color: black;
+    }
+
+    #real-time-preview {
+        border: none;
+        box-shadow: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .resume-template {
+        page-break-after: auto;
+    }
+
+    .section-item {
+        page-break-inside: avoid;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea,
+    select {
+        border-width: 3px;
+    }
+
+    button,
+    .btn-primary,
+    .btn-secondary {
+        border: 2px solid currentColor;
+    }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Dark mode support (if OS prefers dark) */
+@media (prefers-color-scheme: dark) {
+    /* Already using dark theme, but can add specific overrides if needed */
+    body {
+        background-color: #0a0a0a;
+    }
+
+    form {
+        background: linear-gradient(145deg, #0f0f0f, #1a1a1a);
+    }
+}
+
+/* ====================================================================
+   END OF MOBILE RESPONSIVENESS
+   ==================================================================== */
