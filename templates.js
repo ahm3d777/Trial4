@@ -43,6 +43,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 return generateTemplate2(formData);
             case 'template3':
                 return generateTemplate3(formData);
+            case 'template4':
+                return generateTemplate4(formData);
+            case 'template5':
+                return generateTemplate5(formData);
+            case 'template6':
+                return generateTemplate6(formData);
             default:
                 return '<p style="color: #888; text-align: center; padding: 40px;">Select a template to preview your resume</p>';
         }
@@ -401,6 +407,331 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                             `).join('')}
                         </div>
+                    </div>
+                </div>
+                ` : ''}
+            </div>
+        `;
+    }
+
+    // Function to generate HTML for Template 4 - Executive Professional
+    function generateTemplate4(data) {
+        return `
+            <div class="resume-template template4-design">
+                <div class="resume-header-executive">
+                    <h1 class="resume-name">${data.fullName || 'Your Name'}</h1>
+                    ${data.summary ? `<p class="executive-tagline">${data.summary}</p>` : ''}
+                </div>
+
+                <div class="executive-contact-bar">
+                    ${data.email ? `<span>✉ ${data.email}</span>` : ''}
+                    ${data.phone ? `<span>📞 ${data.phone}</span>` : ''}
+                    ${data.location ? `<span>📍 ${data.location}</span>` : ''}
+                    ${data.linkedin ? `<span>🔗 LinkedIn</span>` : ''}
+                    ${data.website ? `<span>🌐 ${data.website}</span>` : ''}
+                </div>
+
+                <div class="executive-layout">
+                    <div class="executive-main">
+                        ${data.experience.length > 0 ? `
+                        <div class="resume-section">
+                            <h2 class="section-title-executive">Professional Experience</h2>
+                            ${data.experience.map(exp => `
+                                <div class="section-item-executive">
+                                    <div class="item-header">
+                                        <div>
+                                            <h3>${exp.position || 'Position'}</h3>
+                                            <p class="item-company">${exp.company || 'Company'}${exp.location ? ` • ${exp.location}` : ''}</p>
+                                        </div>
+                                        <span class="item-date-executive">${exp.duration || ''}</span>
+                                    </div>
+                                    ${exp.description ? `<p class="item-description">${exp.description}</p>` : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                        ` : ''}
+
+                        ${data.education.length > 0 ? `
+                        <div class="resume-section">
+                            <h2 class="section-title-executive">Education</h2>
+                            ${data.education.map(edu => `
+                                <div class="section-item-executive">
+                                    <div class="item-header">
+                                        <div>
+                                            <h3>${edu.degree || 'Degree'}</h3>
+                                            <p class="item-company">${edu.school || 'School/University'}${edu.location ? ` • ${edu.location}` : ''}</p>
+                                        </div>
+                                        <span class="item-date-executive">${edu.year || ''}</span>
+                                    </div>
+                                    ${edu.major ? `<p class="item-detail">Major: ${edu.major}</p>` : ''}
+                                    ${edu.gpa ? `<p class="item-detail">GPA: ${edu.gpa}</p>` : ''}
+                                    ${edu.honors ? `<p class="item-detail">${edu.honors}</p>` : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                        ` : ''}
+                    </div>
+
+                    <div class="executive-sidebar">
+                        ${data.skills.length > 0 ? `
+                        <div class="sidebar-section-executive">
+                            <h3 class="sidebar-title">Key Skills</h3>
+                            <div class="skills-list-executive">
+                                ${data.skills.map(skill => `<div class="skill-item-executive">${skill}</div>`).join('')}
+                            </div>
+                        </div>
+                        ` : ''}
+
+                        ${data.certifications && data.certifications.length > 0 ? `
+                        <div class="sidebar-section-executive">
+                            <h3 class="sidebar-title">Certifications</h3>
+                            ${data.certifications.map(cert => `
+                                <div class="cert-item-executive">
+                                    <strong>${cert.name || 'Certification'}</strong>
+                                    ${cert.issuer ? `<div class="cert-issuer">${cert.issuer}</div>` : ''}
+                                    ${cert.date ? `<div class="cert-date">${cert.date}</div>` : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                        ` : ''}
+
+                        ${data.languages && data.languages.length > 0 ? `
+                        <div class="sidebar-section-executive">
+                            <h3 class="sidebar-title">Languages</h3>
+                            ${data.languages.map(lang => `
+                                <div class="lang-item-executive">
+                                    <strong>${lang.language}</strong>
+                                    ${lang.proficiency ? `<span>${lang.proficiency}</span>` : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                        ` : ''}
+
+                        ${data.projects && data.projects.length > 0 ? `
+                        <div class="sidebar-section-executive">
+                            <h3 class="sidebar-title">Projects</h3>
+                            ${data.projects.map(project => `
+                                <div class="project-item-executive">
+                                    <strong>${project.name || 'Project'}</strong>
+                                    ${project.description ? `<p class="project-desc">${project.description}</p>` : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Function to generate HTML for Template 5 - Technical Clean
+    function generateTemplate5(data) {
+        return `
+            <div class="resume-template template5-design">
+                <div class="tech-header">
+                    <div class="tech-name-section">
+                        <h1 class="resume-name">${data.fullName || 'Your Name'}</h1>
+                        <div class="tech-title">${data.experience.length > 0 ? (data.experience[0].position || 'Professional') : 'Professional'}</div>
+                    </div>
+                    <div class="tech-contact">
+                        ${data.email ? `<div>✉ ${data.email}</div>` : ''}
+                        ${data.phone ? `<div>📞 ${data.phone}</div>` : ''}
+                        ${data.location ? `<div>📍 ${data.location}</div>` : ''}
+                        ${data.github ? `<div>💻 ${data.github}</div>` : ''}
+                        ${data.linkedin ? `<div>🔗 ${data.linkedin}</div>` : ''}
+                    </div>
+                </div>
+
+                ${data.summary ? `
+                <div class="resume-section tech-section">
+                    <h2 class="section-title-tech">// Professional Summary</h2>
+                    <p class="summary-text">${data.summary}</p>
+                </div>
+                ` : ''}
+
+                ${data.skills.length > 0 ? `
+                <div class="resume-section tech-section">
+                    <h2 class="section-title-tech">// Technical Skills</h2>
+                    <div class="tech-skills-container">
+                        ${data.skills.map(skill => `<span class="tech-skill-tag">${skill}</span>`).join('')}
+                    </div>
+                </div>
+                ` : ''}
+
+                ${data.experience.length > 0 ? `
+                <div class="resume-section tech-section">
+                    <h2 class="section-title-tech">// Work Experience</h2>
+                    ${data.experience.map(exp => `
+                        <div class="section-item-tech">
+                            <div class="tech-item-header">
+                                <div>
+                                    <h3 class="tech-position">${exp.position || 'Position'}</h3>
+                                    <div class="tech-company">${exp.company || 'Company'}${exp.location ? ` | ${exp.location}` : ''}</div>
+                                </div>
+                                <span class="tech-duration">${exp.duration || ''}</span>
+                            </div>
+                            ${exp.description ? `<div class="tech-description">${exp.description}</div>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+                ` : ''}
+
+                ${data.projects && data.projects.length > 0 ? `
+                <div class="resume-section tech-section">
+                    <h2 class="section-title-tech">// Notable Projects</h2>
+                    ${data.projects.map(project => `
+                        <div class="section-item-tech">
+                            <h3 class="tech-project-name">${project.name || 'Project Name'}</h3>
+                            ${project.description ? `<div class="tech-description">${project.description}</div>` : ''}
+                            ${project.technologies ? `<div class="tech-stack"><strong>Stack:</strong> ${project.technologies}</div>` : ''}
+                            ${project.link ? `<div class="tech-link">🔗 ${project.link}</div>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+                ` : ''}
+
+                ${data.education.length > 0 ? `
+                <div class="resume-section tech-section">
+                    <h2 class="section-title-tech">// Education</h2>
+                    ${data.education.map(edu => `
+                        <div class="section-item-tech">
+                            <div class="tech-item-header">
+                                <div>
+                                    <h3 class="tech-position">${edu.degree || 'Degree'}</h3>
+                                    <div class="tech-company">${edu.school || 'School/University'}${edu.location ? ` | ${edu.location}` : ''}</div>
+                                </div>
+                                <span class="tech-duration">${edu.year || ''}</span>
+                            </div>
+                            ${edu.major ? `<div class="item-detail">Major: ${edu.major}</div>` : ''}
+                            ${edu.gpa ? `<div class="item-detail">GPA: ${edu.gpa}</div>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+                ` : ''}
+
+                ${data.certifications && data.certifications.length > 0 ? `
+                <div class="resume-section tech-section">
+                    <h2 class="section-title-tech">// Certifications</h2>
+                    <div class="tech-certs">
+                        ${data.certifications.map(cert => `
+                            <div class="tech-cert-item">
+                                <strong>${cert.name || 'Certification'}</strong>
+                                ${cert.issuer ? ` - ${cert.issuer}` : ''}
+                                ${cert.date ? ` (${cert.date})` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                ` : ''}
+            </div>
+        `;
+    }
+
+    // Function to generate HTML for Template 6 - Academic Formal
+    function generateTemplate6(data) {
+        return `
+            <div class="resume-template template6-design">
+                <div class="academic-header">
+                    <h1 class="resume-name-academic">${data.fullName || 'Your Name'}</h1>
+                    <div class="academic-contact">
+                        ${data.email ? `${data.email}` : ''}
+                        ${data.phone ? ` • ${data.phone}` : ''}
+                        ${data.location ? ` • ${data.location}` : ''}
+                    </div>
+                    <div class="academic-links">
+                        ${data.linkedin ? `LinkedIn: ${data.linkedin}` : ''}
+                        ${data.website ? `${data.linkedin ? ' • ' : ''}Website: ${data.website}` : ''}
+                    </div>
+                </div>
+
+                ${data.summary ? `
+                <div class="resume-section academic-section">
+                    <h2 class="section-title-academic">Research Interests / Professional Summary</h2>
+                    <p class="academic-text">${data.summary}</p>
+                </div>
+                ` : ''}
+
+                ${data.education.length > 0 ? `
+                <div class="resume-section academic-section">
+                    <h2 class="section-title-academic">Education</h2>
+                    ${data.education.map(edu => `
+                        <div class="section-item-academic">
+                            <div class="academic-item-header">
+                                <strong>${edu.degree || 'Degree'}</strong>
+                                <span class="academic-year">${edu.year || ''}</span>
+                            </div>
+                            <div class="academic-institution">${edu.school || 'Institution'}${edu.location ? `, ${edu.location}` : ''}</div>
+                            ${edu.major ? `<div class="academic-detail">Major: ${edu.major}</div>` : ''}
+                            ${edu.gpa ? `<div class="academic-detail">GPA: ${edu.gpa}</div>` : ''}
+                            ${edu.honors ? `<div class="academic-detail">${edu.honors}</div>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+                ` : ''}
+
+                ${data.experience.length > 0 ? `
+                <div class="resume-section academic-section">
+                    <h2 class="section-title-academic">Professional Experience</h2>
+                    ${data.experience.map(exp => `
+                        <div class="section-item-academic">
+                            <div class="academic-item-header">
+                                <strong>${exp.position || 'Position'}</strong>
+                                <span class="academic-year">${exp.duration || ''}</span>
+                            </div>
+                            <div class="academic-institution">${exp.company || 'Organization'}${exp.location ? `, ${exp.location}` : ''}</div>
+                            ${exp.description ? `<div class="academic-description">${exp.description}</div>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+                ` : ''}
+
+                ${data.projects && data.projects.length > 0 ? `
+                <div class="resume-section academic-section">
+                    <h2 class="section-title-academic">Research Projects / Publications</h2>
+                    ${data.projects.map(project => `
+                        <div class="section-item-academic">
+                            <div><strong>${project.name || 'Project Title'}</strong></div>
+                            ${project.description ? `<div class="academic-description">${project.description}</div>` : ''}
+                            ${project.technologies ? `<div class="academic-detail">Methods/Tools: ${project.technologies}</div>` : ''}
+                            ${project.link ? `<div class="academic-detail">Link: ${project.link}</div>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+                ` : ''}
+
+                ${data.certifications && data.certifications.length > 0 ? `
+                <div class="resume-section academic-section">
+                    <h2 class="section-title-academic">Certifications & Awards</h2>
+                    ${data.certifications.map(cert => `
+                        <div class="section-item-academic">
+                            <div class="academic-item-header">
+                                <strong>${cert.name || 'Certification/Award'}</strong>
+                                <span class="academic-year">${cert.date || ''}</span>
+                            </div>
+                            ${cert.issuer ? `<div class="academic-institution">${cert.issuer}</div>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+                ` : ''}
+
+                ${data.skills.length > 0 ? `
+                <div class="resume-section academic-section">
+                    <h2 class="section-title-academic">Skills & Competencies</h2>
+                    <div class="academic-skills">
+                        ${data.skills.map(skill => `<span class="academic-skill">${skill}</span>`).join(' • ')}
+                    </div>
+                </div>
+                ` : ''}
+
+                ${data.languages && data.languages.length > 0 ? `
+                <div class="resume-section academic-section">
+                    <h2 class="section-title-academic">Languages</h2>
+                    <div class="academic-languages">
+                        ${data.languages.map(lang => `
+                            <div class="academic-lang-item">
+                                <strong>${lang.language}:</strong> ${lang.proficiency || 'Proficient'}
+                            </div>
+                        `).join('')}
                     </div>
                 </div>
                 ` : ''}
