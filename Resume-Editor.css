@@ -639,29 +639,125 @@ section#resume-editor p {
 /* Suggestion Styles */
 .suggestions {
     position: absolute;
-    background-color: #121212; /* Dark background */
-    border: 1px solid #ffffff; /* White border */
-    border-radius: 5px;
-    max-height: 150px;
+    background-color: #1e1e1e; /* Slightly lighter dark background */
+    border: 1px solid #3a3a3a; /* Subtle border */
+    border-radius: 8px;
+    max-height: 250px; /* Increased height for better UX */
     overflow-y: auto;
-    box-shadow: 0px 2px 5px rgba(255, 255, 255, 0.2); /* White box shadow */
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5), 0px 0px 1px rgba(255, 255, 255, 0.1); /* Enhanced shadow */
     z-index: 1000;
+    display: none; /* Hidden by default */
+    margin-top: 4px;
+    animation: fadeIn 0.15s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Custom scrollbar for suggestions */
+.suggestions::-webkit-scrollbar {
+    width: 8px;
+}
+
+.suggestions::-webkit-scrollbar-track {
+    background: #2a2a2a;
+    border-radius: 4px;
+}
+
+.suggestions::-webkit-scrollbar-thumb {
+    background: #4a4a4a;
+    border-radius: 4px;
+}
+
+.suggestions::-webkit-scrollbar-thumb:hover {
+    background: #5a5a5a;
 }
 
 .suggestion {
-    padding: 5px 10px;
+    padding: 10px 14px;
     cursor: pointer;
+    color: #e0e0e0; /* Lighter text */
+    transition: all 0.12s ease-in-out;
+    border-bottom: 1px solid #2a2a2a;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.suggestion:last-child {
+    border-bottom: none;
+}
+
+.suggestion:hover,
+.suggestion.focused {
+    background-color: #2a5db0; /* Modern blue highlight */
     color: #ffffff; /* White text */
+    padding-left: 18px; /* Subtle indent on hover */
 }
 
-.suggestion:hover {
-    background-color: #ffffff; /* White on hover */
-    color: #121212; /* Dark text */
+.suggestion:active {
+    background-color: #1e4a8a; /* Darker blue on click */
 }
 
+/* Highlighted search matches */
 .suggestion strong {
-    font-weight: bold;
-    color: #64b5f6;
+    font-weight: 600;
+    color: #64b5f6; /* Bright blue for matches */
+    background-color: rgba(100, 181, 246, 0.15); /* Subtle background */
+    padding: 1px 2px;
+    border-radius: 3px;
+}
+
+.suggestion:hover strong,
+.suggestion.focused strong {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Empty state styling */
+.suggestion.empty-state {
+    cursor: default;
+    color: #888888;
+    text-align: center;
+    font-style: italic;
+    padding: 16px 14px;
+    border-bottom: none;
+}
+
+.suggestion.empty-state:hover {
+    background-color: transparent;
+    padding-left: 14px; /* No indent for empty state */
+    color: #888888;
+}
+
+/* Focused state for keyboard navigation */
+.suggestion.focused {
+    outline: 2px solid #64b5f6;
+    outline-offset: -2px;
+}
+
+/* Accessibility - high contrast mode support */
+@media (prefers-contrast: high) {
+    .suggestions {
+        border: 2px solid #ffffff;
+    }
+
+    .suggestion {
+        border-bottom: 1px solid #666666;
+    }
+
+    .suggestion:hover,
+    .suggestion.focused {
+        background-color: #0066cc;
+        outline: 3px solid #ffffff;
+    }
 }
 
 /* User Dashboard Styles */
