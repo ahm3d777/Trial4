@@ -698,14 +698,36 @@
                 });
             }
 
-            // Save button
+            // Save button with loading state
             if (DOM.saveBtn) {
                 DOM.saveBtn.addEventListener('click', function(e) {
                     e.preventDefault();
-                    if (validateForm()) {
-                        saveResume();
-                        showNotification('Resume saved successfully!', 'success');
+
+                    // Validate first
+                    if (!validateForm()) {
+                        return;
                     }
+
+                    // Add loading state
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<span class="btn-icon">⏳</span> Saving...';
+                    this.classList.add('loading');
+                    this.disabled = true;
+
+                    // Small delay to show loading state
+                    setTimeout(() => {
+                        const saved = saveResume();
+
+                        // Reset button state
+                        this.innerHTML = originalText;
+                        this.classList.remove('loading');
+                        this.disabled = false;
+
+                        // Show notification
+                        if (saved) {
+                            showNotification('Resume saved successfully!', 'success');
+                        }
+                    }, 300);
                 });
             }
 
@@ -1301,17 +1323,25 @@
      */
     function setupDownloadButtons() {
         try {
-            // PDF Download button
+            // PDF Download button with improved loading state
             if (DOM.downloadBtn) {
                 DOM.downloadBtn.addEventListener('click', function() {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<span class="btn-icon">⏳</span> Preparing...';
                     this.classList.add('loading');
                     this.disabled = true;
 
+                    // Download with auto-save
                     setTimeout(() => {
                         downloadCurrentResume();
-                        this.classList.remove('loading');
-                        this.disabled = false;
-                    }, 500);
+
+                        // Reset button after a brief delay
+                        setTimeout(() => {
+                            this.innerHTML = originalText;
+                            this.classList.remove('loading');
+                            this.disabled = false;
+                        }, 1000);
+                    }, 100);
                 });
             }
 
@@ -1325,20 +1355,32 @@
     }
 
     /**
-     * Download current resume as PDF
+     * Download current resume as PDF (with auto-save)
      */
     function downloadCurrentResume() {
         try {
-            if (!currentResumeId) {
-                // Save first
-                const resume = saveResume();
-                if (!resume) {
-                    showNotification('Please save your resume first', 'error');
-                    return;
-                }
-                currentResumeId = resume.id;
+            // Check if form is valid
+            if (!validateForm(true)) { // Silent validation
+                showNotification('Please fill in required fields (Name and Email)', 'error');
+                return;
             }
-            downloadResumePDF(currentResumeId);
+
+            // Always save before downloading to ensure PDF has latest data
+            showNotification('Preparing resume for download...', 'info');
+
+            const resume = saveResume();
+            if (!resume) {
+                showNotification('Failed to save resume. Cannot download.', 'error');
+                return;
+            }
+
+            // Update current resume ID
+            currentResumeId = resume.id;
+
+            // Small delay to ensure data is committed
+            setTimeout(() => {
+                downloadResumePDF(currentResumeId);
+            }, 200);
         } catch (error) {
             console.error('Download current resume error:', error);
             showNotification('Failed to download resume', 'error');
