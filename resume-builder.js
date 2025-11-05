@@ -148,14 +148,44 @@
         return div;
     }
 
+    // Validate form data
+    function validateForm() {
+        const fullName = document.getElementById('full_name')?.value.trim();
+        const email = document.getElementById('email')?.value.trim();
+
+        if (!fullName) {
+            showNotification('Please enter your full name', 'error');
+            document.getElementById('full_name')?.focus();
+            return false;
+        }
+
+        if (!email) {
+            showNotification('Please enter your email address', 'error');
+            document.getElementById('email')?.focus();
+            return false;
+        }
+
+        // Basic email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            showNotification('Please enter a valid email address', 'error');
+            document.getElementById('email')?.focus();
+            return false;
+        }
+
+        return true;
+    }
+
     // Setup form submission and save handlers
     function setupFormHandlers() {
         const form = document.getElementById('resume-form');
         if (form) {
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
-                saveResume();
-                showNotification('Resume saved successfully!', 'success');
+                if (validateForm()) {
+                    saveResume();
+                    showNotification('Resume saved successfully!', 'success');
+                }
             });
         }
 
@@ -164,8 +194,10 @@
         if (saveBtn) {
             saveBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                saveResume();
-                showNotification('Resume saved successfully!', 'success');
+                if (validateForm()) {
+                    saveResume();
+                    showNotification('Resume saved successfully!', 'success');
+                }
             });
         }
 

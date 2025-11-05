@@ -21,27 +21,26 @@
     </header>
     <section id="feature">
         <h2>Build Your Professional Resume</h2>
-        <p>Get started with our easy-to-use resume builder. Create a professional resume in minutes.</p>
-        <a href="#resume-editor" class="cta">Start Building</a>
+        <p>Create a standout resume in minutes with our intuitive builder. Choose from professional templates, get intelligent suggestions, and export to PDF instantly.</p>
+        <a href="#resume-editor" class="cta">Start Building Your Resume</a>
     </section>
     <!-- Resume Editing Interface -->
     <section id="resume-editor">
         <h2>Resume Editor</h2>
+        <p style="text-align: center; color: #b0b0b0; margin-bottom: 30px;">Fill in your information below. Changes are saved automatically and you can download your resume as PDF anytime.</p>
         <form id="resume-form">
             <!-- Form fields for personal information -->
             <div class="form-group">
-                <label for="full_name">Full Name</label>
-                <input type="text" name="full_name" id="full_name" placeholder="Enter your full name" required>
+                <label for="full_name">Full Name *</label>
+                <input type="text" name="full_name" id="full_name" placeholder="John Doe" required>
             </div>
             <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" name="email" id="email" placeholder="Enter your email" autocomplete="email" required="">
-
-
+                <label for="email">Email Address *</label>
+                <input type="email" name="email" id="email" placeholder="john.doe@example.com" autocomplete="email" required>
             </div>
             <div class="form-group">
                 <label for="phone">Phone Number</label>
-                <input type="tel" name="phone" id="phone" placeholder="Enter your phone number" autocomplete="tel">
+                <input type="tel" name="phone" id="phone" placeholder="+1 (555) 123-4567" autocomplete="tel">
             </div>
             
         <!-- Form fields for education -->
@@ -49,23 +48,23 @@
 <div id="education-container">
     <div class="education-entry">
         <div class="form-group">
-            <label for="education_degree">Degree:</label>
-            <input type="text" name="education_degree" id="education_degree" placeholder="Enter your degree">
+            <label for="education_degree">Degree</label>
+            <input type="text" name="education_degree" id="education_degree" placeholder="e.g., Bachelor of Science">
             <div id="education-degree-suggestions" class="suggestions"></div>
         </div>
         <div class="form-group">
-            <label for="education_major">Major:</label>
-            <input type="text" name="education_major" id="education_major" placeholder="Enter your major">
+            <label for="education_major">Major / Field of Study</label>
+            <input type="text" name="education_major" id="education_major" placeholder="e.g., Computer Science">
             <div id="education-major-suggestions" class="suggestions"></div>
         </div>
         <div class="form-group">
-            <label for="education_school">School/University:</label>
-            <input type="text" name="education_school" id="education_school" placeholder="Enter your school/university">
+            <label for="education_school">School / University</label>
+            <input type="text" name="education_school" id="education_school" placeholder="e.g., Stanford University">
             <div id="education-school-suggestions" class="suggestions"></div>
         </div>
         <div class="form-group">
-            <label for="education_year">Year of Graduation:</label>
-            <input type="text" name="education_year" id="education_year" placeholder="Enter your year of graduation">
+            <label for="education_year">Graduation Year</label>
+            <input type="text" name="education_year" id="education_year" placeholder="e.g., 2024">
             <div id="education-year-suggestions" class="suggestions"></div>
         </div>
     </div>
@@ -78,26 +77,26 @@
 <div id="experience-container">
     <div class="experience-entry">
         <div class="form-group">
-            <label for="work_position">Position:</label>
-            <input type="text" name="work_position" id="work_position" placeholder="e.g., Software Engineer">
+            <label for="work_position">Job Title</label>
+            <input type="text" name="work_position" id="work_position" placeholder="e.g., Senior Software Engineer">
             <div id="work-position-suggestions" class="suggestions"></div>
         </div>
 
         <div class="form-group">
-            <label for="work_company">Company:</label>
-            <input type="text" name="work_company" id="work_company" placeholder="e.g., Company Name">
+            <label for="work_company">Company Name</label>
+            <input type="text" name="work_company" id="work_company" placeholder="e.g., Google Inc.">
             <div id="work-company-suggestions" class="suggestions"></div>
         </div>
 
         <div class="form-group">
-            <label for="work_duration">Duration:</label>
-            <input type="text" name="work_duration" id="work_duration" placeholder="e.g., Jan 2020 - Dec 2022">
+            <label for="work_duration">Employment Duration</label>
+            <input type="text" name="work_duration" id="work_duration" placeholder="e.g., January 2020 - Present">
             <div id="work-duration-suggestions" class="suggestions"></div>
         </div>
 
         <div class="form-group">
-            <label for="work_description">Description:</label>
-            <textarea name="work_description" id="work_description" placeholder="Describe your responsibilities and achievements..."></textarea>
+            <label for="work_description">Key Responsibilities & Achievements</label>
+            <textarea name="work_description" id="work_description" placeholder="Describe your main responsibilities, achievements, and impact. Use bullet points or short paragraphs." rows="4"></textarea>
         </div>
     </div>
 </div>
@@ -105,25 +104,26 @@
 
            <!-- Form fields for skills -->
 <h3>Skills</h3>
+<p style="color: #888; font-size: 14px; margin-bottom: 15px;">Add your professional skills, technical proficiencies, and areas of expertise.</p>
 <div id="skills-container">
     <div class="skill-entry">
         <div class="form-group">
-            <label for="skill1">Skill:</label>
-            <input type="text" name="skill1" id="skill1" placeholder="e.g., JavaScript">
+            <label for="skill1">Skill</label>
+            <input type="text" name="skill1" id="skill1" placeholder="e.g., JavaScript, React, Node.js">
             <div id="skill-suggestions-1" class="suggestions"></div>
         </div>
     </div>
     <div class="skill-entry">
         <div class="form-group">
-            <label for="skill2">Skill:</label>
-            <input type="text" name="skill2" id="skill2" placeholder="e.g., Python">
+            <label for="skill2">Skill</label>
+            <input type="text" name="skill2" id="skill2" placeholder="e.g., Project Management">
             <div id="skill-suggestions-2" class="suggestions"></div>
         </div>
     </div>
     <div class="skill-entry">
         <div class="form-group">
-            <label for="skill3">Skill:</label>
-            <input type="text" name="skill3" id="skill3" placeholder="e.g., HTML/CSS">
+            <label for="skill3">Skill</label>
+            <input type="text" name="skill3" id="skill3" placeholder="e.g., Data Analysis">
             <div id="skill-suggestions-3" class="suggestions"></div>
         </div>
     </div>
@@ -139,21 +139,25 @@
         </form>
     </section>
 <!-- Templates -->
-<div class="container">
-    <h2>Template Selection</h2>
+<div class="container" style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
+    <h2 style="text-align: center; margin-bottom: 15px;">Choose Your Template</h2>
+    <p style="text-align: center; color: #b0b0b0; margin-bottom: 25px;">Select a professional template that best represents your style. You can change it anytime.</p>
     <div class="form-group">
-        <label for="template-select">Select Template:</label>
+        <label for="template-select">Resume Template</label>
         <select name="template" id="template-select">
-            <option value="">Select Template</option>
-            <option value="template1">Template 1</option>
-            <option value="template2">Template 2</option>
-            <option value="template3">Template 3</option>
+            <option value="template1">Classic Professional - Purple accent, centered layout</option>
+            <option value="template2">Modern Minimal - Red sidebar, clean design</option>
+            <option value="template3">Creative Bold - Green header, dynamic layout</option>
         </select>
     </div>
 </div>
 <!-- Real-time preview -->
-<div id="real-time-preview" class="real-time-preview template1">
-    <!-- Preview of the entire resume will be updated dynamically -->
+<div style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
+    <h2 style="text-align: center; margin-bottom: 15px;">Live Preview</h2>
+    <p style="text-align: center; color: #b0b0b0; margin-bottom: 25px;">See your resume update in real-time as you type. This is how it will look when exported to PDF.</p>
+    <div id="real-time-preview" class="real-time-preview template1">
+        <p style="text-align: center; color: #666; padding: 60px 20px;">Your resume preview will appear here as you fill in the form above.</p>
+    </div>
 </div>
 
 <!-- Preview Page - removed as real-time preview is sufficient -->
