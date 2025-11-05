@@ -603,6 +603,12 @@
                 return generateTemplate2HTML(data);
             case 'template3':
                 return generateTemplate3HTML(data);
+            case 'template4':
+                return generateTemplate4HTML(data);
+            case 'template5':
+                return generateTemplate5HTML(data);
+            case 'template6':
+                return generateTemplate6HTML(data);
             default:
                 return generateTemplate1HTML(data);
         }
@@ -667,6 +673,179 @@
 
     function generateTemplate3HTML(data) {
         return generateTemplate1HTML(data); // Simplified for now
+    }
+
+    function generateTemplate4HTML(data) {
+        return `
+            <div class="resume-template template4-design" style="font-family: 'Georgia', serif; padding: 30px; background: white;">
+                <div style="text-align: center; padding-bottom: 15px; margin-bottom: 20px; border-bottom: 4px solid #1a365d;">
+                    <h1 style="font-size: 36px; color: #1a365d; margin-bottom: 10px; font-weight: 600;">${data.fullName || 'Your Name'}</h1>
+                    ${data.summary ? `<p style="font-size: 14px; color: #555; font-style: italic; max-width: 600px; margin: 10px auto;">${data.summary}</p>` : ''}
+                </div>
+                <div style="text-align: center; font-size: 12px; color: #666; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #ddd;">
+                    ${data.email ? `<span>${data.email}</span>` : ''}
+                    ${data.phone ? `<span style="margin: 0 10px;">• ${data.phone}</span>` : ''}
+                    ${data.location ? `<span>• ${data.location}</span>` : ''}
+                </div>
+                ${data.experience.length > 0 ? `
+                <div style="margin-bottom: 20px;">
+                    <h2 style="font-size: 20px; color: #1a365d; border-bottom: 2px solid #1a365d; padding-bottom: 5px; margin-bottom: 15px;">Professional Experience</h2>
+                    ${data.experience.map(exp => `
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                                <h3 style="font-size: 16px; margin: 0; color: #2d3748;">${exp.position}</h3>
+                                <span style="font-size: 12px; color: #666; white-space: nowrap;">${exp.duration}</span>
+                            </div>
+                            <p style="font-size: 14px; color: #555; margin: 3px 0;">${exp.company}${exp.location ? ` • ${exp.location}` : ''}</p>
+                            ${exp.description ? `<p style="font-size: 13px; color: #666; margin: 5px 0;">${exp.description}</p>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+                ` : ''}
+                ${data.education.length > 0 ? `
+                <div style="margin-bottom: 20px;">
+                    <h2 style="font-size: 20px; color: #1a365d; border-bottom: 2px solid #1a365d; padding-bottom: 5px; margin-bottom: 15px;">Education</h2>
+                    ${data.education.map(edu => `
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                                <h3 style="font-size: 16px; margin: 0; color: #2d3748;">${edu.degree}</h3>
+                                <span style="font-size: 12px; color: #666;">${edu.year}</span>
+                            </div>
+                            <p style="font-size: 14px; color: #555; margin: 3px 0;">${edu.school}${edu.location ? ` • ${edu.location}` : ''}</p>
+                            ${edu.major ? `<p style="font-size: 13px; color: #666; margin: 3px 0;">Major: ${edu.major}</p>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+                ` : ''}
+                ${data.skills.length > 0 ? `
+                <div>
+                    <h2 style="font-size: 20px; color: #1a365d; border-bottom: 2px solid #1a365d; padding-bottom: 5px; margin-bottom: 15px;">Key Skills</h2>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        ${data.skills.map(skill => `<span style="background: #f7fafc; color: #1a365d; padding: 6px 14px; border: 1px solid #cbd5e0; border-radius: 4px; font-size: 13px;">${skill}</span>`).join('')}
+                    </div>
+                </div>
+                ` : ''}
+            </div>
+        `;
+    }
+
+    function generateTemplate5HTML(data) {
+        return `
+            <div class="resume-template template5-design" style="font-family: 'Consolas', 'Monaco', monospace; padding: 30px; background: white;">
+                <div style="background: #f8f9fa; border-left: 4px solid #00d9ff; padding: 15px; margin-bottom: 20px;">
+                    <h1 style="font-size: 28px; color: #1a1a1a; margin: 0 0 5px 0;">${data.fullName || 'Your Name'}</h1>
+                    <div style="font-size: 14px; color: #00d9ff; margin-bottom: 5px;">${data.experience.length > 0 ? (data.experience[0].position || 'Professional') : 'Professional'}</div>
+                    <div style="font-size: 11px; color: #666;">
+                        ${data.email ? `${data.email}` : ''}
+                        ${data.phone ? ` | ${data.phone}` : ''}
+                        ${data.location ? ` | ${data.location}` : ''}
+                    </div>
+                </div>
+                ${data.summary ? `
+                <div style="margin-bottom: 20px;">
+                    <h2 style="font-size: 14px; color: #00d9ff; margin-bottom: 10px;">// Professional Summary</h2>
+                    <p style="font-size: 12px; color: #333; line-height: 1.6;">${data.summary}</p>
+                </div>
+                ` : ''}
+                ${data.skills.length > 0 ? `
+                <div style="margin-bottom: 20px;">
+                    <h2 style="font-size: 14px; color: #00d9ff; margin-bottom: 10px;">// Technical Skills</h2>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        ${data.skills.map(skill => `<span style="background: #f1f5f9; color: #1e293b; padding: 4px 10px; border-radius: 3px; font-size: 11px; font-weight: 500;">${skill}</span>`).join('')}
+                    </div>
+                </div>
+                ` : ''}
+                ${data.experience.length > 0 ? `
+                <div style="margin-bottom: 20px;">
+                    <h2 style="font-size: 14px; color: #00d9ff; margin-bottom: 10px;">// Work Experience</h2>
+                    ${data.experience.map(exp => `
+                        <div style="margin-bottom: 15px; padding-left: 10px; border-left: 2px solid #e2e8f0;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <strong style="font-size: 13px; color: #1a1a1a;">${exp.position}</strong>
+                                <span style="font-size: 11px; color: #666;">${exp.duration}</span>
+                            </div>
+                            <div style="font-size: 12px; color: #555; margin: 2px 0;">${exp.company}${exp.location ? ` | ${exp.location}` : ''}</div>
+                            ${exp.description ? `<p style="font-size: 11px; color: #666; margin: 5px 0;">${exp.description}</p>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+                ` : ''}
+                ${data.education.length > 0 ? `
+                <div style="margin-bottom: 20px;">
+                    <h2 style="font-size: 14px; color: #00d9ff; margin-bottom: 10px;">// Education</h2>
+                    ${data.education.map(edu => `
+                        <div style="margin-bottom: 12px; padding-left: 10px; border-left: 2px solid #e2e8f0;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <strong style="font-size: 13px; color: #1a1a1a;">${edu.degree}</strong>
+                                <span style="font-size: 11px; color: #666;">${edu.year}</span>
+                            </div>
+                            <div style="font-size: 12px; color: #555;">${edu.school}${edu.location ? ` | ${edu.location}` : ''}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                ` : ''}
+            </div>
+        `;
+    }
+
+    function generateTemplate6HTML(data) {
+        return `
+            <div class="resume-template template6-design" style="font-family: 'Times New Roman', serif; padding: 30px; background: white;">
+                <div style="text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 3px double #2c3e50;">
+                    <h1 style="font-size: 32px; color: #2c3e50; margin: 0 0 8px 0; font-weight: bold;">${data.fullName || 'Your Name'}</h1>
+                    <div style="font-size: 11px; color: #555;">
+                        ${data.email ? `${data.email}` : ''}
+                        ${data.phone ? ` • ${data.phone}` : ''}
+                        ${data.location ? ` • ${data.location}` : ''}
+                    </div>
+                </div>
+                ${data.summary ? `
+                <div style="margin-bottom: 18px;">
+                    <h2 style="font-size: 14px; color: #2c3e50; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #2c3e50; padding-bottom: 4px;">Research Interests</h2>
+                    <p style="font-size: 12px; color: #333; line-height: 1.7; text-align: justify;">${data.summary}</p>
+                </div>
+                ` : ''}
+                ${data.education.length > 0 ? `
+                <div style="margin-bottom: 18px;">
+                    <h2 style="font-size: 14px; color: #2c3e50; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #2c3e50; padding-bottom: 4px;">Education</h2>
+                    ${data.education.map(edu => `
+                        <div style="margin-bottom: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                                <strong style="font-size: 13px; color: #2c3e50;">${edu.degree}</strong>
+                                <span style="font-size: 11px; color: #666;">${edu.year}</span>
+                            </div>
+                            <div style="font-size: 12px; color: #555; margin: 2px 0;">${edu.school}${edu.location ? `, ${edu.location}` : ''}</div>
+                            ${edu.major ? `<div style="font-size: 11px; color: #666; margin: 2px 0;">Major: ${edu.major}</div>` : ''}
+                            ${edu.gpa ? `<div style="font-size: 11px; color: #666;">GPA: ${edu.gpa}</div>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+                ` : ''}
+                ${data.experience.length > 0 ? `
+                <div style="margin-bottom: 18px;">
+                    <h2 style="font-size: 14px; color: #2c3e50; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #2c3e50; padding-bottom: 4px;">Professional Experience</h2>
+                    ${data.experience.map(exp => `
+                        <div style="margin-bottom: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                                <strong style="font-size: 13px; color: #2c3e50;">${exp.position}</strong>
+                                <span style="font-size: 11px; color: #666;">${exp.duration}</span>
+                            </div>
+                            <div style="font-size: 12px; color: #555; margin: 2px 0;">${exp.company}${exp.location ? `, ${exp.location}` : ''}</div>
+                            ${exp.description ? `<p style="font-size: 11px; color: #666; margin: 5px 0; line-height: 1.6; text-align: justify;">${exp.description}</p>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+                ` : ''}
+                ${data.skills.length > 0 ? `
+                <div style="margin-bottom: 18px;">
+                    <h2 style="font-size: 14px; color: #2c3e50; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #2c3e50; padding-bottom: 4px;">Skills & Competencies</h2>
+                    <p style="font-size: 12px; color: #333; line-height: 1.7;">
+                        ${data.skills.join(' • ')}
+                    </p>
+                </div>
+                ` : ''}
+            </div>
+        `;
     }
 
     // Utility: Generate unique ID
