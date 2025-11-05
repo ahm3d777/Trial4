@@ -1029,3 +1029,185 @@ button.login-btn:hover {
     border-color: #757575;
     transform: translateY(-1px);
 }
+
+/* Tooltip Styles */
+.tooltip-icon {
+    display: inline-block;
+    margin-left: 5px;
+    width: 18px;
+    height: 18px;
+    background: rgba(100, 181, 246, 0.2);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 18px;
+    font-size: 12px;
+    color: #64b5f6;
+    cursor: help;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.tooltip-icon:hover {
+    background: rgba(100, 181, 246, 0.3);
+    transform: scale(1.1);
+}
+
+.tooltip-icon::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    background: #2a2a2a;
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 1px solid #64b5f6;
+    z-index: 1000;
+    max-width: 250px;
+    white-space: normal;
+    font-weight: normal;
+    line-height: 1.4;
+}
+
+.tooltip-icon:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-5px);
+}
+
+/* Field Error Styles */
+.field-error {
+    display: block;
+    color: #f44336;
+    font-size: 13px;
+    margin-top: 5px;
+    min-height: 18px;
+    font-weight: 500;
+}
+
+input.error,
+textarea.error,
+select.error {
+    border-color: #f44336 !important;
+    background-color: rgba(244, 67, 54, 0.05) !important;
+}
+
+/* Button Icon Styles */
+.btn-icon {
+    display: inline-block;
+    margin-right: 5px;
+    font-size: 16px;
+}
+
+/* Loading State for Buttons */
+button.loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+button.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Back to Top Button Hover */
+.back-to-top-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(33, 150, 243, 0.5);
+}
+
+.back-to-top-btn:active {
+    transform: translateY(-1px);
+}
+
+/* Keyboard Shortcuts Button */
+#shortcuts-help-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(156, 39, 176, 0.5);
+}
+
+#shortcuts-help-btn:active {
+    transform: translateY(-1px);
+}
+
+/* Character Counter */
+.char-counter {
+    transition: color 0.3s ease;
+}
+
+.char-counter.warning {
+    color: #FF9800 !important;
+}
+
+.char-counter.danger {
+    color: #f44336 !important;
+    font-weight: 600;
+}
+
+/* Progress Container Styles */
+.progress-container {
+    padding: 20px;
+    background: linear-gradient(145deg, #1a1a1a, #252525);
+    border-radius: 12px;
+    border: 1px solid #2a2a2a;
+}
+
+/* Autosave Animation */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.autosave-saving {
+    color: #FF9800 !important;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.autosave-saved {
+    color: #4CAF50 !important;
+}
+
+.autosave-error {
+    color: #f44336 !important;
+}
+
+/* Improve Form Actions on Mobile */
+@media (max-width: 768px) {
+    .tooltip-icon::after {
+        left: auto;
+        right: 0;
+        transform: translateX(0) translateY(-10px);
+    }
+
+    .tooltip-icon:hover::after {
+        transform: translateX(0) translateY(-5px);
+    }
+
+    .back-to-top-btn {
+        bottom: 20px !important;
+        right: 20px !important;
+        width: 45px !important;
+        height: 45px !important;
+        font-size: 20px !important;
+    }
+}

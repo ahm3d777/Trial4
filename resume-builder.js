@@ -4,6 +4,8 @@
 
     // Current resume being edited
     let currentResumeId = null;
+    let hasUnsavedChanges = false;
+    let autosaveTimer = null;
 
     // Initialize the application
     function init() {
@@ -11,6 +13,11 @@
         setupFormHandlers();
         setupDashboard();
         setupDownloadButtons();
+        setupProgressTracker();
+        setupCharacterCounters();
+        setupBackToTop();
+        setupUnsavedChangesWarning();
+        setupKeyboardShortcuts();
         loadCurrentResume();
     }
 
@@ -149,28 +156,48 @@
     }
 
     // Validate form data
-    function validateForm() {
+    function validateForm(silent = false) {
         const fullName = document.getElementById('full_name')?.value.trim();
         const email = document.getElementById('email')?.value.trim();
 
         if (!fullName) {
-            showNotification('Please enter your full name', 'error');
-            document.getElementById('full_name')?.focus();
+            if (!silent) {
+                showNotification('Please enter your full name', 'error');
+                document.getElementById('full_name')?.focus();
+                const errorEl = document.getElementById('full_name-error');
+                if (errorEl) errorEl.textContent = 'Full name is required';
+            }
             return false;
         }
 
         if (!email) {
-            showNotification('Please enter your email address', 'error');
-            document.getElementById('email')?.focus();
+            if (!silent) {
+                showNotification('Please enter your email address', 'error');
+                document.getElementById('email')?.focus();
+                const errorEl = document.getElementById('email-error');
+                if (errorEl) errorEl.textContent = 'Email address is required';
+            }
             return false;
         }
 
         // Basic email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            showNotification('Please enter a valid email address', 'error');
-            document.getElementById('email')?.focus();
+            if (!silent) {
+                showNotification('Please enter a valid email address', 'error');
+                document.getElementById('email')?.focus();
+                const errorEl = document.getElementById('email-error');
+                if (errorEl) errorEl.textContent = 'Please enter a valid email address';
+            }
             return false;
+        }
+
+        // Clear errors if validation passes
+        if (!silent) {
+            const fullNameError = document.getElementById('full_name-error');
+            const emailError = document.getElementById('email-error');
+            if (fullNameError) fullNameError.textContent = '';
+            if (emailError) emailError.textContent = '';
         }
 
         return true;
@@ -485,12 +512,34 @@
 
     // Setup download buttons
     function setupDownloadButtons() {
-        const downloadBtn = document.querySelector('.download-btn');
-        if (downloadBtn) {
-            downloadBtn.addEventListener('click', function() {
-                downloadCurrentResume();
+        // PDF Download button
+        const downloadPdfBtn = document.getElementById('download-pdf-btn');
+        if (downloadPdfBtn) {
+            downloadPdfBtn.addEventListener('click', function() {
+                downloadPdfBtn.classList.add('loading');
+                downloadPdfBtn.disabled = true;
+
+                setTimeout(() => {
+                    downloadCurrentResume();
+                    downloadPdfBtn.classList.remove('loading');
+                    downloadPdfBtn.disabled = false;
+                }, 500);
             });
         }
+
+        // JSON Export button
+        const exportJsonBtn = document.getElementById('export-json-btn');
+        if (exportJsonBtn) {
+            exportJsonBtn.addEventListener('click', exportAsJSON);
+        }
+
+        // Legacy download buttons in dashboard
+        const legacyDownloadBtns = document.querySelectorAll('.download-btn');
+        legacyDownloadBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                downloadCurrentResume();
+            });
+        });
     }
 
     // Download current resume as PDF
@@ -652,6 +701,265 @@
                 document.body.removeChild(notification);
             }, 300);
         }, 3000);
+    }
+
+    // Setup progress tracker
+    function setupProgressTracker() {
+        const form = document.getElementById('resume-form');
+        if (form) {
+            form.addEventListener('input', updateProgress);
+            updateProgress(); // Initial calculation
+        }
+    }
+
+    // Calculate and update progress
+    function updateProgress() {
+        const requiredFields = {
+            fullName: document.getElementById('full_name')?.value.trim() || '',
+            email: document.getElementById('email')?.value.trim() || '',
+            phone: document.getElementById('phone')?.value.trim() || ''
+        };
+
+        const education = getEducationData();
+        const experience = getExperienceData();
+        const skills = getSkillsData();
+
+        let completed = 0;
+        let total = 8; // Total criteria
+
+        // Required fields (2 points each)
+        if (requiredFields.fullName) completed++;
+        if (requiredFields.email) completed++;
+
+        // Optional but important fields
+        if (requiredFields.phone) completed++;
+        if (education.length > 0) completed++;
+        if (experience.length > 0) completed++;
+        if (skills.length >= 3) completed++;
+
+        // Bonus for detailed info
+        if (experience.length > 0 && experience[0].description) completed++;
+        if (education.length > 0 && education[0].major) completed++;
+
+        const percentage = Math.round((completed / total) * 100);
+
+        const progressBar = document.getElementById('progress-bar-fill');
+        const progressPercentage = document.getElementById('progress-percentage');
+
+        if (progressBar) progressBar.style.width = percentage + '%';
+        if (progressPercentage) progressPercentage.textContent = percentage + '%';
+
+        // Trigger autosave
+        triggerAutosave();
+    }
+
+    // Trigger autosave with debouncing
+    function triggerAutosave() {
+        hasUnsavedChanges = true;
+
+        const indicator = document.getElementById('autosave-indicator');
+        if (indicator) {
+            indicator.textContent = 'Saving...';
+            indicator.className = 'autosave-saving';
+        }
+
+        // Clear existing timer
+        if (autosaveTimer) clearTimeout(autosaveTimer);
+
+        // Set new timer
+        autosaveTimer = setTimeout(() => {
+            if (validateForm(true)) { // Silent validation
+                saveResume();
+                hasUnsavedChanges = false;
+
+                if (indicator) {
+                    indicator.textContent = '✓ Saved';
+                    indicator.className = 'autosave-saved';
+
+                    setTimeout(() => {
+                        indicator.textContent = '';
+                        indicator.className = '';
+                    }, 2000);
+                }
+            }
+        }, 1500); // Autosave after 1.5 seconds of inactivity
+    }
+
+    // Setup character counters
+    function setupCharacterCounters() {
+        const textarea = document.getElementById('work_description');
+        const counter = document.getElementById('work_description-count');
+
+        if (textarea && counter) {
+            const updateCounter = () => {
+                const length = textarea.value.length;
+                const maxLength = textarea.maxLength || 1000;
+                counter.textContent = length;
+
+                // Color coding
+                const parent = counter.parentElement;
+                parent.classList.remove('warning', 'danger');
+
+                if (length > maxLength * 0.9) {
+                    parent.classList.add('danger');
+                } else if (length > maxLength * 0.7) {
+                    parent.classList.add('warning');
+                }
+            };
+
+            textarea.addEventListener('input', updateCounter);
+            updateCounter();
+        }
+    }
+
+    // Setup back to top button
+    function setupBackToTop() {
+        const backToTopBtn = document.getElementById('back-to-top');
+
+        if (backToTopBtn) {
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.style.display = 'block';
+                } else {
+                    backToTopBtn.style.display = 'none';
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+    }
+
+    // Setup unsaved changes warning
+    function setupUnsavedChangesWarning() {
+        window.addEventListener('beforeunload', (e) => {
+            if (hasUnsavedChanges) {
+                e.preventDefault();
+                e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+                return e.returnValue;
+            }
+        });
+    }
+
+    // Setup keyboard shortcuts
+    function setupKeyboardShortcuts() {
+        document.addEventListener('keydown', (e) => {
+            // Ctrl/Cmd + S to save
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                if (validateForm()) {
+                    saveResume();
+                    showNotification('Resume saved!', 'success');
+                }
+            }
+
+            // Ctrl/Cmd + P to download PDF
+            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                e.preventDefault();
+                const downloadBtn = document.getElementById('download-pdf-btn');
+                if (downloadBtn) downloadBtn.click();
+            }
+        });
+
+        // Setup shortcuts modal
+        const shortcutsBtn = document.getElementById('shortcuts-help-btn');
+        const shortcutsModal = document.getElementById('shortcuts-modal');
+        const shortcutsClose = document.getElementById('shortcuts-close');
+
+        if (shortcutsBtn && shortcutsModal) {
+            shortcutsBtn.addEventListener('click', () => {
+                shortcutsModal.style.display = 'block';
+            });
+
+            if (shortcutsClose) {
+                shortcutsClose.addEventListener('click', () => {
+                    shortcutsModal.style.display = 'none';
+                });
+            }
+
+            // Close on outside click
+            window.addEventListener('click', (e) => {
+                if (e.target === shortcutsModal) {
+                    shortcutsModal.style.display = 'none';
+                }
+            });
+        }
+    }
+
+    // Enhanced validation with silent mode
+    function validateFormEnhanced(silent = false) {
+        let isValid = true;
+        const errors = {};
+
+        const fullName = document.getElementById('full_name');
+        const email = document.getElementById('email');
+
+        // Validate full name
+        if (!fullName?.value.trim()) {
+            errors.full_name = 'Full name is required';
+            isValid = false;
+        }
+
+        // Validate email
+        if (!email?.value.trim()) {
+            errors.email = 'Email address is required';
+            isValid = false;
+        } else {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value)) {
+                errors.email = 'Please enter a valid email address';
+                isValid = false;
+            }
+        }
+
+        // Display errors if not silent
+        if (!silent) {
+            // Clear previous errors
+            document.querySelectorAll('.field-error').forEach(el => el.textContent = '');
+            document.querySelectorAll('input.error, textarea.error').forEach(el => el.classList.remove('error'));
+
+            // Show new errors
+            Object.keys(errors).forEach(field => {
+                const errorEl = document.getElementById(`${field}-error`);
+                const inputEl = document.getElementById(field);
+
+                if (errorEl) errorEl.textContent = errors[field];
+                if (inputEl) inputEl.classList.add('error');
+            });
+
+            if (!isValid) {
+                showNotification('Please fix the errors in the form', 'error');
+            }
+        }
+
+        return isValid;
+    }
+
+    // Export resume as JSON
+    function exportAsJSON() {
+        const resume = getResumeById(currentResumeId);
+        if (!resume) {
+            showNotification('Please save your resume first', 'error');
+            return;
+        }
+
+        const dataStr = JSON.stringify(resume, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${resume.title.replace(/[^a-z0-9]/gi, '_')}_backup.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+        showNotification('Resume backup downloaded', 'success');
     }
 
     // Initialize when DOM is ready
