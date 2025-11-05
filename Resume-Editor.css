@@ -173,61 +173,307 @@ section#resume-editor p {
 
 /* Real-time preview styles */
 #real-time-preview {
-    border: 2px solid #4caf4f94; /* Green border */
+    border: 2px solid #4caf4f94;
     padding: 20px;
-    min-height: 300px;
-    background: linear-gradient(135deg, #1f1f1f, #333); /* Gradient background */
-    border-radius: 10px; /* Increased border radius */
+    min-height: 400px;
+    background: #ffffff;
+    border-radius: 10px;
     margin-bottom: 20px;
-    font-size: 18px; /* Slightly larger font size */
-    line-height: 1.8; /* Increased line height for better readability */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* Added box shadow */
-    transition: transform 0.3s ease; /* Added transition for transform */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+    overflow: auto;
 }
 
-/* Template 1 styles */
-.template1 #real-time-preview {
-    background-color: #f0f0f0; /* Light gray background */
-    color: #57078f; /* Purple text color */
+/* Common template styles */
+.resume-template {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
 }
 
-.template1 #real-time-preview h3 {
+/* Template 1 - Classic Professional */
+.template1-design {
+    background: #ffffff;
+    padding: 30px;
+}
+
+.template1-design .resume-header {
+    text-align: center;
+    border-bottom: 3px solid #57078f;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.template1-design .resume-name {
+    font-size: 32px;
+    color: #57078f;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.template1-design .contact-info {
+    font-size: 14px;
+    color: #666;
+}
+
+.template1-design .contact-info span {
+    margin: 0 15px;
+}
+
+.template1-design .section-title {
+    font-size: 20px;
+    color: #57078f;
+    border-bottom: 2px solid #57078f;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    margin-top: 25px;
+    font-weight: bold;
+}
+
+.template1-design .section-item {
+    margin-bottom: 20px;
+}
+
+.template1-design .item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 5px;
+}
+
+.template1-design .item-header h3 {
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+    margin: 0;
+}
+
+.template1-design .item-date {
+    font-size: 14px;
+    color: #666;
+    font-style: italic;
+}
+
+.template1-design .item-subtitle {
+    font-size: 16px;
+    color: #555;
+    margin: 5px 0;
+}
+
+.template1-design .item-detail,
+.template1-design .item-description {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
+    line-height: 1.5;
+}
+
+.template1-design .skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.template1-design .skill-tag {
+    background: #57078f;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+/* Template 2 - Modern Minimal with Sidebar */
+.template2-design {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    background: #ffffff;
+    min-height: 500px;
+}
+
+.template2-design .resume-sidebar {
+    background: #af1c1c;
+    color: white;
+    padding: 30px 20px;
+}
+
+.template2-design .resume-sidebar .resume-name {
     font-size: 24px;
     margin-bottom: 20px;
+    font-weight: bold;
+    word-wrap: break-word;
 }
 
-.template1 #real-time-preview p {
+.template2-design .resume-sidebar .contact-info {
+    font-size: 12px;
+    margin-bottom: 20px;
+    word-wrap: break-word;
+}
+
+.template2-design .resume-sidebar .contact-info p {
+    margin: 5px 0;
+}
+
+.template2-design .resume-sidebar .section-title {
+    font-size: 16px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 5px;
+    font-weight: bold;
+}
+
+.template2-design .resume-sidebar .skill-item {
+    font-size: 13px;
+    margin: 8px 0;
+    padding-left: 10px;
+}
+
+.template2-design .resume-main {
+    padding: 30px;
+    background: #ffffff;
+    color: #333;
+}
+
+.template2-design .resume-main .section-title {
+    font-size: 20px;
+    color: #af1c1c;
+    border-bottom: 2px solid #af1c1c;
+    padding-bottom: 5px;
     margin-bottom: 15px;
+    margin-top: 25px;
+    font-weight: bold;
 }
 
-/* Template 2 styles */
-.template2 #real-time-preview {
-    background-color: #f5f5f5; /* Light gray background */
-    color: #af1c1c; /* Red text color */
-}
-
-.template2 #real-time-preview h3 {
-    font-size: 24px;
+.template2-design .resume-main .section-item {
     margin-bottom: 20px;
 }
 
-.template2 #real-time-preview p {
+.template2-design .resume-main .item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 5px;
+}
+
+.template2-design .resume-main .item-header h3 {
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+    margin: 0;
+}
+
+.template2-design .resume-main .item-date {
+    font-size: 14px;
+    color: #666;
+    font-style: italic;
+}
+
+.template2-design .resume-main .item-subtitle {
+    font-size: 16px;
+    color: #555;
+    margin: 5px 0;
+}
+
+.template2-design .resume-main .item-detail,
+.template2-design .resume-main .item-description {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
+    line-height: 1.5;
+}
+
+/* Template 3 - Creative Bold */
+.template3-design {
+    background: #ffffff;
+    padding: 30px;
+}
+
+.template3-design .resume-header-bold {
+    background: #16b439;
+    color: white;
+    padding: 30px;
+    margin: -30px -30px 30px -30px;
+    text-align: center;
+}
+
+.template3-design .resume-header-bold .resume-name {
+    font-size: 36px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.template3-design .resume-header-bold .contact-info {
+    font-size: 14px;
+}
+
+.template3-design .section-title-bold {
+    font-size: 18px;
+    color: #16b439;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-top: 25px;
     margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid #16b439;
 }
 
-/* Template 3 styles */
-.template3 #real-time-preview {
-    background-color: #f9f9f9;  /* Light gray background */
-    color: #16b439; /* Green text color */
-}
-
-.template3 #real-time-preview h3 {
-    font-size: 24px;
+.template3-design .section-item {
     margin-bottom: 20px;
+    padding-left: 10px;
 }
 
-.template3 #real-time-preview p {
-    margin-bottom: 15px;
+.template3-design .item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.template3-design .item-header h3 {
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+    margin: 0 0 5px 0;
+}
+
+.template3-design .item-date {
+    font-size: 14px;
+    color: #16b439;
+    font-weight: bold;
+    white-space: nowrap;
+    margin-left: 15px;
+}
+
+.template3-design .item-subtitle {
+    font-size: 15px;
+    color: #555;
+    margin: 0 0 8px 0;
+    font-style: italic;
+}
+
+.template3-design .item-detail,
+.template3-design .item-description {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
+    line-height: 1.6;
+}
+
+.template3-design .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+.template3-design .skill-badge {
+    background: linear-gradient(135deg, #16b439, #0d8028);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+    font-weight: bold;
 }
 
 /* Responsive Styles */
@@ -515,4 +761,128 @@ button.login-btn:hover {
 .register-link a:hover {
     text-decoration: underline;
     color: #8e8d8d; /* White on hover */
+}
+
+/* Dynamic Entry Styles */
+.dynamic-entry {
+    border: 1px solid #444;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.entry-header h4 {
+    color: #ffd700;
+    margin: 0;
+    font-size: 16px;
+}
+
+.remove-entry-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.remove-entry-btn:hover {
+    background-color: #d32f2f;
+}
+
+.add-entry-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    width: 100%;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.add-entry-btn:hover {
+    background-color: #45a049;
+}
+
+/* Skill Entry Styles */
+.skill-input-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.skill-input-group input {
+    flex: 1;
+}
+
+.remove-skill-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    transition: background-color 0.3s ease;
+}
+
+.remove-skill-btn:hover {
+    background-color: #d32f2f;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.form-actions button {
+    flex: 1;
+    min-width: 150px;
+}
+
+.btn-primary {
+    background-color: #ffd700;
+    color: #121212;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #ffed4e;
+}
+
+.btn-secondary {
+    background-color: #555;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #666;
 }
