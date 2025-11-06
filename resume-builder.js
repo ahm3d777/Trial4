@@ -1377,10 +1377,14 @@
             // Update current resume ID
             currentResumeId = resume.id;
 
-            // Small delay to ensure data is committed
+            // CRITICAL: Trigger preview update to ensure preview has latest data
+            triggerPreviewUpdate();
+
+            // Wait for debounced preview update (100ms) + render time before downloading
+            // This ensures the preview element is populated with current data
             setTimeout(() => {
                 downloadResumePDF(currentResumeId);
-            }, 200);
+            }, 300); // Increased from 200ms to 300ms to account for debounce + render
         } catch (error) {
             console.error('Download current resume error:', error);
             showNotification('Failed to download resume', 'error');
@@ -1407,8 +1411,26 @@
 
             // Get the preview element directly
             const previewElement = DOM.preview;
-            if (!previewElement || !previewElement.innerHTML) {
-                showNotification('Please fill in your resume details first', 'error');
+            if (!previewElement) {
+                showNotification('Preview element not found. Please refresh the page.', 'error');
+                return;
+            }
+
+            // Check if preview has meaningful content (not just placeholder text)
+            const previewContent = previewElement.innerHTML.trim();
+            if (!previewContent || previewContent.length < 100) {
+                console.error('Preview content too short or empty:', previewContent.substring(0, 100));
+                showNotification('Preview is not ready. Please try again in a moment.', 'error');
+                return;
+            }
+
+            // Verify preview has actual resume data (check for name or email)
+            const hasName = previewContent.includes(resume.data.fullName) || resume.data.fullName === '';
+            const hasContent = previewElement.querySelector('.resume-template') !== null;
+
+            if (!hasContent) {
+                console.error('Preview template not rendered');
+                showNotification('Preview not fully loaded. Please try again.', 'error');
                 return;
             }
 
