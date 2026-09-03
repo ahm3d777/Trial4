@@ -638,6 +638,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
                 ` : ''}
+
+                ${data.languages && data.languages.length > 0 ? `
+                <div class="resume-section tech-section">
+                    <h2 class="section-title-tech">// Languages</h2>
+                    <div class="tech-certs">
+                        ${data.languages.map(lang => `
+                            <div class="tech-cert-item">
+                                <strong>${lang.language}</strong>${lang.proficiency ? ` - ${lang.proficiency}` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                ` : ''}
             </div>
         `;
     }

@@ -1,4 +1,8 @@
 /* Global styles */
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
@@ -36,9 +40,8 @@ body {
    /* background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.2));  Overlay gradient */
 }
 
-/* Example: Apply glass effect to #home section */
 #home {
-    background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/37f002aa-032d-480b-9aa7-474adef47ed6/daqohse-f79cb156-0096-4748-9f7e-39b15cf2e86e.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzM3ZjAwMmFhLTAzMmQtNDgwYi05YWE3LTQ3NGFkZWY0N2VkNlwvZGFxb2hzZS1mNzljYjE1Ni0wMDk2LTQ3NDgtOWY3ZS0zOWIxNWNmMmU4NmUuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.J-x32M2EVAjG7wBPe_hvxGgyKH1dUGhBaoYqYjhUXW4'); /* Replace with your image */
+    background-image: linear-gradient(rgba(18, 18, 18, 0.55), rgba(18, 18, 18, 0.75)), url('./assets/bg-hero.jpg');
     background-size: cover;
     background-position: center;
     position: relative;
@@ -153,17 +156,13 @@ body {
 
 
 #features {
-    background-image: url('features-background.jpg');
-    /*background-color: rgba(0, 0, 0, 0.5);  Semi-transparent overlay */
+    background-color: #121212;
 }
 
 #testimonials {
-    background-image: url('testimonials-background.jpg');
-    /*background-color: rgba(0, 0, 0, 0.5);  Semi-transparent overlay */
+    background-color: #121212;
 }
 
 #contact {
-    background-image: url('contact-background.jpg');
-    /*background-color: rgba(0, 0, 0, 0.5);  Semi-transparent overlay */
-
+    background-color: #121212;
 }

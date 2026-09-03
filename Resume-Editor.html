@@ -13,8 +13,8 @@
         <a href="index.html" style="text-decoration: none;"><h1>Resume Builder</h1></a>
         <nav>
             <ul>
-                <li><a href="#">Features</a></li>
-                <li><a href="#" id="login-btn">Login</a></li>
+                <li><a href="index.html#features">Features</a></li>
+                <li><a href="#resume-tips">Resume Tips</a></li>
             </ul>
         </nav>
     </header>
@@ -380,35 +380,10 @@
 
 <!-- User Dashboard -->
 <section id="user-dashboard" class="dashboard-container" style="display: none;">
-    <h2>User Dashboard</h2>
+    <h2>My Resumes</h2>
+    <p style="text-align: center; color: #b0b0b0; margin-bottom: 20px;">Everything here is saved in this browser only — nothing is uploaded anywhere.</p>
     <div class="resume-list">
-        <!-- List of saved resumes -->
-        <div class="resume-item">
-            <h3>Resume Title</h3>
-            <p>Created: January 1, 2024</p>
-            <p>Last Modified: January 5, 2024</p>
-            <div class="resume-actions">
-                <button class="edit-btn">Edit</button>
-                <button class="download-btn">Download</button>
-                <button class="delete-btn">Delete</button>
-            </div>
-        </div>
-        <!-- More resume items can be added dynamically -->
-    </div>
-    <div class="profile-settings">
-        <!-- Profile settings and account management -->
-        <h3>Profile Settings</h3>
-        <ul>
-            <li><a href="#">Update Personal Information</a></li>
-            <li><a href="#">Change Password</a></li>
-            <li><a href="#">Manage Subscription</a></li>
-        </ul>
-        <!-- Integration with third-party services -->
-        <div class="third-party-integration">
-            <h3>Third-Party Integration</h3>
-            <a href="#" class="linkedin-btn">Connect with LinkedIn</a>
-            <!-- Add more third-party integration options as needed -->
-        </div>
+        <!-- Populated dynamically by resume-builder.js -->
     </div>
 </section>
 
@@ -452,62 +427,6 @@
 <footer class="footer">
     <p>&copy; 2024 Resume Builder. All rights reserved.</p>
 </footer>
-<!-- Login section (popup) -->
-<div id="login-popup" class="popup">
-    <div class="popup-content">
-        <span class="close">&times;</span>
-        <h2>Login / Registration</h2>
-        <form id="login-form">
-            <!-- Login/registration form fields -->
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="email" required="">
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
-            </div>
-            <button type="submit" class="login-btn">Login</button>
-        </form>
-        <p class="register-link">Don't have an account? <a href="#registration">Register</a></p>
-    </div>
-</div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Get the login button
-            const loginBtn = document.getElementById('login-btn');
-            // Get the login popup
-            const loginPopup = document.getElementById('login-popup');
-            // Get the close button inside the popup
-            const closeBtn = loginPopup.querySelector('.close');
-    
-            // Function to open the login popup
-            function openLoginPopup(event) {
-                event.preventDefault();
-                loginPopup.style.display = 'block';
-            }
-    
-            // Function to close the login popup
-            function closeLoginPopup() {
-                loginPopup.style.display = 'none';
-            }
-    
-            // Event listener for login button click
-            loginBtn.addEventListener('click', openLoginPopup);
-    
-            // Event listener for close button click
-            closeBtn.addEventListener('click', closeLoginPopup);
-    
-            // Close the popup if the user clicks outside of it
-            window.addEventListener('click', function(event) {
-                if (event.target == loginPopup) {
-                    closeLoginPopup();
-                }
-            });
-        });
-    </script>
-    
 
 <script src="templates.js"></script>
     <script src="suggestions.js"></script>

@@ -90,14 +90,15 @@ Create a professional resume in minutes with our easy-to-use resume builder appl
 ```
 ├── index.html              # Landing page
 ├── Resume-Editor.html      # Main resume editor
-├── styles.css             # Landing page styles
-├── Resume-Editor.css      # Editor page styles
-├── scripts.js             # Landing page scripts
-├── templates.js           # Resume template generators
-├── suggestions.js         # Autocomplete functionality
-├── resume-builder.js      # Main app functionality
-└── assets/               # Images and resources
+├── styles.css              # Landing page styles
+├── Resume-Editor.css       # Editor page styles
+├── templates.js            # Resume template generators + live preview
+├── suggestions.js          # Autocomplete functionality
+├── resume-builder.js       # Main app functionality (forms, save/load, PDF export)
+└── assets/                 # Images and resources
 ```
+
+There's no build step and no server — it's plain HTML/CSS/JS. Open `index.html` (or serve the folder with any static file server) and it works.
 
 ## Features in Detail
 

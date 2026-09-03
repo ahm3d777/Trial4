@@ -756,9 +756,9 @@
             DOM.form?.reset();
             hasUnsavedChanges = false;
 
-            // Clear dynamic sections
-            const dynamicSections = document.querySelectorAll('.dynamic-entry');
-            dynamicSections.forEach(section => section.remove());
+            // Clear dynamic sections (including any extra skill fields,
+            // which don't carry the .dynamic-entry class)
+            clearDynamicEntries();
 
             // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1111,6 +1111,204 @@
     }
 
     /**
+     * Fill in the single-value fields (contact info, summary, template)
+     * shared by loadResume() and loadCurrentResume().
+     * @param {Object} data - resume.data object
+     * @param {string} template - template id
+     */
+    function applyBasicFields(data, template) {
+        data = data || {};
+        if (DOM.fullName) DOM.fullName.value = data.fullName || '';
+        if (DOM.email) DOM.email.value = data.email || '';
+        if (DOM.phone) DOM.phone.value = data.phone || '';
+        if (DOM.location) DOM.location.value = data.location || '';
+        if (DOM.linkedin) DOM.linkedin.value = data.linkedin || '';
+        if (DOM.website) DOM.website.value = data.website || '';
+        if (DOM.github) DOM.github.value = data.github || '';
+        if (DOM.summary) DOM.summary.value = data.summary || '';
+        if (DOM.templateSelect) DOM.templateSelect.value = template || 'template1';
+    }
+
+    /**
+     * Remove every dynamically-added entry so a resume's data can be
+     * loaded into the form without old entries lingering behind.
+     * Skill entries don't carry the .dynamic-entry class (they use a
+     * compact layout, not the bordered card style), so anything past
+     * the first 3 is trimmed manually.
+     */
+    function clearDynamicEntries() {
+        try {
+            document.querySelectorAll('.dynamic-entry').forEach(el => el.remove());
+
+            if (DOM.skillsContainer) {
+                DOM.skillsContainer.querySelectorAll('.skill-entry').forEach((entry, idx) => {
+                    if (idx >= 3) entry.remove();
+                });
+            }
+        } catch (error) {
+            console.error('Clear dynamic entries error:', error);
+        }
+    }
+
+    /**
+     * Set a form field's value by element id.
+     */
+    function setFieldValue(id, value) {
+        const el = document.getElementById(id);
+        if (el) el.value = value || '';
+    }
+
+    /**
+     * Set values on fields inside one entry container, keyed by their
+     * `name` attribute (e.g. "education_degree[]").
+     */
+    function fillEntryFields(container, valuesByName) {
+        if (!container) return;
+        Object.keys(valuesByName).forEach(name => {
+            const el = container.querySelector(`[name="${name}"]`);
+            if (el) el.value = valuesByName[name] || '';
+        });
+    }
+
+    /**
+     * Rebuild every dynamic section of the form (education, experience,
+     * skills, projects, certifications, languages) from saved resume
+     * data. Used when loading a resume for editing and when restoring
+     * the most recently saved resume on startup — without this, only
+     * the contact info/summary came back and everything else silently
+     * looked lost even though it was still in storage.
+     * @param {Object} data - resume.data object
+     */
+    function populateFormSections(data) {
+        try {
+            data = data || {};
+            clearDynamicEntries();
+
+            // ---- Education ----
+            const education = data.education || [];
+            const eduFirst = education[0] || {};
+            setFieldValue('education_degree', eduFirst.degree);
+            setFieldValue('education_major', eduFirst.major);
+            setFieldValue('education_school', eduFirst.school);
+            setFieldValue('education_location', eduFirst.location);
+            setFieldValue('education_year', eduFirst.year);
+            setFieldValue('education_gpa', eduFirst.gpa);
+            setFieldValue('education_honors', eduFirst.honors);
+            for (let i = 1; i < education.length; i++) {
+                const entry = createEducationEntry();
+                DOM.educationContainer.appendChild(entry);
+                fillEntryFields(entry, {
+                    'education_degree[]': education[i].degree,
+                    'education_major[]': education[i].major,
+                    'education_school[]': education[i].school,
+                    'education_location[]': education[i].location,
+                    'education_year[]': education[i].year,
+                    'education_gpa[]': education[i].gpa,
+                    'education_honors[]': education[i].honors
+                });
+            }
+
+            // ---- Work Experience ----
+            const experience = data.experience || [];
+            const expFirst = experience[0] || {};
+            setFieldValue('work_position', expFirst.position);
+            setFieldValue('work_company', expFirst.company);
+            setFieldValue('work_location', expFirst.location);
+            setFieldValue('work_duration', expFirst.duration);
+            setFieldValue('work_description', expFirst.description);
+            for (let i = 1; i < experience.length; i++) {
+                const entry = createExperienceEntry();
+                DOM.experienceContainer.appendChild(entry);
+                fillEntryFields(entry, {
+                    'work_position[]': experience[i].position,
+                    'work_company[]': experience[i].company,
+                    'work_location[]': experience[i].location,
+                    'work_duration[]': experience[i].duration,
+                    'work_description[]': experience[i].description
+                });
+                const textarea = entry.querySelector('textarea');
+                const counter = entry.querySelector('.char-count');
+                if (textarea && counter) counter.textContent = textarea.value.length;
+            }
+
+            // ---- Skills ----
+            const skills = data.skills || [];
+            for (let i = 1; i <= 3; i++) {
+                setFieldValue(`skill${i}`, skills[i - 1]);
+            }
+            for (let i = 3; i < skills.length; i++) {
+                const entry = createSkillEntry();
+                DOM.skillsContainer.appendChild(entry);
+                fillEntryFields(entry, { 'skill[]': skills[i] });
+            }
+
+            // ---- Projects ----
+            const projects = data.projects || [];
+            fillEntryFields(document.querySelector('.project-entry'), {
+                'project_name[]': (projects[0] || {}).name,
+                'project_description[]': (projects[0] || {}).description,
+                'project_technologies[]': (projects[0] || {}).technologies,
+                'project_link[]': (projects[0] || {}).link
+            });
+            for (let i = 1; i < projects.length; i++) {
+                const entry = createProjectEntry();
+                DOM.projectsContainer.appendChild(entry);
+                fillEntryFields(entry, {
+                    'project_name[]': projects[i].name,
+                    'project_description[]': projects[i].description,
+                    'project_technologies[]': projects[i].technologies,
+                    'project_link[]': projects[i].link
+                });
+            }
+
+            // ---- Certifications ----
+            const certifications = data.certifications || [];
+            fillEntryFields(document.querySelector('.certification-entry'), {
+                'cert_name[]': (certifications[0] || {}).name,
+                'cert_issuer[]': (certifications[0] || {}).issuer,
+                'cert_date[]': (certifications[0] || {}).date
+            });
+            for (let i = 1; i < certifications.length; i++) {
+                const entry = createCertificationEntry();
+                DOM.certificationsContainer.appendChild(entry);
+                fillEntryFields(entry, {
+                    'cert_name[]': certifications[i].name,
+                    'cert_issuer[]': certifications[i].issuer,
+                    'cert_date[]': certifications[i].date
+                });
+            }
+
+            // ---- Languages ----
+            const languages = data.languages || [];
+            fillEntryFields(document.querySelector('.language-entry'), {
+                'language_name[]': (languages[0] || {}).name,
+                'language_proficiency[]': (languages[0] || {}).proficiency
+            });
+            for (let i = 1; i < languages.length; i++) {
+                const entry = createLanguageEntry();
+                DOM.languagesContainer.appendChild(entry);
+                fillEntryFields(entry, {
+                    'language_name[]': languages[i].name,
+                    'language_proficiency[]': languages[i].proficiency
+                });
+            }
+
+            // Directly refresh the counters bound to the static textareas:
+            // they only update on real 'input' events, and we deliberately
+            // avoid firing per-field events above so we don't leave any
+            // autocomplete dropdown stuck open (those listen on 'input'
+            // too, but only hide on 'blur').
+            const summaryCounter = document.getElementById('professional_summary-count');
+            if (summaryCounter && DOM.summary) summaryCounter.textContent = DOM.summary.value.length;
+            const descCounter = document.getElementById('work_description-count');
+            const descTextarea = document.getElementById('work_description');
+            if (descCounter && descTextarea) descCounter.textContent = descTextarea.value.length;
+        } catch (error) {
+            console.error('Populate form sections error:', error);
+        }
+    }
+
+    /**
      * Load resume into form
      * @param {string} id - Resume ID
      */
@@ -1123,22 +1321,9 @@
             }
 
             currentResumeId = id;
-            const data = resume.data;
 
-            // Load basic info
-            if (DOM.fullName) DOM.fullName.value = data.fullName || '';
-            if (DOM.email) DOM.email.value = data.email || '';
-            if (DOM.phone) DOM.phone.value = data.phone || '';
-            if (DOM.location) DOM.location.value = data.location || '';
-            if (DOM.linkedin) DOM.linkedin.value = data.linkedin || '';
-            if (DOM.website) DOM.website.value = data.website || '';
-            if (DOM.github) DOM.github.value = data.github || '';
-            if (DOM.summary) DOM.summary.value = data.summary || '';
-
-            // Load template
-            if (DOM.templateSelect) {
-                DOM.templateSelect.value = resume.template || 'template1';
-            }
+            applyBasicFields(resume.data, resume.template);
+            populateFormSections(resume.data);
 
             // Trigger preview update
             triggerPreviewUpdate();
@@ -1165,6 +1350,14 @@
                     new Date(current.updatedAt) > new Date(prev.updatedAt) ? current : prev
                 );
                 currentResumeId = latest.id;
+
+                // Restore it into the form. Without this, reopening the app
+                // showed a blank editor even though a resume was saved, and
+                // autosave could silently overwrite that saved resume with
+                // empty data the moment the form's initial progress check ran.
+                applyBasicFields(latest.data, latest.template);
+                populateFormSections(latest.data);
+                triggerPreviewUpdate();
             }
         } catch (error) {
             console.error('Load current resume error:', error);
@@ -1403,6 +1596,31 @@
                 return;
             }
 
+            // The live preview always reflects whichever resume is
+            // currently loaded in the editor form. If the requested resume
+            // isn't the one on screen (e.g. clicking "Download" on a
+            // different card in the dashboard), load it first - otherwise
+            // this would silently export whatever the previous resume's
+            // preview happened to contain, under the right resume's name.
+            if (currentResumeId !== id) {
+                loadResume(id);
+                setTimeout(() => generatePDFFromPreview(resume), 400);
+                return;
+            }
+
+            generatePDFFromPreview(resume);
+        } catch (error) {
+            console.error('Download resume PDF error:', error);
+            showNotification('Failed to download PDF', 'error');
+        }
+    }
+
+    /**
+     * Render the current live preview element to a downloaded PDF.
+     * @param {Object} resume - resume record (used for the filename)
+     */
+    function generatePDFFromPreview(resume) {
+        try {
             // Check if html2pdf is available
             if (typeof html2pdf === 'undefined') {
                 showNotification('PDF library not loaded. Please refresh the page.', 'error');
