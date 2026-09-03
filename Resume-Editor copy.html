@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/death.png">
+    <title>Resume Builder</title>
+    <link rel="stylesheet" href="Resume-Editor.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <header>
+        <a href="index.html" style="text-decoration: none;"><h1>Resume Builder</h1></a>
+        <nav>
+            <ul>
+                <li><a href="index.html#features">Features</a></li>
+                <li><a href="#resume-tips">Resume Tips</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id="feature">
+        <h2>Build Your Professional Resume</h2>
+        <p>Create a standout resume in minutes with our intuitive builder. Choose from professional templates, get intelligent suggestions, and export to PDF instantly.</p>
+        <a href="#resume-editor" class="cta">Start Building Your Resume</a>
+    </section>
+    <!-- Resume Editing Interface -->
+    <section id="resume-editor">
+        <h2>Resume Editor</h2>
+        <p style="text-align: center; color: #b0b0b0; margin-bottom: 20px;">Fill in your information below. Changes are saved automatically and you can download your resume as PDF anytime.</p>
+
+        <!-- Progress Indicator -->
+        <div class="progress-container" style="max-width: 900px; margin: 0 auto 30px;">
+            <div class="progress-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span style="font-weight: 600; color: #64b5f6;">Resume Completion</span>
+                <span id="progress-percentage" style="font-weight: 600; color: #64b5f6;">0%</span>
+            </div>
+            <div class="progress-bar-bg" style="width: 100%; height: 8px; background: #2a2a2a; border-radius: 10px; overflow: hidden;">
+                <div id="progress-bar-fill" style="height: 100%; width: 0%; background: linear-gradient(90deg, #2196F3, #4CAF50); transition: width 0.5s ease;"></div>
+            </div>
+            <div id="autosave-status" style="text-align: right; margin-top: 8px; font-size: 14px; color: #888; min-height: 20px;">
+                <span id="autosave-indicator"></span>
+            </div>
+        </div>
+
+        <form id="resume-form">
+            <!-- Form fields for personal information -->
+            <div class="form-group">
+                <label for="full_name">
+                    Full Name *
+                    <span class="tooltip-icon" data-tooltip="Enter your full name as you want it to appear on your resume">ⓘ</span>
+                </label>
+                <input type="text" name="full_name" id="full_name" placeholder="John Doe" required aria-label="Full Name">
+                <span class="field-error" id="full_name-error"></span>
+            </div>
+            <div class="form-group">
+                <label for="email">
+                    Email Address *
+                    <span class="tooltip-icon" data-tooltip="Use a professional email address that you check regularly">ⓘ</span>
+                </label>
+                <input type="email" name="email" id="email" placeholder="john.doe@example.com" autocomplete="email" required aria-label="Email Address">
+                <span class="field-error" id="email-error"></span>
+            </div>
+            <div class="form-group">
+                <label for="phone">
+                    Phone Number
+                    <span class="tooltip-icon" data-tooltip="Include country code for international applications">ⓘ</span>
+                </label>
+                <input type="tel" name="phone" id="phone" placeholder="+1 (555) 123-4567" autocomplete="tel" aria-label="Phone Number">
+            </div>
+            <div class="form-group">
+                <label for="location">
+                    Location
+                    <span class="tooltip-icon" data-tooltip="City and State/Country (e.g., San Francisco, CA)">ⓘ</span>
+                </label>
+                <input type="text" name="location" id="location" placeholder="San Francisco, CA" aria-label="Location">
+            </div>
+            <div class="form-group">
+                <label for="linkedin">
+                    LinkedIn Profile
+                    <span class="tooltip-icon" data-tooltip="Your LinkedIn profile URL">ⓘ</span>
+                </label>
+                <input type="text" name="linkedin" id="linkedin" placeholder="linkedin.com/in/yourprofile" aria-label="LinkedIn Profile">
+            </div>
+            <div class="form-group">
+                <label for="website">
+                    Portfolio/Website
+                    <span class="tooltip-icon" data-tooltip="Your personal website or portfolio URL">ⓘ</span>
+                </label>
+                <input type="text" name="website" id="website" placeholder="yourportfolio.com" aria-label="Portfolio Website">
+            </div>
+            <div class="form-group">
+                <label for="github">
+                    GitHub Profile
+                    <span class="tooltip-icon" data-tooltip="Your GitHub username or profile URL">ⓘ</span>
+                </label>
+                <input type="text" name="github" id="github" placeholder="github.com/yourusername" aria-label="GitHub Profile">
+            </div>
+
+        <!-- Professional Summary -->
+        <h3>Professional Summary</h3>
+        <p style="color: #888; font-size: 14px; margin-bottom: 15px;">Write a brief summary highlighting your key qualifications and career objectives.</p>
+        <div class="form-group">
+            <label for="professional_summary">
+                Summary
+                <span class="tooltip-icon" data-tooltip="2-3 sentences about your professional background and goals">ⓘ</span>
+            </label>
+            <textarea name="professional_summary" id="professional_summary" placeholder="Experienced software engineer with 5+ years developing scalable web applications. Passionate about creating elegant solutions to complex problems..." rows="4" maxlength="500" aria-label="Professional Summary"></textarea>
+            <div class="char-counter" style="text-align: right; font-size: 12px; color: #888; margin-top: 5px;">
+                <span id="professional_summary-count">0</span>/500 characters
+            </div>
+        </div>
+
+        <!-- Form fields for education -->
+<h3>Education</h3>
+<div id="education-container">
+    <div class="education-entry">
+        <div class="form-group">
+            <label for="education_degree">Degree</label>
+            <input type="text" name="education_degree" id="education_degree" placeholder="e.g., Bachelor of Science">
+            <div id="education-degree-suggestions" class="suggestions"></div>
+        </div>
+        <div class="form-group">
+            <label for="education_major">Major / Field of Study</label>
+            <input type="text" name="education_major" id="education_major" placeholder="e.g., Computer Science">
+            <div id="education-major-suggestions" class="suggestions"></div>
+        </div>
+        <div class="form-group">
+            <label for="education_school">School / University</label>
+            <input type="text" name="education_school" id="education_school" placeholder="e.g., Stanford University">
+            <div id="education-school-suggestions" class="suggestions"></div>
+        </div>
+        <div class="form-group">
+            <label for="education_location">Location</label>
+            <input type="text" name="education_location" id="education_location" placeholder="e.g., Stanford, CA">
+        </div>
+        <div class="form-group">
+            <label for="education_year">Graduation Year</label>
+            <input type="text" name="education_year" id="education_year" placeholder="e.g., 2024">
+            <div id="education-year-suggestions" class="suggestions"></div>
+        </div>
+        <div class="form-group">
+            <label for="education_gpa">
+                GPA (Optional)
+                <span class="tooltip-icon" data-tooltip="Include if 3.5 or higher">ⓘ</span>
+            </label>
+            <input type="text" name="education_gpa" id="education_gpa" placeholder="e.g., 3.8/4.0">
+        </div>
+        <div class="form-group">
+            <label for="education_honors">
+                Honors & Awards (Optional)
+                <span class="tooltip-icon" data-tooltip="e.g., Summa Cum Laude, Dean's List">ⓘ</span>
+            </label>
+            <input type="text" name="education_honors" id="education_honors" placeholder="e.g., Magna Cum Laude">
+        </div>
+    </div>
+</div>
+<button type="button" id="add-education-btn" class="add-entry-btn">+ Add Another Education</button>
+
+            
+       <!-- Form fields for work experience -->
+<h3>Work Experience</h3>
+<div id="experience-container">
+    <div class="experience-entry">
+        <div class="form-group">
+            <label for="work_position">Job Title</label>
+            <input type="text" name="work_position" id="work_position" placeholder="e.g., Senior Software Engineer">
+            <div id="work-position-suggestions" class="suggestions"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="work_company">Company Name</label>
+            <input type="text" name="work_company" id="work_company" placeholder="e.g., Google Inc.">
+            <div id="work-company-suggestions" class="suggestions"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="work_location">Location</label>
+            <input type="text" name="work_location" id="work_location" placeholder="e.g., Mountain View, CA">
+        </div>
+
+        <div class="form-group">
+            <label for="work_duration">Employment Duration</label>
+            <input type="text" name="work_duration" id="work_duration" placeholder="e.g., January 2020 - Present">
+            <div id="work-duration-suggestions" class="suggestions"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="work_description">
+                Key Responsibilities & Achievements
+                <span class="tooltip-icon" data-tooltip="Use action verbs and quantify achievements when possible (e.g., 'Increased sales by 25%')">ⓘ</span>
+            </label>
+            <textarea name="work_description" id="work_description" placeholder="Describe your main responsibilities, achievements, and impact. Use bullet points or short paragraphs." rows="4" maxlength="1000" aria-label="Job Description"></textarea>
+            <div class="char-counter" style="text-align: right; font-size: 12px; color: #888; margin-top: 5px;">
+                <span id="work_description-count">0</span>/1000 characters
+            </div>
+        </div>
+    </div>
+</div>
+<button type="button" id="add-experience-btn" class="add-entry-btn">+ Add Another Experience</button>
+
+           <!-- Form fields for skills -->
+<h3>Skills</h3>
+<p style="color: #888; font-size: 14px; margin-bottom: 15px;">Add your professional skills, technical proficiencies, and areas of expertise.</p>
+<div id="skills-container">
+    <div class="skill-entry">
+        <div class="form-group">
+            <label for="skill1">Skill</label>
+            <input type="text" name="skill1" id="skill1" placeholder="e.g., JavaScript, React, Node.js">
+            <div id="skill-suggestions-1" class="suggestions"></div>
+        </div>
+    </div>
+    <div class="skill-entry">
+        <div class="form-group">
+            <label for="skill2">Skill</label>
+            <input type="text" name="skill2" id="skill2" placeholder="e.g., Project Management">
+            <div id="skill-suggestions-2" class="suggestions"></div>
+        </div>
+    </div>
+    <div class="skill-entry">
+        <div class="form-group">
+            <label for="skill3">Skill</label>
+            <input type="text" name="skill3" id="skill3" placeholder="e.g., Data Analysis">
+            <div id="skill-suggestions-3" class="suggestions"></div>
+        </div>
+    </div>
+</div>
+<button type="button" id="add-skill-btn" class="add-entry-btn">+ Add Another Skill</button>
+
+            <!-- Projects Section -->
+<h3>Projects (Optional)</h3>
+<p style="color: #888; font-size: 14px; margin-bottom: 15px;">Showcase your personal projects, open-source contributions, or significant work.</p>
+<div id="projects-container">
+    <div class="project-entry">
+        <div class="form-group">
+            <label for="project_name">Project Name</label>
+            <input type="text" name="project_name[]" placeholder="e.g., E-commerce Platform">
+        </div>
+        <div class="form-group">
+            <label for="project_description">
+                Description
+                <span class="tooltip-icon" data-tooltip="Brief description of what the project does and your role">ⓘ</span>
+            </label>
+            <textarea name="project_description[]" placeholder="Describe the project, your role, and impact..." rows="3" maxlength="500"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="project_technologies">Technologies Used</label>
+            <input type="text" name="project_technologies[]" placeholder="e.g., React, Node.js, MongoDB">
+        </div>
+        <div class="form-group">
+            <label for="project_link">Project Link (Optional)</label>
+            <input type="text" name="project_link[]" placeholder="e.g., github.com/username/project">
+        </div>
+    </div>
+</div>
+<button type="button" id="add-project-btn" class="add-entry-btn">+ Add Another Project</button>
+
+            <!-- Certifications Section -->
+<h3>Certifications (Optional)</h3>
+<p style="color: #888; font-size: 14px; margin-bottom: 15px;">List your professional certifications and credentials.</p>
+<div id="certifications-container">
+    <div class="certification-entry">
+        <div class="form-group">
+            <label for="cert_name">Certification Name</label>
+            <input type="text" name="cert_name[]" placeholder="e.g., AWS Certified Solutions Architect">
+        </div>
+        <div class="form-group">
+            <label for="cert_issuer">Issuing Organization</label>
+            <input type="text" name="cert_issuer[]" placeholder="e.g., Amazon Web Services">
+        </div>
+        <div class="form-group">
+            <label for="cert_date">Date Obtained</label>
+            <input type="text" name="cert_date[]" placeholder="e.g., January 2024">
+        </div>
+    </div>
+</div>
+<button type="button" id="add-certification-btn" class="add-entry-btn">+ Add Another Certification</button>
+
+            <!-- Languages Section -->
+<h3>Languages (Optional)</h3>
+<p style="color: #888; font-size: 14px; margin-bottom: 15px;">List the languages you speak and your proficiency level.</p>
+<div id="languages-container">
+    <div class="language-entry">
+        <div class="form-group">
+            <label for="language_name">Language</label>
+            <input type="text" name="language_name[]" placeholder="e.g., English">
+        </div>
+        <div class="form-group">
+            <label for="language_proficiency">Proficiency Level</label>
+            <select name="language_proficiency[]">
+                <option value="">Select proficiency</option>
+                <option value="Native">Native</option>
+                <option value="Fluent">Fluent</option>
+                <option value="Professional">Professional Working Proficiency</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Basic">Basic</option>
+            </select>
+        </div>
+    </div>
+</div>
+<button type="button" id="add-language-btn" class="add-entry-btn">+ Add Another Language</button>
+
+            <!-- Action buttons -->
+            <div class="form-actions" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 30px;">
+                <button type="submit" id="save-resume-btn" class="btn-primary" aria-label="Save Resume">
+                    <span class="btn-icon">💾</span> Save Resume
+                </button>
+                <button type="button" id="download-pdf-btn" class="btn-primary" aria-label="Download PDF">
+                    <span class="btn-icon">📥</span> Download PDF
+                </button>
+                <button type="button" id="export-json-btn" class="btn-secondary" aria-label="Export Backup">
+                    <span class="btn-icon">📦</span> Export Backup
+                </button>
+                <button type="button" id="new-resume-btn" class="btn-secondary" aria-label="New Resume">
+                    <span class="btn-icon">📄</span> New Resume
+                </button>
+                <button type="button" id="show-dashboard-btn" class="btn-secondary" aria-label="My Resumes">
+                    <span class="btn-icon">📂</span> My Resumes
+                </button>
+            </div>
+        </form>
+    </section>
+<!-- Templates -->
+<div class="container" style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
+    <h2 style="text-align: center; margin-bottom: 15px;">Choose Your Template</h2>
+    <p style="text-align: center; color: #b0b0b0; margin-bottom: 25px;">Select a professional template that best represents your style. You can change it anytime.</p>
+    <div class="form-group">
+        <label for="template-select">Resume Template</label>
+        <select name="template" id="template-select">
+            <option value="template1">Classic Professional - Elegant purple design, ideal for traditional industries</option>
+            <option value="template2">Modern Minimal - Contemporary sidebar layout, perfect for tech and creative fields</option>
+            <option value="template3">Creative Bold - Eye-catching green design, great for standing out</option>
+            <option value="template4">Executive Professional - Sophisticated two-column layout for senior positions</option>
+            <option value="template5">Technical Clean - Developer-focused design with code-style formatting</option>
+            <option value="template6">Academic Formal - Traditional layout perfect for research and academic roles</option>
+        </select>
+    </div>
+</div>
+<!-- Real-time preview -->
+<div style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
+    <h2 style="text-align: center; margin-bottom: 15px;">Live Preview</h2>
+    <p style="text-align: center; color: #b0b0b0; margin-bottom: 25px;">See your resume update in real-time as you type. This is how it will look when exported to PDF.</p>
+    <div id="real-time-preview" class="real-time-preview template1">
+        <p style="text-align: center; color: #666; padding: 60px 20px;">Your resume preview will appear here as you fill in the form above.</p>
+    </div>
+</div>
+
+<!-- Preview Page - removed as real-time preview is sufficient -->
+
+
+<!-- Resume Tips Panel -->
+<section id="resume-tips" style="max-width: 900px; margin: 40px auto; padding: 20px; background: linear-gradient(145deg, #1a1a1a, #252525); border-radius: 12px; border: 1px solid #2a2a2a;">
+    <h2 style="text-align: center; margin-bottom: 25px; color: #64b5f6;">💡 Professional Resume Tips</h2>
+    <div class="tips-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+        <div class="tip-card" style="padding: 20px; background: rgba(33, 150, 243, 0.05); border-left: 4px solid #2196F3; border-radius: 8px;">
+            <h3 style="font-size: 18px; color: #64b5f6; margin-bottom: 10px;">✅ Be Concise</h3>
+            <p style="color: #b0b0b0; font-size: 14px; line-height: 1.6;">Keep your resume to 1-2 pages. Focus on your most relevant and recent experience.</p>
+        </div>
+        <div class="tip-card" style="padding: 20px; background: rgba(76, 175, 80, 0.05); border-left: 4px solid #4CAF50; border-radius: 8px;">
+            <h3 style="font-size: 18px; color: #4CAF50; margin-bottom: 10px;">📊 Use Numbers</h3>
+            <p style="color: #b0b0b0; font-size: 14px; line-height: 1.6;">Quantify achievements with metrics: "Increased sales by 25%" is better than "Improved sales".</p>
+        </div>
+        <div class="tip-card" style="padding: 20px; background: rgba(255, 152, 0, 0.05); border-left: 4px solid #FF9800; border-radius: 8px;">
+            <h3 style="font-size: 18px; color: #FF9800; margin-bottom: 10px;">🎯 Tailor It</h3>
+            <p style="color: #b0b0b0; font-size: 14px; line-height: 1.6;">Customize your resume for each job application. Highlight relevant skills and experience.</p>
+        </div>
+        <div class="tip-card" style="padding: 20px; background: rgba(156, 39, 176, 0.05); border-left: 4px solid #9C27B0; border-radius: 8px;">
+            <h3 style="font-size: 18px; color: #9C27B0; margin-bottom: 10px;">✏️ Action Verbs</h3>
+            <p style="color: #b0b0b0; font-size: 14px; line-height: 1.6;">Start bullet points with strong action verbs: Led, Developed, Implemented, Achieved.</p>
+        </div>
+        <div class="tip-card" style="padding: 20px; background: rgba(244, 67, 54, 0.05); border-left: 4px solid #f44336; border-radius: 8px;">
+            <h3 style="font-size: 18px; color: #f44336; margin-bottom: 10px;">🔍 Proofread</h3>
+            <p style="color: #b0b0b0; font-size: 14px; line-height: 1.6;">Check for spelling and grammar errors. Ask someone else to review your resume.</p>
+        </div>
+        <div class="tip-card" style="padding: 20px; background: rgba(0, 188, 212, 0.05); border-left: 4px solid #00BCD4; border-radius: 8px;">
+            <h3 style="font-size: 18px; color: #00BCD4; margin-bottom: 10px;">🤖 ATS Friendly</h3>
+            <p style="color: #b0b0b0; font-size: 14px; line-height: 1.6;">Use standard fonts and avoid complex formatting to pass Applicant Tracking Systems.</p>
+        </div>
+    </div>
+</section>
+
+<!-- User Dashboard -->
+<section id="user-dashboard" class="dashboard-container" style="display: none;">
+    <h2>My Resumes</h2>
+    <p style="text-align: center; color: #b0b0b0; margin-bottom: 20px;">Everything here is saved in this browser only — nothing is uploaded anywhere.</p>
+    <div class="resume-list">
+        <!-- Populated dynamically by resume-builder.js -->
+    </div>
+</section>
+
+<!-- Keyboard Shortcuts Help Button -->
+<button id="shortcuts-help-btn" aria-label="Keyboard shortcuts" style="position: fixed; bottom: 90px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #9C27B0, #7B1FA2); color: white; border: none; font-size: 20px; cursor: pointer; box-shadow: 0 4px 12px rgba(156, 39, 176, 0.4); z-index: 1000; transition: all 0.3s ease;">
+    ⌨️
+</button>
+
+<!-- Back to Top Button -->
+<button id="back-to-top" class="back-to-top-btn" aria-label="Back to top" style="display: none; position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #2196F3, #1976D2); color: white; border: none; font-size: 24px; cursor: pointer; box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4); z-index: 1000; transition: all 0.3s ease;">
+    ↑
+</button>
+
+<!-- Keyboard Shortcuts Modal -->
+<div id="shortcuts-modal" class="popup" style="display: none;">
+    <div class="popup-content" style="max-width: 500px;">
+        <span class="close" id="shortcuts-close" style="position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer;">&times;</span>
+        <h2 style="margin-bottom: 20px; color: #64b5f6;">⌨️ Keyboard Shortcuts</h2>
+        <div style="color: #e0e0e0;">
+            <div style="display: grid; gap: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(33, 150, 243, 0.1); border-radius: 8px;">
+                    <span style="font-weight: 600;">Save Resume</span>
+                    <kbd style="background: #2a2a2a; padding: 5px 12px; border-radius: 5px; font-family: monospace; border: 1px solid #444;">Ctrl + S</kbd>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(76, 175, 80, 0.1); border-radius: 8px;">
+                    <span style="font-weight: 600;">Download PDF</span>
+                    <kbd style="background: #2a2a2a; padding: 5px 12px; border-radius: 5px; font-family: monospace; border: 1px solid #444;">Ctrl + P</kbd>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255, 152, 0, 0.1); border-radius: 8px;">
+                    <span style="font-weight: 600;">Back to Top</span>
+                    <kbd style="background: #2a2a2a; padding: 5px 12px; border-radius: 5px; font-family: monospace; border: 1px solid #444;">Click ↑ Button</kbd>
+                </div>
+            </div>
+            <p style="margin-top: 20px; font-size: 14px; color: #888; text-align: center;">
+                <em>On Mac, use Cmd instead of Ctrl</em>
+            </p>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <p>&copy; 2024 Resume Builder. All rights reserved.</p>
+</footer>
+
+<script src="templates.js"></script>
+    <script src="suggestions.js"></script>
+    <script src="resume-builder.js"></script>
+</body>
+</html>
