@@ -416,7 +416,15 @@
                 <button type="button" class="remove-entry-btn" aria-label="Remove experience entry">Remove</button>
             </div>
             <div class="form-group">
-                <label>Position:</label>
+                <label>Position:
+                    <div class="group relative flex items-center justify-center cursor-help">
+                        <span class="w-4 h-4 rounded-full bg-neutral-200 dark:bg-neutral-800 text-[10px] font-bold text-neutral-600 dark:text-neutral-400 flex items-center justify-center border border-neutral-300 dark:border-neutral-700 group-hover:bg-amber-100 group-hover:text-amber-700 group-hover:border-amber-300 dark:group-hover:bg-amber-900/30 dark:group-hover:text-amber-400 dark:group-hover:border-amber-500/50 transition-colors">?</span>
+                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-3 bg-neutral-900 dark:bg-neutral-800 text-white dark:text-neutral-200 text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 font-normal pointer-events-none text-center leading-relaxed font-sans">
+                            Use industry-standard titles for better ATS (Applicant Tracking System) matching.
+                            <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-neutral-900 dark:border-t-neutral-800"></div>
+                        </div>
+                    </div>
+                </label>
                 <input type="text" name="work_position[]" placeholder="e.g., Software Engineer" aria-label="Job Position">
             </div>
             <div class="form-group">
@@ -432,7 +440,15 @@
                 <input type="text" name="work_duration[]" placeholder="e.g., Jan 2020 - Dec 2022" aria-label="Employment Duration">
             </div>
             <div class="form-group">
-                <label>Description:</label>
+                <label>Description:
+                    <div class="group relative flex items-center justify-center cursor-help">
+                        <span class="w-4 h-4 rounded-full bg-neutral-200 dark:bg-neutral-800 text-[10px] font-bold text-neutral-600 dark:text-neutral-400 flex items-center justify-center border border-neutral-300 dark:border-neutral-700 group-hover:bg-amber-100 group-hover:text-amber-700 group-hover:border-amber-300 dark:group-hover:bg-amber-900/30 dark:group-hover:text-amber-400 dark:group-hover:border-amber-500/50 transition-colors">?</span>
+                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 p-3 bg-neutral-900 dark:bg-neutral-800 text-white dark:text-neutral-200 text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 font-normal pointer-events-none text-center leading-relaxed font-sans">
+                            Use bullet points. Start with action verbs and include measurable results (e.g., 'Increased sales by 15%').
+                            <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-neutral-900 dark:border-t-neutral-800"></div>
+                        </div>
+                    </div>
+                </label>
                 <textarea name="work_description[]" placeholder="Describe your responsibilities and achievements..." rows="4" maxlength="1000" aria-label="Job Description"></textarea>
                 <div class="char-counter" style="text-align: right; font-size: 12px; color: #888; margin-top: 5px;">
                     <span class="char-count">0</span>/1000 characters
@@ -507,7 +523,15 @@
                 <input type="text" name="project_name[]" placeholder="e.g., E-commerce Platform" aria-label="Project Name">
             </div>
             <div class="form-group">
-                <label>Description:</label>
+                <label>Description:
+                    <div class="group relative flex items-center justify-center cursor-help">
+                        <span class="w-4 h-4 rounded-full bg-neutral-200 dark:bg-neutral-800 text-[10px] font-bold text-neutral-600 dark:text-neutral-400 flex items-center justify-center border border-neutral-300 dark:border-neutral-700 group-hover:bg-amber-100 group-hover:text-amber-700 group-hover:border-amber-300 dark:group-hover:bg-amber-900/30 dark:group-hover:text-amber-400 dark:group-hover:border-amber-500/50 transition-colors">?</span>
+                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 p-3 bg-neutral-900 dark:bg-neutral-800 text-white dark:text-neutral-200 text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 font-normal pointer-events-none text-center leading-relaxed font-sans">
+                            Focus on the problem you solved, your specific contribution, and the impact.
+                            <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-neutral-900 dark:border-t-neutral-800"></div>
+                        </div>
+                    </div>
+                </label>
                 <textarea name="project_description[]" placeholder="Describe the project..." rows="3" maxlength="500" aria-label="Project Description"></textarea>
             </div>
             <div class="form-group">

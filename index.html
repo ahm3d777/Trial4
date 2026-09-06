@@ -5,136 +5,123 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/death.png">
   <title>Resume Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script>
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
 </head>
-<body>
-    <section id="home" class="parallax-section">
-        <header class="header">
-            <div class="container">
-                <div class="header-content">
-                    <h1 class="hero-heading neon-glow">Resume Builder</h1>
-                    <p class="hero-subheading">Craft your perfect resume with ease and confidence.</p>
-                    <p style="font-size: 1em; margin-bottom: 30px; color: #b0b0b0; max-width: 600px; margin-left: auto; margin-right: auto;">
-                        Professional templates, intelligent suggestions, and instant PDF export. Build a standout resume in minutes, not hours.
-                    </p>
-                    <div style="display: flex; gap: 15px; justify-content: center; align-items: center; flex-wrap: wrap;">
-                        <a href="Resume-Editor.html" class="btn btn-primary" style="padding: 15px 35px; font-size: 18px; font-weight: 600;">Get Started Free</a>
-                        <a href="#features" class="btn" style="background-color: transparent; border: 2px solid #ffd700; padding: 13px 33px; font-size: 18px;">Learn More</a>
-                    </div>
-                    <div style="margin-top: 30px; display: flex; gap: 30px; justify-content: center; align-items: center; flex-wrap: wrap; font-size: 14px; color: #888;">
-                        <span>✓ No Registration Required</span>
-                        <span>✓ 100% Free</span>
-                        <span>✓ ATS Friendly</span>
-                    </div>
-                </div>
-            </div>
-        </header>
+<body class="bg-neutral-50 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-50 font-sans antialiased selection:bg-neutral-200 dark:selection:bg-neutral-700 transition-colors duration-300">
+
+  <nav class="w-full max-w-7xl mx-auto px-6 py-8 flex items-center justify-between">
+    <a href="#" class="font-serif text-2xl tracking-tight text-neutral-900 dark:text-white font-medium">Resume Builder.</a>
+    <div class="flex items-center gap-4 sm:gap-6">
+      <button type="button" class="theme-toggle-btn text-neutral-600 dark:text-neutral-400 hover:text-amber-500 dark:hover:text-amber-400 transition-colors p-2" aria-label="Toggle theme">
+        <svg class="sun-icon hidden w-5 h-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+        <svg class="moon-icon w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+      </button>
+      <a href="#features" class="hidden sm:block text-sm font-medium text-neutral-600 dark:text-neutral-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">Features</a>
+      <a href="Resume-Editor.html" class="text-sm font-semibold bg-amber-500 dark:bg-amber-500 text-neutral-950 dark:text-neutral-950 px-5 py-2.5 rounded-full hover:bg-amber-600 dark:hover:bg-amber-400 transition-all">Build Resume</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="max-w-4xl mx-auto px-6 pt-24 pb-32 text-center">
+      <h1 class="font-serif text-6xl md:text-7xl font-medium tracking-tight text-neutral-900 dark:text-white mb-8 leading-tight opacity-0 animate-[fade-in-up_0.6s_ease-out_forwards]">
+        Craft your perfect resume <br class="hidden md:block">with absolute clarity.
+      </h1>
+      <p class="text-lg md:text-xl text-neutral-600 dark:text-neutral-300 mb-12 max-w-2xl mx-auto leading-relaxed opacity-0 animate-[fade-in-up_0.6s_ease-out_0.2s_forwards]">
+        Professional templates, intelligent suggestions, and instant PDF export. Build a standout resume in minutes, without the noise.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0 animate-[fade-in-up_0.6s_ease-out_0.4s_forwards]">
+        <a href="Resume-Editor.html" class="w-full sm:w-auto bg-amber-500 text-neutral-950 px-8 py-4 rounded-full text-base font-semibold hover:bg-amber-600 dark:hover:bg-amber-400 hover:scale-105 active:scale-95 transition-all duration-300 shadow-sm hover:shadow-md">Get Started Free</a>
+        <a href="#features" class="w-full sm:w-auto bg-transparent border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white px-8 py-4 rounded-full text-base font-medium hover:border-amber-300 dark:hover:border-amber-700 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20 hover:scale-105 active:scale-95 transition-all duration-300">Explore Features</a>
+      </div>
+      <div class="mt-12 flex items-center justify-center gap-6 text-sm text-neutral-500 dark:text-neutral-400 font-medium opacity-0 animate-[fade-in-up_0.6s_ease-out_0.6s_forwards]">
+        <span class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          No Registration
+        </span>
+        <span class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          100% Free
+        </span>
+        <span class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          ATS Friendly
+        </span>
+      </div>
     </section>
-    
-  
-    <section id="features" class="parallax-section">
-        <div class="container">
-            <div class="section-content">
-                <h2 class="section-heading">Our Features</h2>
-                <p class="section-description">Discover the amazing features that make our resume builder stand out.</p>
-                <div class="features">
-                    <!-- Feature 1 -->
-                    <div class="feature">
-                        <div style="font-size: 48px; margin-bottom: 15px;">⚡</div>
-                        <h3 class="feature-heading">Lightning Fast</h3>
-                        <p class="feature-description">Create your resume in minutes with our intuitive interface and real-time preview.</p>
-                    </div>
-                    <!-- Feature 2 -->
-                    <div class="feature">
-                        <div style="font-size: 48px; margin-bottom: 15px;">🎨</div>
-                        <h3 class="feature-heading">Professional Templates</h3>
-                        <p class="feature-description">Choose from multiple professionally designed, ATS-friendly templates that impress recruiters.</p>
-                    </div>
-                    <!-- Feature 3 -->
-                    <div class="feature">
-                        <div style="font-size: 48px; margin-bottom: 15px;">📱</div>
-                        <h3 class="feature-heading">Works Everywhere</h3>
-                        <p class="feature-description">Access and edit your resume on any device with our fully responsive design.</p>
-                    </div>
-                    <!-- Feature 4 -->
-                    <div class="feature">
-                        <div style="font-size: 48px; margin-bottom: 15px;">💾</div>
-                        <h3 class="feature-heading">Auto-Save</h3>
-                        <p class="feature-description">Never lose your work with automatic saving. Your data is stored locally and securely.</p>
-                    </div>
-                    <!-- Feature 5 -->
-                    <div class="feature">
-                        <div style="font-size: 48px; margin-bottom: 15px;">📥</div>
-                        <h3 class="feature-heading">Instant Download</h3>
-                        <p class="feature-description">Download your resume as a high-quality PDF with a single click. No account needed.</p>
-                    </div>
-                    <!-- Feature 6 -->
-                    <div class="feature">
-                        <div style="font-size: 48px; margin-bottom: 15px;">💡</div>
-                        <h3 class="feature-heading">Smart Suggestions</h3>
-                        <p class="feature-description">Get helpful tips and suggestions while building your resume to make it stand out.</p>
-                    </div>
-                </div>
-            </div>
+
+    <section id="features" class="w-full bg-white dark:bg-neutral-900 py-32 border-y border-neutral-200 dark:border-neutral-800 transition-colors duration-300">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-24">
+          <h2 class="font-serif text-4xl text-neutral-900 dark:text-white font-medium mb-4 tracking-tight">Essential Tools</h2>
+          <p class="text-neutral-600 dark:text-neutral-400 max-w-lg mx-auto text-lg">Everything you need to create a professional resume, distilled into a seamless experience.</p>
         </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
+          <!-- Feature 1 -->
+          <div class="group hover:-translate-y-2 transition-transform duration-300">
+            <div class="w-12 h-12 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800/50 rounded-2xl flex items-center justify-center mb-6 text-xl group-hover:scale-110 group-hover:shadow-sm transition-all duration-300">⚡</div>
+            <h3 class="text-xl font-semibold text-neutral-900 dark:text-white mb-3">Lightning Fast</h3>
+            <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">Create your resume in minutes with our intuitive interface and real-time preview.</p>
+          </div>
+          <!-- Feature 2 -->
+          <div class="group hover:-translate-y-2 transition-transform duration-300">
+            <div class="w-12 h-12 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800/50 rounded-2xl flex items-center justify-center mb-6 text-xl group-hover:scale-110 group-hover:shadow-sm transition-all duration-300">📐</div>
+            <h3 class="text-xl font-semibold text-neutral-900 dark:text-white mb-3">Professional Templates</h3>
+            <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">Choose from multiple professionally designed, ATS-friendly templates that impress recruiters.</p>
+          </div>
+          <!-- Feature 3 -->
+          <div class="group hover:-translate-y-2 transition-transform duration-300">
+            <div class="w-12 h-12 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800/50 rounded-2xl flex items-center justify-center mb-6 text-xl group-hover:scale-110 group-hover:shadow-sm transition-all duration-300">💾</div>
+            <h3 class="text-xl font-semibold text-neutral-900 dark:text-white mb-3">Local Auto-Save</h3>
+            <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">Never lose your work. Your data is stored locally and securely in your browser.</p>
+          </div>
+          <!-- Feature 4 -->
+          <div class="group hover:-translate-y-2 transition-transform duration-300">
+            <div class="w-12 h-12 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800/50 rounded-2xl flex items-center justify-center mb-6 text-xl group-hover:scale-110 group-hover:shadow-sm transition-all duration-300">📥</div>
+            <h3 class="text-xl font-semibold text-neutral-900 dark:text-white mb-3">Instant PDF Download</h3>
+            <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">Export your resume as a high-quality PDF with a single click. No account needed.</p>
+          </div>
+          <!-- Feature 5 -->
+          <div class="group hover:-translate-y-2 transition-transform duration-300">
+            <div class="w-12 h-12 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800/50 rounded-2xl flex items-center justify-center mb-6 text-xl group-hover:scale-110 group-hover:shadow-sm transition-all duration-300">💡</div>
+            <h3 class="text-xl font-semibold text-neutral-900 dark:text-white mb-3">Smart Suggestions</h3>
+            <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">Get helpful tips and content suggestions while building your resume to make it stand out.</p>
+          </div>
+          <!-- Feature 6 -->
+          <div class="group hover:-translate-y-2 transition-transform duration-300">
+            <div class="w-12 h-12 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800/50 rounded-2xl flex items-center justify-center mb-6 text-xl group-hover:scale-110 group-hover:shadow-sm transition-all duration-300">🗜️</div>
+            <h3 class="text-xl font-semibold text-neutral-900 dark:text-white mb-3">Smart Layout</h3>
+            <p class="text-neutral-600 dark:text-neutral-400 leading-relaxed">Automatically adjusts spacing and typography to fit your content perfectly onto a single page.</p>
+          </div>
+        </div>
+      </div>
     </section>
-    
-    <section id="testimonials" class="parallax-section">
-        <div class="container">
-            <div class="section-content">
-                <h2 class="section-heading">Testimonials</h2>
-                <div class="testimonials">
-                    <!-- Testimonial 1 -->
-                    <div class="testimonial">
-                        <img src="./assets/t1.png" alt="Testimonial 1 Avatar">
-                        <p class="testimonial-text">"The resume builder helped me land my dream job. Highly recommended!"</p>
-                        <p class="testimonial-author">John Doe</p>
-                    </div>
-                    <!-- Testimonial 2 -->
-                    <div class="testimonial">
-                        <img src="./assets/t2.png" alt="Testimonial 2 Avatar">
-                        <p class="testimonial-text">"I'm impressed with the ease of use and the quality of the templates."</p>
-                        <p class="testimonial-author">Jane Smith</p>
-                    </div>
-                </div>
-            </div>
+  </main>
+
+  <footer class="w-full bg-neutral-50 dark:bg-neutral-900 py-16 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-8 border-b border-neutral-200 dark:border-neutral-800 pb-12 mb-8">
+        <h2 class="font-serif text-3xl font-medium text-neutral-900 dark:text-white">Ready to build your future?</h2>
+        <a href="Resume-Editor.html" class="bg-amber-500 text-neutral-950 px-6 py-3 rounded-full text-base font-medium hover:bg-amber-600 dark:hover:bg-amber-400 transition-all">Create Resume Now</a>
+      </div>
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-neutral-500">
+        <p>&copy; 2024 Resume Builder. All rights reserved.</p>
+        <div class="flex gap-6">
+          <a href="Resume-Editor.html" class="hover:text-neutral-900 transition-colors">Editor</a>
+          <a href="#" class="hover:text-neutral-900 transition-colors">Privacy</a>
         </div>
-    </section>
-    
-    <footer id="contact" class="parallax-section">
-        <div class="container">
-            <div class="section-content">
-                <h2 class="section-heading">Ready to Build Your Future?</h2>
-                <p class="section-description">Start creating your professional resume today. No registration required, completely free.</p>
-                <div style="margin: 40px 0;">
-                    <a href="Resume-Editor.html" class="btn btn-primary" style="padding: 15px 40px; font-size: 18px; font-weight: 600;">Create Your Resume Now</a>
-                </div>
-                <div class="contact-info" style="margin-top: 50px; padding-top: 40px; border-top: 1px solid #333;">
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; text-align: left;">
-                        <div>
-                            <h3 style="font-size: 20px; margin-bottom: 15px; color: #ffd700;">Resume Builder</h3>
-                            <p style="color: #888; line-height: 1.8;">Create professional resumes with our free, easy-to-use builder. No sign-up required.</p>
-                        </div>
-                        <div>
-                            <h3 style="font-size: 20px; margin-bottom: 15px; color: #ffd700;">Quick Links</h3>
-                            <p><a href="Resume-Editor.html" style="color: #888; text-decoration: none; transition: color 0.3s;">Resume Builder</a></p>
-                            <p><a href="Resume-Editor.html#resume-tips" style="color: #888; text-decoration: none; transition: color 0.3s;">Resume Tips</a></p>
-                            <p><a href="#features" style="color: #888; text-decoration: none; transition: color 0.3s;">Features</a></p>
-                        </div>
-                        <div>
-                            <h3 style="font-size: 20px; margin-bottom: 15px; color: #ffd700;">Privacy</h3>
-                            <p style="color: #888; line-height: 1.8;">Your data stays on your device. We don't collect or store any personal information.</p>
-                        </div>
-                    </div>
-                    <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #333; text-align: center;">
-                        <p style="color: #888;">&copy; 2024 Resume Builder. Built with care for job seekers everywhere.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    
-  
-  </body>
-  
+      </div>
+    </div>
+  </footer>
+</body>
 </html>
