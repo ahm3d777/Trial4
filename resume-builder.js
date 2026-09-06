@@ -32,6 +32,9 @@
     /** @type {number|null} Autosave timer reference */
     let autosaveTimer = null;
 
+    /** @type {HTMLElement|null} Entry currently being drag-reordered */
+    let draggedEntry = null;
+
     // ====================================================================
     // DOM ELEMENT CACHE (Performance Optimization)
     // ====================================================================
@@ -206,6 +209,8 @@
         try {
             cacheDOM();
             setupDynamicFields();
+            initEntryReordering();
+            initSectionManager();
             setupFormHandlers();
             setupDashboard();
             setupDownloadButtons();
@@ -215,6 +220,8 @@
             setupUnsavedChangesWarning();
             setupKeyboardShortcuts();
             setupImportButton();
+            setupThemeToggle();
+            setupStorageAndHistoryControls();
             loadCurrentResume();
             checkLocalStorageQuota();
         } catch (error) {
@@ -387,8 +394,11 @@
         const removeBtn = div.querySelector('.remove-entry-btn');
         removeBtn.addEventListener('click', function() {
             div.remove();
+            refreshReorderButtons(DOM.educationContainer, '.education-entry');
             triggerPreviewUpdate();
         });
+
+        bindReorderControls(div, DOM.educationContainer, '.education-entry');
 
         return div;
     }
@@ -434,6 +444,7 @@
         const removeBtn = div.querySelector('.remove-entry-btn');
         removeBtn.addEventListener('click', function() {
             div.remove();
+            refreshReorderButtons(DOM.experienceContainer, '.experience-entry');
             triggerPreviewUpdate();
         });
 
@@ -445,6 +456,8 @@
                 counter.textContent = this.value.length;
             });
         }
+
+        bindReorderControls(div, DOM.experienceContainer, '.experience-entry');
 
         return div;
     }
@@ -468,8 +481,11 @@
         const removeBtn = div.querySelector('.remove-skill-btn');
         removeBtn.addEventListener('click', function() {
             div.remove();
+            refreshReorderButtons(DOM.skillsContainer, '.skill-entry');
             triggerPreviewUpdate();
         });
+
+        bindReorderControls(div, DOM.skillsContainer, '.skill-entry');
 
         return div;
     }
@@ -507,8 +523,11 @@
         const removeBtn = div.querySelector('.remove-entry-btn');
         removeBtn.addEventListener('click', function() {
             div.remove();
+            refreshReorderButtons(DOM.projectsContainer, '.project-entry');
             triggerPreviewUpdate();
         });
+
+        bindReorderControls(div, DOM.projectsContainer, '.project-entry');
 
         return div;
     }
@@ -542,8 +561,11 @@
         const removeBtn = div.querySelector('.remove-entry-btn');
         removeBtn.addEventListener('click', function() {
             div.remove();
+            refreshReorderButtons(DOM.certificationsContainer, '.certification-entry');
             triggerPreviewUpdate();
         });
+
+        bindReorderControls(div, DOM.certificationsContainer, '.certification-entry');
 
         return div;
     }
@@ -580,8 +602,11 @@
         const removeBtn = div.querySelector('.remove-entry-btn');
         removeBtn.addEventListener('click', function() {
             div.remove();
+            refreshReorderButtons(DOM.languagesContainer, '.language-entry');
             triggerPreviewUpdate();
         });
+
+        bindReorderControls(div, DOM.languagesContainer, '.language-entry');
 
         return div;
     }
@@ -594,6 +619,306 @@
             const event = new Event('input', { bubbles: true });
             DOM.form.dispatchEvent(event);
         }
+    }
+
+    // ====================================================================
+    // ENTRY REORDERING (drag-and-drop + up/down buttons)
+    // ====================================================================
+
+    /**
+     * Build the small drag handle + move up/down control bar prepended to
+     * every reorderable entry (education, experience, skills, projects,
+     * certifications, languages) - including the one static entry each
+     * section starts with, not just ones added via "+ Add Another...".
+     */
+    function createReorderControls() {
+        const div = document.createElement('div');
+        div.className = 'reorder-controls';
+        div.innerHTML = `
+            <span class="drag-handle" draggable="true" aria-hidden="true" title="Drag to reorder">⠿</span>
+            <button type="button" class="move-up-btn" aria-label="Move up">▲</button>
+            <button type="button" class="move-down-btn" aria-label="Move down">▼</button>
+        `;
+        return div;
+    }
+
+    /**
+     * Disable the "move up" button on the first entry and "move down" on
+     * the last, within one container, so the boundaries are obvious.
+     */
+    function refreshReorderButtons(containerEl, itemSelector) {
+        if (!containerEl) return;
+        const items = Array.from(containerEl.querySelectorAll(itemSelector));
+        items.forEach((item, idx) => {
+            const upBtn = item.querySelector(':scope > .reorder-controls .move-up-btn');
+            const downBtn = item.querySelector(':scope > .reorder-controls .move-down-btn');
+            if (upBtn) upBtn.disabled = idx === 0;
+            if (downBtn) downBtn.disabled = idx === items.length - 1;
+        });
+    }
+
+    /**
+     * Give one entry element working reorder controls: adds the control
+     * bar if it doesn't already have one, and wires up the up/down
+     * buttons plus the drag handle. Safe to call more than once on the
+     * same element (it won't add a second control bar).
+     * @param {HTMLElement} entryEl - the .education-entry/.experience-entry/etc.
+     * @param {HTMLElement} containerEl - its parent container
+     * @param {string} itemSelector - CSS selector matching sibling entries
+     * @param {Function} [onChange] - called after a successful reorder,
+     *   instead of the default triggerPreviewUpdate (used by the section
+     *   manager, which also needs to persist the new order into its
+     *   hidden input, not just refresh the preview).
+     */
+    function bindReorderControls(entryEl, containerEl, itemSelector, onChange) {
+        try {
+            const notify = onChange || triggerPreviewUpdate;
+
+            let controls = entryEl.querySelector(':scope > .reorder-controls');
+            if (!controls) {
+                controls = createReorderControls();
+                entryEl.insertBefore(controls, entryEl.firstChild);
+            }
+
+            const upBtn = controls.querySelector('.move-up-btn');
+            const downBtn = controls.querySelector('.move-down-btn');
+            const handle = controls.querySelector('.drag-handle');
+
+            upBtn.addEventListener('click', () => {
+                const prev = entryEl.previousElementSibling;
+                if (prev && prev.matches(itemSelector)) {
+                    containerEl.insertBefore(entryEl, prev);
+                    refreshReorderButtons(containerEl, itemSelector);
+                    notify();
+                    upBtn.focus();
+                }
+            });
+
+            downBtn.addEventListener('click', () => {
+                const next = entryEl.nextElementSibling;
+                if (next && next.matches(itemSelector)) {
+                    containerEl.insertBefore(next, entryEl);
+                    refreshReorderButtons(containerEl, itemSelector);
+                    notify();
+                    downBtn.focus();
+                }
+            });
+
+            handle.addEventListener('dragstart', (e) => {
+                draggedEntry = entryEl;
+                entryEl.classList.add('dragging');
+                if (e.dataTransfer) {
+                    e.dataTransfer.effectAllowed = 'move';
+                    try { e.dataTransfer.setData('text/plain', ''); } catch (err) { /* Firefox needs this set, value is unused */ }
+                }
+            });
+
+            handle.addEventListener('dragend', () => {
+                entryEl.classList.remove('dragging');
+                draggedEntry = null;
+                refreshReorderButtons(containerEl, itemSelector);
+                notify();
+            });
+        } catch (error) {
+            console.error('Bind reorder controls error:', error);
+        }
+    }
+
+    /**
+     * Find which sibling a dragged entry should be inserted before, based
+     * on the pointer's vertical position - the standard "drag to sort a
+     * list" midpoint algorithm.
+     */
+    function getDragAfterElement(containerEl, itemSelector, y) {
+        const items = Array.from(containerEl.querySelectorAll(itemSelector + ':not(.dragging)'));
+        return items.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2;
+            if (offset < 0 && offset > closest.offset) {
+                return { offset, element: child };
+            }
+            return closest;
+        }, { offset: -Infinity, element: null }).element;
+    }
+
+    /**
+     * Set up drag-over handling once per container (event delegation - it
+     * doesn't need to be re-attached as entries are added/removed).
+     */
+    function setupContainerDragOver(containerEl, itemSelector) {
+        if (!containerEl) return;
+        containerEl.addEventListener('dragover', (e) => {
+            if (!draggedEntry) return;
+            e.preventDefault();
+            const afterElement = getDragAfterElement(containerEl, itemSelector, e.clientY);
+            if (afterElement == null) {
+                containerEl.appendChild(draggedEntry);
+            } else if (afterElement !== draggedEntry) {
+                containerEl.insertBefore(draggedEntry, afterElement);
+            }
+        });
+    }
+
+    /** One config entry per reorderable section: container + item selector. */
+    function getReorderableSections() {
+        return [
+            { container: DOM.educationContainer, selector: '.education-entry' },
+            { container: DOM.experienceContainer, selector: '.experience-entry' },
+            { container: DOM.skillsContainer, selector: '.skill-entry' },
+            { container: DOM.projectsContainer, selector: '.project-entry' },
+            { container: DOM.certificationsContainer, selector: '.certification-entry' },
+            { container: DOM.languagesContainer, selector: '.language-entry' }
+        ];
+    }
+
+    /**
+     * One-time setup: give every entry currently in the DOM (the static
+     * first entry in each section, present since page load) reorder
+     * controls, and set up drag-over handling on each container.
+     */
+    function initEntryReordering() {
+        try {
+            getReorderableSections().forEach(({ container, selector }) => {
+                if (!container) return;
+                setupContainerDragOver(container, selector);
+                container.querySelectorAll(selector).forEach(entry => {
+                    bindReorderControls(entry, container, selector);
+                });
+                refreshReorderButtons(container, selector);
+            });
+        } catch (error) {
+            console.error('Init entry reordering error:', error);
+        }
+    }
+
+    /**
+     * Refresh up/down button disabled-states across every reorderable
+     * section - call after bulk DOM changes like loading a saved resume.
+     */
+    function refreshAllReorderButtons() {
+        getReorderableSections().forEach(({ container, selector }) => {
+            refreshReorderButtons(container, selector);
+        });
+    }
+
+    // ====================================================================
+    // SECTION ORDER / VISIBILITY MANAGER
+    // ====================================================================
+
+    /** The resume sections a person can reorder or hide, in their default order. */
+    const SECTION_DEFS = [
+        { key: 'summary', label: 'Professional Summary' },
+        { key: 'education', label: 'Education' },
+        { key: 'experience', label: 'Work Experience' },
+        { key: 'projects', label: 'Projects' },
+        { key: 'skills', label: 'Skills' },
+        { key: 'certifications', label: 'Certifications' },
+        { key: 'languages', label: 'Languages' }
+    ];
+    const DEFAULT_SECTION_ORDER = SECTION_DEFS.map(s => s.key);
+
+    /**
+     * Read the current section order/visibility settings out of the
+     * hidden input that both this script and templates.js share.
+     * @returns {{order: string[], hidden: string[]}}
+     */
+    function getSectionSettings() {
+        try {
+            const raw = document.getElementById('section-settings-data')?.value;
+            if (!raw) return { order: DEFAULT_SECTION_ORDER.slice(), hidden: [] };
+            const parsed = JSON.parse(raw);
+            const validKeys = DEFAULT_SECTION_ORDER;
+            const order = Array.isArray(parsed.order) ? parsed.order.filter(k => validKeys.includes(k)) : [];
+            validKeys.forEach(k => { if (!order.includes(k)) order.push(k); });
+            const hidden = Array.isArray(parsed.hidden) ? parsed.hidden.filter(k => validKeys.includes(k)) : [];
+            return { order, hidden };
+        } catch (error) {
+            return { order: DEFAULT_SECTION_ORDER.slice(), hidden: [] };
+        }
+    }
+
+    /**
+     * Persist section order/visibility settings into the shared hidden
+     * input (does not by itself refresh anything - callers trigger a
+     * preview update afterwards).
+     */
+    function setSectionSettings(settings) {
+        const input = document.getElementById('section-settings-data');
+        if (input) input.value = JSON.stringify(settings);
+    }
+
+    /**
+     * Read the section manager's current DOM order + checkbox states and
+     * write them back into the shared hidden input, then refresh the
+     * live preview. Called after every reorder (drag or button) and
+     * every visibility checkbox toggle.
+     */
+    function syncSectionSettingsFromDOM() {
+        try {
+            const list = document.getElementById('section-manager-list');
+            if (!list) return;
+            const rows = Array.from(list.querySelectorAll('.section-manager-row'));
+            const order = rows.map(r => r.dataset.key);
+            const hidden = [];
+            rows.forEach(row => {
+                const checkbox = row.querySelector('.section-visibility-checkbox');
+                const isHidden = checkbox ? !checkbox.checked : false;
+                row.classList.toggle('section-hidden', isHidden);
+                if (isHidden) hidden.push(row.dataset.key);
+            });
+            setSectionSettings({ order, hidden });
+            triggerPreviewUpdate();
+        } catch (error) {
+            console.error('Sync section settings error:', error);
+        }
+    }
+
+    /**
+     * (Re)build the section manager panel to reflect a given settings
+     * object - used on first load (defaults) and whenever a saved resume
+     * with its own custom order/visibility is loaded into the editor.
+     */
+    function renderSectionManagerFromSettings(settings) {
+        try {
+            const list = document.getElementById('section-manager-list');
+            if (!list) return;
+            settings = settings || { order: DEFAULT_SECTION_ORDER.slice(), hidden: [] };
+
+            list.innerHTML = settings.order.map(key => {
+                const def = SECTION_DEFS.find(d => d.key === key);
+                if (!def) return '';
+                const isHidden = settings.hidden.includes(key);
+                return `
+                    <div class="section-manager-row${isHidden ? ' section-hidden' : ''}" data-key="${key}">
+                        <label class="section-manager-label">
+                            <input type="checkbox" class="section-visibility-checkbox" ${isHidden ? '' : 'checked'}>
+                            ${def.label}
+                        </label>
+                    </div>
+                `;
+            }).join('');
+
+            list.querySelectorAll('.section-manager-row').forEach(row => {
+                bindReorderControls(row, list, '.section-manager-row', syncSectionSettingsFromDOM);
+                const checkbox = row.querySelector('.section-visibility-checkbox');
+                if (checkbox) checkbox.addEventListener('change', syncSectionSettingsFromDOM);
+            });
+            refreshReorderButtons(list, '.section-manager-row');
+
+            if (!list.dataset.dragoverBound) {
+                setupContainerDragOver(list, '.section-manager-row');
+                list.dataset.dragoverBound = 'true';
+            }
+
+            setSectionSettings(settings);
+        } catch (error) {
+            console.error('Render section manager error:', error);
+        }
+    }
+
+    /** One-time setup, called during init. */
+    function initSectionManager() {
+        renderSectionManagerFromSettings({ order: DEFAULT_SECTION_ORDER.slice(), hidden: [] });
     }
 
     // ====================================================================
@@ -759,6 +1084,8 @@
             // Clear dynamic sections (including any extra skill fields,
             // which don't carry the .dynamic-entry class)
             clearDynamicEntries();
+            refreshAllReorderButtons();
+            renderSectionManagerFromSettings({ order: DEFAULT_SECTION_ORDER.slice(), hidden: [] });
 
             // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -813,6 +1140,9 @@
             // Save to localStorage with error handling
             localStorage.setItem(CONFIG.LOCALSTORAGE_KEY, JSON.stringify(resumes));
 
+            // Snapshot into this resume's autosave history (throttled/deduped)
+            recordHistorySnapshot(resume);
+
             // Update dashboard
             updateDashboard();
 
@@ -849,7 +1179,9 @@
             skills: getSkillsData(),
             projects: getProjectsData(),
             certifications: getCertificationsData(),
-            languages: getLanguagesData()
+            languages: getLanguagesData(),
+            sectionSettings: getSectionSettings(),
+            compactMode: !!document.getElementById('compact-mode-toggle')?.checked
         };
     }
 
@@ -1127,6 +1459,11 @@
         if (DOM.github) DOM.github.value = data.github || '';
         if (DOM.summary) DOM.summary.value = data.summary || '';
         if (DOM.templateSelect) DOM.templateSelect.value = template || 'template1';
+
+        renderSectionManagerFromSettings(data.sectionSettings || { order: DEFAULT_SECTION_ORDER.slice(), hidden: [] });
+
+        const compactToggle = document.getElementById('compact-mode-toggle');
+        if (compactToggle) compactToggle.checked = !!data.compactMode;
     }
 
     /**
@@ -1303,6 +1640,8 @@
             const descCounter = document.getElementById('work_description-count');
             const descTextarea = document.getElementById('work_description');
             if (descCounter && descTextarea) descCounter.textContent = descTextarea.value.length;
+
+            refreshAllReorderButtons();
         } catch (error) {
             console.error('Populate form sections error:', error);
         }
@@ -1373,6 +1712,8 @@
             let resumes = getResumes();
             resumes = resumes.filter(r => r.id !== id);
             localStorage.setItem(CONFIG.LOCALSTORAGE_KEY, JSON.stringify(resumes));
+
+            try { localStorage.removeItem(HISTORY_KEY_PREFIX + id); } catch (e) { /* ignore */ }
 
             if (currentResumeId === id) {
                 currentResumeId = null;
@@ -1471,6 +1812,7 @@
                         <button class="edit-btn" data-id="${resume.id}" aria-label="Edit resume">Edit</button>
                         <button class="duplicate-btn" data-id="${resume.id}" aria-label="Duplicate resume">Duplicate</button>
                         <button class="download-btn" data-id="${resume.id}" aria-label="Download PDF">Download</button>
+                        <button class="history-btn" data-id="${resume.id}" aria-label="View autosave history">History</button>
                         <button class="delete-btn" data-id="${resume.id}" aria-label="Delete resume">Delete</button>
                     </div>
                 </div>
@@ -1502,8 +1844,331 @@
                     }
                 });
             });
+
+            DOM.resumeList.querySelectorAll('.history-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    openHistoryModal(this.dataset.id);
+                });
+            });
         } catch (error) {
             console.error('Update dashboard error:', error);
+        }
+
+        updateStorageReadout();
+    }
+
+    // ====================================================================
+    // STORAGE USAGE + BULK ACTIONS
+    // ====================================================================
+
+    /** Prefix for the per-resume autosave history keys in localStorage. */
+    const HISTORY_KEY_PREFIX = 'resume_history_';
+
+    /**
+     * Measure how much of localStorage this app is using, broken down by
+     * saved resumes vs. autosave history, plus everything else it might
+     * share the origin with.
+     * @returns {{resumesBytes:number, historyBytes:number, otherBytes:number, totalBytes:number, resumeCount:number}}
+     */
+    function calculateStorageBreakdown() {
+        const breakdown = { resumesBytes: 0, historyBytes: 0, otherBytes: 0, totalBytes: 0, resumeCount: 0 };
+        try {
+            for (const key in localStorage) {
+                if (!localStorage.hasOwnProperty(key)) continue;
+                const size = (localStorage[key] || '').length + key.length;
+                breakdown.totalBytes += size;
+                if (key === CONFIG.LOCALSTORAGE_KEY) {
+                    breakdown.resumesBytes += size;
+                } else if (key.indexOf(HISTORY_KEY_PREFIX) === 0) {
+                    breakdown.historyBytes += size;
+                } else {
+                    breakdown.otherBytes += size;
+                }
+            }
+            breakdown.resumeCount = getResumes().length;
+        } catch (error) {
+            console.error('Calculate storage breakdown error:', error);
+        }
+        return breakdown;
+    }
+
+    /**
+     * Format a byte count as a short human-readable string.
+     */
+    function formatBytes(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    }
+
+    /**
+     * Refresh the storage usage readout + bar in the dashboard.
+     */
+    function updateStorageReadout() {
+        try {
+            const textEl = document.getElementById('storage-readout-text');
+            const barEl = document.getElementById('storage-bar-fill');
+            if (!textEl || !barEl) return;
+
+            const usage = calculateStorageBreakdown();
+            const percentage = Math.min(100, (usage.totalBytes / CONFIG.MAX_STORAGE_SIZE) * 100);
+
+            const resumeLabel = usage.resumeCount === 1 ? '1 resume' : `${usage.resumeCount} resumes`;
+            textEl.textContent = `${formatBytes(usage.totalBytes)} used (${resumeLabel}, plus autosave history) — ${percentage.toFixed(1)}% of the ~5 MB this browser gives this app`;
+
+            barEl.style.width = percentage + '%';
+            barEl.classList.toggle('storage-warning', percentage > 75);
+        } catch (error) {
+            console.error('Update storage readout error:', error);
+        }
+    }
+
+    /**
+     * Export every saved resume (not just the one currently open) as a
+     * single JSON file, so someone can back up - or move to another
+     * browser - everything at once instead of one-by-one.
+     */
+    function exportAllResumes() {
+        try {
+            const resumes = getResumes();
+            if (resumes.length === 0) {
+                showNotification('No saved resumes to export', 'info');
+                return;
+            }
+
+            const payload = {
+                exportedAt: new Date().toISOString(),
+                count: resumes.length,
+                resumes: resumes
+            };
+
+            const dataStr = JSON.stringify(payload, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `all_resumes_backup_${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            showNotification(`Exported ${resumes.length} resume${resumes.length === 1 ? '' : 's'}`, 'success');
+        } catch (error) {
+            console.error('Export all resumes error:', error);
+            showNotification('Failed to export resumes', 'error');
+        }
+    }
+
+    /**
+     * Permanently delete every saved resume and all autosave history.
+     * Gated behind a double confirmation since it can't be undone.
+     */
+    function deleteAllResumes() {
+        try {
+            const resumes = getResumes();
+            if (resumes.length === 0) {
+                showNotification('There are no saved resumes to delete', 'info');
+                return;
+            }
+
+            if (!confirm(`Delete all ${resumes.length} saved resume${resumes.length === 1 ? '' : 's'}? This cannot be undone.`)) {
+                return;
+            }
+            if (!confirm('Are you absolutely sure? This will permanently erase everything saved in this browser.')) {
+                return;
+            }
+
+            localStorage.removeItem(CONFIG.LOCALSTORAGE_KEY);
+            resumes.forEach(r => {
+                try { localStorage.removeItem(HISTORY_KEY_PREFIX + r.id); } catch (e) { /* ignore */ }
+            });
+
+            currentResumeId = null;
+            DOM.form?.reset();
+            clearDynamicEntries();
+            triggerPreviewUpdate();
+
+            updateDashboard();
+            showNotification('All resumes deleted', 'info');
+        } catch (error) {
+            console.error('Delete all resumes error:', error);
+            showNotification('Failed to delete resumes', 'error');
+        }
+    }
+
+    // ====================================================================
+    // PER-RESUME AUTOSAVE HISTORY
+    // ====================================================================
+
+    /** Keep at most this many history snapshots per resume. */
+    const HISTORY_MAX_ENTRIES = 15;
+    /** Don't add a new snapshot within this many ms of the last one. */
+    const HISTORY_MIN_INTERVAL_MS = 60 * 1000;
+
+    /**
+     * Read the snapshot history for one resume.
+     * @param {string} id
+     * @returns {Array<{timestamp:string, title:string, data:Object, template:string}>}
+     */
+    function getResumeHistory(id) {
+        try {
+            const raw = localStorage.getItem(HISTORY_KEY_PREFIX + id);
+            return raw ? JSON.parse(raw) : [];
+        } catch (error) {
+            console.error('Get resume history error:', error);
+            return [];
+        }
+    }
+
+    /**
+     * Record a snapshot of a just-saved resume into its history, provided
+     * the content actually changed and enough time has passed since the
+     * last snapshot - otherwise the 1.5s autosave debounce would fill
+     * storage with near-duplicate entries almost instantly.
+     * @param {Object} resume - the resume record that was just saved
+     */
+    function recordHistorySnapshot(resume) {
+        try {
+            const history = getResumeHistory(resume.id);
+            const last = history[history.length - 1];
+            const serializedData = JSON.stringify(resume.data);
+
+            if (last) {
+                const sameContent = JSON.stringify(last.data) === serializedData && last.template === resume.template;
+                const tooSoon = (Date.now() - new Date(last.timestamp).getTime()) < HISTORY_MIN_INTERVAL_MS;
+                if (sameContent || tooSoon) return;
+            }
+
+            history.push({
+                timestamp: new Date().toISOString(),
+                title: resume.title,
+                template: resume.template,
+                data: resume.data
+            });
+
+            while (history.length > HISTORY_MAX_ENTRIES) history.shift();
+
+            localStorage.setItem(HISTORY_KEY_PREFIX + resume.id, JSON.stringify(history));
+        } catch (error) {
+            // History is a nice-to-have safety net, not core functionality -
+            // never let a storage hiccup here block a save.
+            console.error('Record history snapshot error:', error);
+        }
+    }
+
+    /**
+     * Turn an ISO timestamp into a short "X minutes ago"-style string.
+     */
+    function relativeTime(isoString) {
+        const diffMs = Date.now() - new Date(isoString).getTime();
+        const diffSec = Math.round(diffMs / 1000);
+        if (diffSec < 60) return 'just now';
+        const diffMin = Math.round(diffSec / 60);
+        if (diffMin < 60) return `${diffMin} minute${diffMin === 1 ? '' : 's'} ago`;
+        const diffHour = Math.round(diffMin / 60);
+        if (diffHour < 24) return `${diffHour} hour${diffHour === 1 ? '' : 's'} ago`;
+        const diffDay = Math.round(diffHour / 24);
+        return `${diffDay} day${diffDay === 1 ? '' : 's'} ago`;
+    }
+
+    /**
+     * Open the History modal for one resume and render its snapshots.
+     * @param {string} id
+     */
+    function openHistoryModal(id) {
+        try {
+            const resume = getResumeById(id);
+            const modal = document.getElementById('history-modal');
+            const list = document.getElementById('history-list');
+            const titleEl = document.getElementById('history-resume-title');
+            if (!resume || !modal || !list) return;
+
+            if (titleEl) titleEl.textContent = resume.title;
+
+            const history = getResumeHistory(id).slice().reverse(); // newest first
+
+            if (history.length === 0) {
+                list.innerHTML = '<p class="history-empty">No earlier versions saved yet. Snapshots appear here as you keep editing (at most one per minute of changes).</p>';
+            } else {
+                list.innerHTML = history.map((snapshot, idx) => `
+                    <div class="history-item">
+                        <div>
+                            <span class="history-item-time">${new Date(snapshot.timestamp).toLocaleString()}</span>
+                            <span class="history-item-relative">${relativeTime(snapshot.timestamp)}</span>
+                        </div>
+                        <button type="button" class="history-restore-btn" data-id="${id}" data-index="${history.length - 1 - idx}">Restore</button>
+                    </div>
+                `).join('');
+
+                list.querySelectorAll('.history-restore-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        restoreHistorySnapshot(this.dataset.id, parseInt(this.dataset.index, 10));
+                    });
+                });
+            }
+
+            modal.style.display = 'block';
+        } catch (error) {
+            console.error('Open history modal error:', error);
+            showNotification('Failed to load history', 'error');
+        }
+    }
+
+    /**
+     * Load one historical snapshot into the editor form (without
+     * auto-saving it, so the person can review before committing).
+     * @param {string} id
+     * @param {number} index - index into the (chronological) history array
+     */
+    function restoreHistorySnapshot(id, index) {
+        try {
+            const history = getResumeHistory(id);
+            const snapshot = history[index];
+            if (!snapshot) {
+                showNotification('That version could not be found', 'error');
+                return;
+            }
+
+            currentResumeId = id;
+            applyBasicFields(snapshot.data, snapshot.template);
+            populateFormSections(snapshot.data);
+            triggerPreviewUpdate();
+
+            const modal = document.getElementById('history-modal');
+            if (modal) modal.style.display = 'none';
+
+            showNotification(`Restored version from ${relativeTime(snapshot.timestamp)} — remember to Save`, 'success');
+            document.getElementById('resume-editor')?.scrollIntoView({ behavior: 'smooth' });
+        } catch (error) {
+            console.error('Restore history snapshot error:', error);
+            showNotification('Failed to restore that version', 'error');
+        }
+    }
+
+    /**
+     * Wire up the storage panel's buttons and the history modal's close
+     * controls. Called once during init.
+     */
+    function setupStorageAndHistoryControls() {
+        try {
+            const exportAllBtn = document.getElementById('export-all-btn');
+            if (exportAllBtn) exportAllBtn.addEventListener('click', exportAllResumes);
+
+            const deleteAllBtn = document.getElementById('delete-all-btn');
+            if (deleteAllBtn) deleteAllBtn.addEventListener('click', deleteAllResumes);
+
+            const historyModal = document.getElementById('history-modal');
+            const historyClose = document.getElementById('history-close');
+            if (historyClose && historyModal) {
+                historyClose.addEventListener('click', () => { historyModal.style.display = 'none'; });
+                window.addEventListener('click', (e) => {
+                    if (e.target === historyModal) historyModal.style.display = 'none';
+                });
+            }
+        } catch (error) {
+            console.error('Setup storage and history controls error:', error);
         }
     }
 
@@ -1541,6 +2206,17 @@
             // JSON Export button
             if (DOM.exportBtn) {
                 DOM.exportBtn.addEventListener('click', exportAsJSON);
+            }
+
+            // Print button - a real, native browser print (see the
+            // @media print rules in Resume-Editor.css), separate from the
+            // html2canvas-based "Download PDF" flow above.
+            const printBtn = document.getElementById('print-resume-btn');
+            if (printBtn) {
+                printBtn.addEventListener('click', () => {
+                    triggerPreviewUpdate();
+                    setTimeout(() => window.print(), 150);
+                });
             }
         } catch (error) {
             console.error('Setup download buttons error:', error);
@@ -1997,6 +2673,56 @@
             }
         } catch (error) {
             console.error('Setup back to top error:', error);
+        }
+    }
+
+    // ====================================================================
+    // LIGHT / DARK THEME TOGGLE
+    // ====================================================================
+
+    /** localStorage key for the user's chosen editor theme */
+    const THEME_STORAGE_KEY = 'resumeBuilderTheme';
+
+    /**
+     * Wire up the light/dark theme toggle button. The theme itself is
+     * applied as early as possible by an inline script in <head> (to avoid
+     * a flash of the wrong theme); this just keeps the button in sync and
+     * handles clicks.
+     */
+    function setupThemeToggle() {
+        try {
+            const btn = document.getElementById('theme-toggle-btn');
+            if (!btn) return;
+
+            const applyButtonState = (theme) => {
+                const isLight = theme === 'light';
+                btn.textContent = isLight ? '☀️' : '🌙';
+                btn.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
+                btn.title = isLight ? 'Switch to dark theme' : 'Switch to light theme';
+            };
+
+            let current = document.documentElement.getAttribute('data-theme');
+            if (current !== 'light' && current !== 'dark') {
+                // No explicit choice yet - fall back to the OS preference so
+                // the button icon matches what the person is actually seeing.
+                current = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches)
+                    ? 'light' : 'dark';
+            }
+            applyButtonState(current);
+
+            btn.addEventListener('click', () => {
+                const isCurrentlyLight = document.documentElement.getAttribute('data-theme') === 'light';
+                const next = isCurrentlyLight ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', next);
+                applyButtonState(next);
+                try {
+                    localStorage.setItem(THEME_STORAGE_KEY, next);
+                } catch (e) {
+                    console.error('Failed to persist theme choice:', e);
+                }
+            });
+        } catch (error) {
+            console.error('Setup theme toggle error:', error);
         }
     }
 

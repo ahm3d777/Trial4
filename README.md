@@ -14,14 +14,23 @@ Create a professional resume in minutes with our easy-to-use resume builder appl
 - **Multiple Entries**: Add multiple work experiences, education entries, and skills
 - **Auto-save**: Your resumes are automatically saved in your browser
 - **PDF Export**: Download your resume as a professional PDF document
+- **Print**: A dedicated "Print" button + print stylesheet gives a clean, native browser print of just the resume (separate from the PDF button, which rasterizes the preview)
+- **Shrink to fit one page**: An optional toggle that automatically scales down type and spacing - but only when your resume would otherwise spill onto a second page
 - **Dashboard**: Manage all your saved resumes in one place
 - **Smart Suggestions**: Get autocomplete suggestions for common fields
+- **Light / Dark theme**: A toggle in the header switches the editor between a dark and a light, paper-like look; your choice is remembered
+
+### 🧩 Arrange Your Resume
+- **Reorder & hide sections**: An "Arrange Your Sections" panel lets you drag (or use the ▲/▼ buttons) to reorder Professional Summary, Education, Work Experience, Projects, Skills, Certifications, and Languages, and uncheck any of them to leave it off the resume entirely. Two-column templates (Modern Minimal, Executive) keep sidebar/main grouping but still follow your order within each column.
+- **Drag-and-drop entries**: Every entry (education, experience, skills, projects, certifications, languages) - including the first one in each section - has a drag handle plus ▲/▼ buttons, so you can put your most recent job or degree on top.
 
 ### 💾 Data Management
 - **Local Storage**: All data is stored locally in your browser
 - **Create Multiple Resumes**: Build and save as many resumes as you need
 - **Edit Anytime**: Load and edit your saved resumes whenever you want
 - **Delete Resumes**: Remove resumes you no longer need
+- **Storage usage**: The dashboard shows how much of this browser's storage your resumes (and their history) are using, with one-click **Export All** (every resume as one JSON backup) and **Delete All** (double-confirmed) actions
+- **Autosave history**: Each resume keeps a capped, throttled history of earlier autosaved versions - open "History" on a dashboard card to preview timestamps and restore an earlier version into the editor
 
 ## How to Use
 

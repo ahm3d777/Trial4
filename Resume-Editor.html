@@ -3,6 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Set the theme before first paint so switching to light mode doesn't
+         flash the dark layout for a frame on every reload. -->
+    <script>
+        (function() {
+            try {
+                var saved = localStorage.getItem('resumeBuilderTheme');
+                if (saved === 'light' || saved === 'dark') {
+                    document.documentElement.setAttribute('data-theme', saved);
+                }
+            } catch (e) { /* localStorage unavailable - fall back to default dark theme */ }
+        })();
+    </script>
     <link rel="icon" type="image/png" sizes="32x32" href="./assets/death.png">
     <title>Resume Builder</title>
     <link rel="stylesheet" href="Resume-Editor.css">
@@ -17,6 +29,7 @@
                 <li><a href="#resume-tips">Resume Tips</a></li>
             </ul>
         </nav>
+        <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Switch to light theme" title="Switch theme">🌙</button>
     </header>
     <section id="feature">
         <h2>Build Your Professional Resume</h2>
@@ -26,7 +39,7 @@
     <!-- Resume Editing Interface -->
     <section id="resume-editor">
         <h2>Resume Editor</h2>
-        <p style="text-align: center; color: #b0b0b0; margin-bottom: 20px;">Fill in your information below. Changes are saved automatically and you can download your resume as PDF anytime.</p>
+        <p class="muted-text" style="text-align: center; margin-bottom: 20px;">Fill in your information below. Changes are saved automatically and you can download your resume as PDF anytime.</p>
 
         <!-- Progress Indicator -->
         <div class="progress-container" style="max-width: 900px; margin: 0 auto 30px;">
@@ -98,14 +111,14 @@
 
         <!-- Professional Summary -->
         <h3>Professional Summary</h3>
-        <p style="color: #888; font-size: 14px; margin-bottom: 15px;">Write a brief summary highlighting your key qualifications and career objectives.</p>
+        <p class="muted-text" style="font-size: 14px; margin-bottom: 15px;">Write a brief summary highlighting your key qualifications and career objectives.</p>
         <div class="form-group">
             <label for="professional_summary">
                 Summary
                 <span class="tooltip-icon" data-tooltip="2-3 sentences about your professional background and goals">ⓘ</span>
             </label>
             <textarea name="professional_summary" id="professional_summary" placeholder="Experienced software engineer with 5+ years developing scalable web applications. Passionate about creating elegant solutions to complex problems..." rows="4" maxlength="500" aria-label="Professional Summary"></textarea>
-            <div class="char-counter" style="text-align: right; font-size: 12px; color: #888; margin-top: 5px;">
+            <div class="char-counter" style="text-align: right; font-size: 12px; margin-top: 5px;">
                 <span id="professional_summary-count">0</span>/500 characters
             </div>
         </div>
@@ -190,7 +203,7 @@
                 <span class="tooltip-icon" data-tooltip="Use action verbs and quantify achievements when possible (e.g., 'Increased sales by 25%')">ⓘ</span>
             </label>
             <textarea name="work_description" id="work_description" placeholder="Describe your main responsibilities, achievements, and impact. Use bullet points or short paragraphs." rows="4" maxlength="1000" aria-label="Job Description"></textarea>
-            <div class="char-counter" style="text-align: right; font-size: 12px; color: #888; margin-top: 5px;">
+            <div class="char-counter" style="text-align: right; font-size: 12px; margin-top: 5px;">
                 <span id="work_description-count">0</span>/1000 characters
             </div>
         </div>
@@ -200,7 +213,7 @@
 
            <!-- Form fields for skills -->
 <h3>Skills</h3>
-<p style="color: #888; font-size: 14px; margin-bottom: 15px;">Add your professional skills, technical proficiencies, and areas of expertise.</p>
+<p class="muted-text" style="font-size: 14px; margin-bottom: 15px;">Add your professional skills, technical proficiencies, and areas of expertise.</p>
 <div id="skills-container">
     <div class="skill-entry">
         <div class="form-group">
@@ -228,7 +241,7 @@
 
             <!-- Projects Section -->
 <h3>Projects (Optional)</h3>
-<p style="color: #888; font-size: 14px; margin-bottom: 15px;">Showcase your personal projects, open-source contributions, or significant work.</p>
+<p class="muted-text" style="font-size: 14px; margin-bottom: 15px;">Showcase your personal projects, open-source contributions, or significant work.</p>
 <div id="projects-container">
     <div class="project-entry">
         <div class="form-group">
@@ -256,7 +269,7 @@
 
             <!-- Certifications Section -->
 <h3>Certifications (Optional)</h3>
-<p style="color: #888; font-size: 14px; margin-bottom: 15px;">List your professional certifications and credentials.</p>
+<p class="muted-text" style="font-size: 14px; margin-bottom: 15px;">List your professional certifications and credentials.</p>
 <div id="certifications-container">
     <div class="certification-entry">
         <div class="form-group">
@@ -277,7 +290,7 @@
 
             <!-- Languages Section -->
 <h3>Languages (Optional)</h3>
-<p style="color: #888; font-size: 14px; margin-bottom: 15px;">List the languages you speak and your proficiency level.</p>
+<p class="muted-text" style="font-size: 14px; margin-bottom: 15px;">List the languages you speak and your proficiency level.</p>
 <div id="languages-container">
     <div class="language-entry">
         <div class="form-group">
@@ -307,6 +320,13 @@
                 <button type="button" id="download-pdf-btn" class="btn-primary" aria-label="Download PDF">
                     <span class="btn-icon">📥</span> Download PDF
                 </button>
+                <button type="button" id="print-resume-btn" class="btn-secondary" aria-label="Print Resume">
+                    <span class="btn-icon">🖨️</span> Print
+                </button>
+                <label class="compact-toggle" for="compact-mode-toggle" title="Automatically shrinks spacing and type only if your resume would otherwise spill onto a second page">
+                    <input type="checkbox" id="compact-mode-toggle" name="compact_mode">
+                    <span>🗜️ Shrink to fit one page</span>
+                </label>
                 <button type="button" id="export-json-btn" class="btn-secondary" aria-label="Export Backup">
                     <span class="btn-icon">📦</span> Export Backup
                 </button>
@@ -320,9 +340,9 @@
         </form>
     </section>
 <!-- Templates -->
-<div class="container" style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
+<div class="container template-picker-block" style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
     <h2 style="text-align: center; margin-bottom: 15px;">Choose Your Template</h2>
-    <p style="text-align: center; color: #b0b0b0; margin-bottom: 25px;">Select a professional template that best represents your style. You can change it anytime.</p>
+    <p class="muted-text" style="text-align: center; margin-bottom: 25px;">Select a professional template that best represents your style. You can change it anytime.</p>
     <div class="form-group">
         <label for="template-select">Resume Template</label>
         <select name="template" id="template-select">
@@ -335,12 +355,21 @@
         </select>
     </div>
 </div>
+
+<!-- Section order / visibility manager -->
+<div class="container template-picker-block" style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
+    <h2 style="text-align: center; margin-bottom: 15px;">Arrange Your Sections</h2>
+    <p class="muted-text" style="text-align: center; margin-bottom: 20px;">Drag to reorder, or use the arrows. Uncheck a section to hide it from your resume entirely. Two-column templates (Modern Minimal, Executive) keep sidebar sections grouped together, but still follow this order within each column.</p>
+    <input type="hidden" id="section-settings-data" value="">
+    <div id="section-manager-list" class="section-manager-list"></div>
+</div>
 <!-- Real-time preview -->
-<div style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
+<div class="preview-block" style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
     <h2 style="text-align: center; margin-bottom: 15px;">Live Preview</h2>
-    <p style="text-align: center; color: #b0b0b0; margin-bottom: 25px;">See your resume update in real-time as you type. This is how it will look when exported to PDF.</p>
+    <p class="muted-text" style="text-align: center; margin-bottom: 25px;">See your resume update in real-time as you type. This is how it will look when exported to PDF.</p>
     <div id="real-time-preview" class="real-time-preview template1">
         <p style="text-align: center; color: #666; padding: 60px 20px;">Your resume preview will appear here as you fill in the form above.</p>
+        <!-- Note: color left as-is here - this placeholder text renders inside #real-time-preview, which is always a white/paper-like surface regardless of the editor theme. -->
     </div>
 </div>
 
@@ -348,32 +377,32 @@
 
 
 <!-- Resume Tips Panel -->
-<section id="resume-tips" style="max-width: 900px; margin: 40px auto; padding: 20px; background: linear-gradient(145deg, #1a1a1a, #252525); border-radius: 12px; border: 1px solid #2a2a2a;">
-    <h2 style="text-align: center; margin-bottom: 25px; color: #64b5f6;">💡 Professional Resume Tips</h2>
+<section id="resume-tips" class="surface-panel" style="max-width: 900px; margin: 40px auto; padding: 20px; border-radius: 12px;">
+    <h2 style="text-align: center; margin-bottom: 25px; color: var(--accent-text);">💡 Professional Resume Tips</h2>
     <div class="tips-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
         <div class="tip-card" style="padding: 20px; background: rgba(33, 150, 243, 0.05); border-left: 4px solid #2196F3; border-radius: 8px;">
             <h3 style="font-size: 18px; color: #64b5f6; margin-bottom: 10px;">✅ Be Concise</h3>
-            <p style="color: #b0b0b0; font-size: 14px; line-height: 1.6;">Keep your resume to 1-2 pages. Focus on your most relevant and recent experience.</p>
+            <p class="muted-text" style="font-size: 14px; line-height: 1.6;">Keep your resume to 1-2 pages. Focus on your most relevant and recent experience.</p>
         </div>
         <div class="tip-card" style="padding: 20px; background: rgba(76, 175, 80, 0.05); border-left: 4px solid #4CAF50; border-radius: 8px;">
             <h3 style="font-size: 18px; color: #4CAF50; margin-bottom: 10px;">📊 Use Numbers</h3>
-            <p style="color: #b0b0b0; font-size: 14px; line-height: 1.6;">Quantify achievements with metrics: "Increased sales by 25%" is better than "Improved sales".</p>
+            <p class="muted-text" style="font-size: 14px; line-height: 1.6;">Quantify achievements with metrics: "Increased sales by 25%" is better than "Improved sales".</p>
         </div>
         <div class="tip-card" style="padding: 20px; background: rgba(255, 152, 0, 0.05); border-left: 4px solid #FF9800; border-radius: 8px;">
             <h3 style="font-size: 18px; color: #FF9800; margin-bottom: 10px;">🎯 Tailor It</h3>
-            <p style="color: #b0b0b0; font-size: 14px; line-height: 1.6;">Customize your resume for each job application. Highlight relevant skills and experience.</p>
+            <p class="muted-text" style="font-size: 14px; line-height: 1.6;">Customize your resume for each job application. Highlight relevant skills and experience.</p>
         </div>
         <div class="tip-card" style="padding: 20px; background: rgba(156, 39, 176, 0.05); border-left: 4px solid #9C27B0; border-radius: 8px;">
             <h3 style="font-size: 18px; color: #9C27B0; margin-bottom: 10px;">✏️ Action Verbs</h3>
-            <p style="color: #b0b0b0; font-size: 14px; line-height: 1.6;">Start bullet points with strong action verbs: Led, Developed, Implemented, Achieved.</p>
+            <p class="muted-text" style="font-size: 14px; line-height: 1.6;">Start bullet points with strong action verbs: Led, Developed, Implemented, Achieved.</p>
         </div>
         <div class="tip-card" style="padding: 20px; background: rgba(244, 67, 54, 0.05); border-left: 4px solid #f44336; border-radius: 8px;">
             <h3 style="font-size: 18px; color: #f44336; margin-bottom: 10px;">🔍 Proofread</h3>
-            <p style="color: #b0b0b0; font-size: 14px; line-height: 1.6;">Check for spelling and grammar errors. Ask someone else to review your resume.</p>
+            <p class="muted-text" style="font-size: 14px; line-height: 1.6;">Check for spelling and grammar errors. Ask someone else to review your resume.</p>
         </div>
         <div class="tip-card" style="padding: 20px; background: rgba(0, 188, 212, 0.05); border-left: 4px solid #00BCD4; border-radius: 8px;">
             <h3 style="font-size: 18px; color: #00BCD4; margin-bottom: 10px;">🤖 ATS Friendly</h3>
-            <p style="color: #b0b0b0; font-size: 14px; line-height: 1.6;">Use standard fonts and avoid complex formatting to pass Applicant Tracking Systems.</p>
+            <p class="muted-text" style="font-size: 14px; line-height: 1.6;">Use standard fonts and avoid complex formatting to pass Applicant Tracking Systems.</p>
         </div>
     </div>
 </section>
@@ -381,11 +410,40 @@
 <!-- User Dashboard -->
 <section id="user-dashboard" class="dashboard-container" style="display: none;">
     <h2>My Resumes</h2>
-    <p style="text-align: center; color: #b0b0b0; margin-bottom: 20px;">Everything here is saved in this browser only — nothing is uploaded anywhere.</p>
+    <p class="muted-text" style="text-align: center; margin-bottom: 20px;">Everything here is saved in this browser only — nothing is uploaded anywhere.</p>
+
+    <!-- Storage usage + bulk actions -->
+    <div id="storage-panel" class="storage-panel">
+        <div class="storage-panel-header">
+            <span id="storage-readout-text">Calculating storage usage…</span>
+        </div>
+        <div class="storage-bar-bg">
+            <div id="storage-bar-fill" class="storage-bar-fill" style="width: 0%;"></div>
+        </div>
+        <div class="storage-panel-actions">
+            <button type="button" id="export-all-btn" class="btn-secondary" aria-label="Export all resumes">
+                <span class="btn-icon">📦</span> Export All
+            </button>
+            <button type="button" id="delete-all-btn" class="btn-danger" aria-label="Delete all resumes">
+                <span class="btn-icon">🗑️</span> Delete All
+            </button>
+        </div>
+    </div>
+
     <div class="resume-list">
         <!-- Populated dynamically by resume-builder.js -->
     </div>
 </section>
+
+<!-- History Modal (per-resume autosave history) -->
+<div id="history-modal" class="popup" style="display: none;">
+    <div class="popup-content" style="max-width: 520px;">
+        <span class="close" id="history-close" style="position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer;">&times;</span>
+        <h2 style="margin-bottom: 8px; color: var(--accent-text);">🕓 Autosave History</h2>
+        <p class="muted-text" style="font-size: 13px; margin-bottom: 15px;"><span id="history-resume-title"></span> — restoring a snapshot loads it into the editor; you'll still need to Save it.</p>
+        <div id="history-list" style="max-height: 320px; overflow-y: auto;"></div>
+    </div>
+</div>
 
 <!-- Keyboard Shortcuts Help Button -->
 <button id="shortcuts-help-btn" aria-label="Keyboard shortcuts" style="position: fixed; bottom: 90px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #9C27B0, #7B1FA2); color: white; border: none; font-size: 20px; cursor: pointer; box-shadow: 0 4px 12px rgba(156, 39, 176, 0.4); z-index: 1000; transition: all 0.3s ease;">
@@ -401,23 +459,27 @@
 <div id="shortcuts-modal" class="popup" style="display: none;">
     <div class="popup-content" style="max-width: 500px;">
         <span class="close" id="shortcuts-close" style="position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer;">&times;</span>
-        <h2 style="margin-bottom: 20px; color: #64b5f6;">⌨️ Keyboard Shortcuts</h2>
-        <div style="color: #e0e0e0;">
+        <h2 style="margin-bottom: 20px; color: var(--accent-text);">⌨️ Keyboard Shortcuts</h2>
+        <div style="color: var(--text-label);">
             <div style="display: grid; gap: 15px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(33, 150, 243, 0.1); border-radius: 8px;">
                     <span style="font-weight: 600;">Save Resume</span>
-                    <kbd style="background: #2a2a2a; padding: 5px 12px; border-radius: 5px; font-family: monospace; border: 1px solid #444;">Ctrl + S</kbd>
+                    <kbd style="background: var(--kbd-bg); padding: 5px 12px; border-radius: 5px; font-family: monospace; border: 1px solid var(--kbd-border);">Ctrl + S</kbd>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(76, 175, 80, 0.1); border-radius: 8px;">
                     <span style="font-weight: 600;">Download PDF</span>
-                    <kbd style="background: #2a2a2a; padding: 5px 12px; border-radius: 5px; font-family: monospace; border: 1px solid #444;">Ctrl + P</kbd>
+                    <kbd style="background: var(--kbd-bg); padding: 5px 12px; border-radius: 5px; font-family: monospace; border: 1px solid var(--kbd-border);">Ctrl + P</kbd>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255, 152, 0, 0.1); border-radius: 8px;">
                     <span style="font-weight: 600;">Back to Top</span>
-                    <kbd style="background: #2a2a2a; padding: 5px 12px; border-radius: 5px; font-family: monospace; border: 1px solid #444;">Click ↑ Button</kbd>
+                    <kbd style="background: var(--kbd-bg); padding: 5px 12px; border-radius: 5px; font-family: monospace; border: 1px solid var(--kbd-border);">Click ↑ Button</kbd>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(0, 188, 212, 0.1); border-radius: 8px;">
+                    <span style="font-weight: 600;">Print (clean, native print)</span>
+                    <kbd style="background: var(--kbd-bg); padding: 5px 12px; border-radius: 5px; font-family: monospace; border: 1px solid var(--kbd-border);">🖨️ Print Button</kbd>
                 </div>
             </div>
-            <p style="margin-top: 20px; font-size: 14px; color: #888; text-align: center;">
+            <p class="muted-text" style="margin-top: 20px; font-size: 14px; text-align: center;">
                 <em>On Mac, use Cmd instead of Ctrl</em>
             </p>
         </div>
