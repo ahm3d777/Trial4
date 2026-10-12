@@ -1,0 +1,59 @@
+{
+  "name": "folio-resume-builder",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Folio — a privacy-first resume builder with live preview, six print-ready templates and one-click PDF export. Runs entirely in the browser.",
+  "author": "ahm3d777",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ahm3d777/Trial4.git"
+  },
+  "homepage": "https://ahm3d777.github.io/Trial4/",
+  "keywords": [
+    "resume",
+    "cv",
+    "resume-builder",
+    "pdf",
+    "vite",
+    "tailwindcss",
+    "vanilla-js"
+  ],
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "check": "npm run lint && npm run format:check && npm run test && npm run build"
+  },
+  "dependencies": {
+    "@fontsource-variable/jetbrains-mono": "5.3.0",
+    "@fontsource-variable/plus-jakarta-sans": "5.3.0",
+    "@fontsource/newsreader": "5.3.0",
+    "html2pdf.js": "0.14.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.56.0",
+    "@vitest/coverage-v8": "5.0.4",
+    "autoprefixer": "^10.5.5",
+    "eslint": "10.12.0",
+    "eslint-config-prettier": "10.1.8",
+    "globals": "17.13.0",
+    "postcss": "^8.5.28",
+    "prettier": "3.9.10",
+    "tailwindcss": "^3.4.19",
+    "vite": "^8.2.2",
+    "vitest": "5.0.4"
+  }
+}

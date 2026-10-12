@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editor · Folio Resume Builder</title>
+    <meta
+      name="description"
+      content="Build your resume with a live preview, six print-ready templates and PDF export. Everything stays in your browser."
+    />
+    <meta name="theme-color" content="#F9F9F8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1A1919" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <script>
+      // Set the theme before first paint to avoid a flash of the wrong colours.
+      (function () {
+        var t = null;
+        try {
+          t = localStorage.getItem('theme');
+        } catch (e) {}
+        var dark = t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.classList.toggle('dark', dark);
+        document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+      })();
+    </script>
+    <script type="module" src="/src/editor/main.js"></script>
+  </head>
+  <body
+    class="flex h-dvh flex-col overflow-hidden bg-ink-50 font-sans text-ink-900 antialiased dark:bg-ink-900 dark:text-ink-100"
+  >
+    <a
+      href="#editor-pane"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow"
+      >Skip to editor</a
+    >
+
+    <!-- Top bar ------------------------------------------------------------>
+    <header
+      class="z-20 flex shrink-0 items-center gap-2 border-b border-ink-200 bg-white px-4 py-3 dark:border-ink-800 dark:bg-ink-900 sm:px-6"
+    >
+      <a href="./" class="mr-1 font-serif text-xl font-medium tracking-tight text-ink-900 dark:text-white"
+        >Folio<span class="text-amber-500">.</span></a
+      >
+      <span
+        id="save-status"
+        class="hidden truncate text-xs font-medium text-ink-400 sm:inline"
+        aria-live="polite"
+      ></span>
+
+      <div class="ml-auto flex items-center gap-1 sm:gap-2">
+        <button type="button" class="icon-btn" data-theme-toggle aria-label="Toggle theme">
+          <span class="dark:hidden" data-icon="moon"></span
+          ><span class="hidden dark:inline" data-icon="sun"></span>
+        </button>
+        <button type="button" class="btn-ghost" id="open-resumes" aria-haspopup="dialog">
+          <span data-icon="folder"></span><span class="hidden sm:inline">My resumes</span>
+        </button>
+        <button type="button" class="btn-secondary hidden sm:inline-flex" id="save-btn">Save</button>
+
+        <div class="relative" id="export-menu">
+          <button
+            type="button"
+            class="btn-primary"
+            id="export-toggle"
+            aria-haspopup="menu"
+            aria-expanded="false"
+            aria-controls="export-list"
+          >
+            <span data-icon="download"></span><span class="hidden sm:inline">Export</span
+            ><span data-icon="chevronDown" class="-mr-1 opacity-70"></span>
+          </button>
+          <div
+            id="export-list"
+            role="menu"
+            hidden
+            class="absolute right-0 top-full z-40 mt-2 w-72 overflow-hidden rounded-xl border border-ink-200 bg-white p-1.5 shadow-xl dark:border-ink-700 dark:bg-ink-800"
+          >
+            <button
+              type="button"
+              role="menuitem"
+              data-export="print"
+              class="flex w-full items-start gap-3 rounded-lg p-2.5 text-left hover:bg-ink-100 dark:hover:bg-ink-700"
+            >
+              <span data-icon="printer" class="mt-0.5 text-amber-600"></span>
+              <span
+                ><span class="block text-sm font-semibold"
+                  >Save as PDF
+                  <span
+                    class="ml-1 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300"
+                    >Best</span
+                  ></span
+                ><span class="block text-xs text-ink-500 dark:text-ink-400"
+                  >Selectable text that applicant-tracking systems can read. Choose “Save as PDF” in the print
+                  dialog.</span
+                ></span
+              >
+            </button>
+            <button
+              type="button"
+              role="menuitem"
+              data-export="image-pdf"
+              class="flex w-full items-start gap-3 rounded-lg p-2.5 text-left hover:bg-ink-100 dark:hover:bg-ink-700"
+            >
+              <span data-icon="download" class="mt-0.5 text-ink-500"></span>
+              <span
+                ><span class="block text-sm font-semibold">Quick download</span
+                ><span class="block text-xs text-ink-500 dark:text-ink-400"
+                  >One-click PDF file. Text is an image, so prefer the option above for job portals.</span
+                ></span
+              >
+            </button>
+            <button
+              type="button"
+              role="menuitem"
+              data-export="json"
+              class="flex w-full items-start gap-3 rounded-lg p-2.5 text-left hover:bg-ink-100 dark:hover:bg-ink-700"
+            >
+              <span data-icon="json" class="mt-0.5 text-ink-500"></span>
+              <span
+                ><span class="block text-sm font-semibold">Backup (JSON)</span
+                ><span class="block text-xs text-ink-500 dark:text-ink-400"
+                  >Re-import later or move to another browser.</span
+                ></span
+              >
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile view switch -------------------------------------------------->
+    <div
+      class="flex shrink-0 gap-1 border-b border-ink-200 bg-white p-2 dark:border-ink-800 dark:bg-ink-900 lg:hidden"
+      role="tablist"
+      aria-label="View"
+    >
+      <button
+        type="button"
+        role="tab"
+        class="btn flex-1 aria-selected:bg-ink-900 aria-selected:text-white dark:aria-selected:bg-white dark:aria-selected:text-ink-900"
+        data-view="edit"
+        aria-selected="true"
+      >
+        Edit
+      </button>
+      <button
+        type="button"
+        role="tab"
+        class="btn flex-1 aria-selected:bg-ink-900 aria-selected:text-white dark:aria-selected:bg-white dark:aria-selected:text-ink-900"
+        data-view="preview"
+        aria-selected="false"
+      >
+        Preview
+      </button>
+    </div>
+
+    <main class="flex min-h-0 flex-1" id="workspace" data-view="edit">
+      <!-- Editor pane ------------------------------------------------------>
+      <div
+        id="editor-pane"
+        class="w-full overflow-y-auto border-ink-200 bg-white [[data-view=preview]_&]:hidden dark:border-ink-800 dark:bg-ink-900 lg:!block lg:w-[46%] lg:max-w-[720px] lg:border-r"
+      >
+        <div class="mx-auto max-w-2xl px-5 pb-24 pt-6 sm:px-8">
+          <!-- Completeness -->
+          <div
+            class="mb-6 rounded-2xl border border-ink-200 bg-ink-50 p-4 dark:border-ink-800 dark:bg-ink-800/50"
+          >
+            <div class="mb-2 flex items-baseline justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-ink-500 dark:text-ink-400"
+                >Resume strength</span
+              >
+              <span id="score-value" class="text-sm font-bold tabular-nums">0%</span>
+            </div>
+            <div
+              class="h-1.5 overflow-hidden rounded-full bg-ink-200 dark:bg-ink-700"
+              role="progressbar"
+              aria-labelledby="score-value"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+              id="score-bar"
+            >
+              <div
+                id="score-fill"
+                class="h-full w-0 rounded-full bg-amber-500 transition-all duration-500"
+              ></div>
+            </div>
+            <p id="score-tip" class="mt-2 text-xs text-ink-500 dark:text-ink-400"></p>
+          </div>
+
+          <!-- Tabs -->
+          <div
+            class="mb-8 flex gap-1 rounded-xl bg-ink-100 p-1 dark:bg-ink-800"
+            role="tablist"
+            aria-label="Editor sections"
+          >
+            <button
+              type="button"
+              role="tab"
+              id="tab-content"
+              aria-controls="tabpanel-content"
+              aria-selected="true"
+              class="btn flex-1 text-ink-600 aria-selected:bg-white aria-selected:text-ink-900 aria-selected:shadow-sm dark:text-ink-300 dark:aria-selected:bg-ink-900 dark:aria-selected:text-white"
+            >
+              Content
+            </button>
+            <button
+              type="button"
+              role="tab"
+              id="tab-design"
+              aria-controls="tabpanel-design"
+              aria-selected="false"
+              tabindex="-1"
+              class="btn flex-1 text-ink-600 aria-selected:bg-white aria-selected:text-ink-900 aria-selected:shadow-sm dark:text-ink-300 dark:aria-selected:bg-ink-900 dark:aria-selected:text-white"
+            >
+              Design
+            </button>
+          </div>
+
+          <form id="resume-form" novalidate autocomplete="on">
+            <div id="tabpanel-content" role="tabpanel" aria-labelledby="tab-content" class="space-y-12">
+              <div
+                id="starter"
+                hidden
+                class="flex flex-col items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-5 dark:border-amber-500/30 dark:bg-amber-500/10 sm:flex-row sm:items-center"
+              >
+                <span data-icon="sparkles" class="text-amber-600"></span>
+                <p class="flex-1 text-sm text-ink-700 dark:text-ink-200">
+                  Want to see how it works first? Load a complete example resume, then edit or clear it.
+                </p>
+                <button type="button" class="btn-outline bg-white dark:bg-transparent" id="load-sample">
+                  Load example
+                </button>
+              </div>
+
+              <section class="panel" aria-labelledby="h-personal">
+                <h2 class="panel-title" id="h-personal"><span data-icon="user"></span>Personal details</h2>
+                <div data-mount="personal"></div>
+              </section>
+              <section class="panel" aria-labelledby="h-summary">
+                <h2 class="panel-title" id="h-summary"><span data-icon="text"></span>Summary</h2>
+                <div data-mount="summary"></div>
+              </section>
+              <section class="panel" aria-labelledby="h-experience">
+                <h2 class="panel-title" id="h-experience">
+                  <span data-icon="briefcase"></span>Work experience
+                </h2>
+                <div data-mount="experience"></div>
+              </section>
+              <section class="panel" aria-labelledby="h-education">
+                <h2 class="panel-title" id="h-education"><span data-icon="graduation"></span>Education</h2>
+                <div data-mount="education"></div>
+              </section>
+              <section class="panel" aria-labelledby="h-skills">
+                <h2 class="panel-title" id="h-skills"><span data-icon="bolt"></span>Skills</h2>
+                <div data-mount="skills"></div>
+              </section>
+              <section class="panel" aria-labelledby="h-projects">
+                <h2 class="panel-title" id="h-projects"><span data-icon="code"></span>Projects</h2>
+                <div data-mount="projects"></div>
+              </section>
+              <section class="panel" aria-labelledby="h-certifications">
+                <h2 class="panel-title" id="h-certifications">
+                  <span data-icon="award"></span>Certifications
+                </h2>
+                <div data-mount="certifications"></div>
+              </section>
+              <section class="panel" aria-labelledby="h-languages">
+                <h2 class="panel-title" id="h-languages"><span data-icon="globe"></span>Languages</h2>
+                <div data-mount="languages"></div>
+              </section>
+
+              <div class="flex flex-wrap gap-3 border-t border-ink-200 pt-8 dark:border-ink-800">
+                <button type="button" class="btn-outline" id="new-resume">
+                  <span data-icon="file"></span>New resume
+                </button>
+                <button type="button" class="btn-outline" id="clear-resume">
+                  <span data-icon="trash"></span>Clear all fields
+                </button>
+              </div>
+            </div>
+
+            <div id="tabpanel-design" role="tabpanel" aria-labelledby="tab-design" hidden class="space-y-10">
+              <fieldset>
+                <legend class="panel-title w-full"><span data-icon="layout"></span>Template</legend>
+                <div id="template-picker" class="grid grid-cols-1 gap-3 sm:grid-cols-2"></div>
+              </fieldset>
+
+              <fieldset>
+                <legend class="mb-3 text-sm font-semibold text-ink-700 dark:text-ink-200">Paper size</legend>
+                <div class="flex gap-2" id="paper-picker">
+                  <label
+                    class="btn-outline flex-1 cursor-pointer has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50 has-[:checked]:text-amber-800 dark:has-[:checked]:bg-amber-500/10 dark:has-[:checked]:text-amber-300"
+                    ><input
+                      type="radio"
+                      name="paper"
+                      value="a4"
+                      class="sr-only"
+                      data-bind-setting="paper"
+                    />A4</label
+                  >
+                  <label
+                    class="btn-outline flex-1 cursor-pointer has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50 has-[:checked]:text-amber-800 dark:has-[:checked]:bg-amber-500/10 dark:has-[:checked]:text-amber-300"
+                    ><input
+                      type="radio"
+                      name="paper"
+                      value="letter"
+                      class="sr-only"
+                      data-bind-setting="paper"
+                    />US Letter</label
+                  >
+                </div>
+              </fieldset>
+
+              <label
+                class="flex cursor-pointer items-start gap-3 rounded-xl border border-ink-200 p-4 hover:bg-ink-50 dark:border-ink-700 dark:hover:bg-ink-800"
+              >
+                <input type="checkbox" id="compact-toggle" class="mt-0.5 h-5 w-5 rounded accent-amber-500" />
+                <span>
+                  <span class="block text-sm font-semibold">Shrink to fit one page</span>
+                  <span class="block text-xs text-ink-500 dark:text-ink-400"
+                    >Scales type and spacing down just enough — only when the content would spill onto a
+                    second page.</span
+                  >
+                </span>
+              </label>
+
+              <fieldset>
+                <legend class="mb-1 text-sm font-semibold text-ink-700 dark:text-ink-200">
+                  Section order
+                </legend>
+                <p class="mb-3 text-xs text-ink-500 dark:text-ink-400">
+                  Drag or use the arrows to reorder. Hide a section with the eye icon. Two-column templates
+                  keep their sidebar sections in the sidebar.
+                </p>
+                <ol id="section-manager" class="space-y-2"></ol>
+              </fieldset>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Preview pane ------------------------------------------------------>
+      <div
+        class="hidden min-w-0 flex-1 flex-col bg-ink-200/70 [[data-view=preview]_&]:flex dark:bg-ink-950 lg:!flex"
+        aria-label="Live preview"
+        role="region"
+      >
+        <div class="flex items-center justify-between gap-3 px-4 pt-4 sm:px-8">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-ink-500 dark:text-ink-400">
+            Live preview
+          </h2>
+          <div class="flex items-center gap-2">
+            <span
+              id="page-count"
+              class="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-ink-600 shadow-sm dark:bg-ink-800 dark:text-ink-300"
+            ></span>
+            <button
+              type="button"
+              class="icon-btn bg-white shadow-sm dark:bg-ink-800"
+              id="open-shortcuts"
+              aria-label="Keyboard shortcuts"
+              aria-haspopup="dialog"
+            >
+              <span data-icon="keyboard"></span>
+            </button>
+          </div>
+        </div>
+        <div id="preview-stage" class="flex-1 overflow-auto px-4 pb-16 pt-4 sm:px-8">
+          <div id="preview-host" class="mx-auto">
+            <div id="preview-paper" class="paper"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Dialogs ------------------------------------------------------------>
+    <dialog id="dlg-resumes" class="dialog max-w-4xl" aria-labelledby="dlg-resumes-title">
+      <div class="flex max-h-[85vh] flex-col">
+        <div class="flex items-center justify-between border-b border-ink-200 px-6 py-4 dark:border-ink-800">
+          <h2 id="dlg-resumes-title" class="font-serif text-2xl">My resumes</h2>
+          <button type="button" class="icon-btn" data-close aria-label="Close">
+            <span data-icon="x"></span>
+          </button>
+        </div>
+        <div class="flex flex-wrap items-center gap-3 border-b border-ink-200 px-6 py-4 dark:border-ink-800">
+          <div class="min-w-[12rem] flex-1">
+            <p id="storage-text" class="mb-1.5 text-xs font-medium text-ink-500 dark:text-ink-400"></p>
+            <div class="h-1.5 overflow-hidden rounded-full bg-ink-200 dark:bg-ink-700">
+              <div id="storage-fill" class="h-full rounded-full bg-amber-500"></div>
+            </div>
+          </div>
+          <button type="button" class="btn-outline" id="import-btn">
+            <span data-icon="upload"></span>Import
+          </button>
+          <button type="button" class="btn-outline" id="export-all-btn">
+            <span data-icon="download"></span>Export all
+          </button>
+          <button type="button" class="btn-danger" id="delete-all-btn">
+            <span data-icon="trash"></span>Delete all
+          </button>
+        </div>
+        <div
+          id="resume-grid"
+          class="grid flex-1 grid-cols-1 gap-4 overflow-y-auto p-6 sm:grid-cols-2 lg:grid-cols-3"
+        ></div>
+      </div>
+    </dialog>
+
+    <dialog id="dlg-history" class="dialog" aria-labelledby="dlg-history-title">
+      <div class="p-6">
+        <div class="mb-1 flex items-center justify-between">
+          <h2 id="dlg-history-title" class="font-serif text-2xl">Version history</h2>
+          <button type="button" class="icon-btn" data-close aria-label="Close">
+            <span data-icon="x"></span>
+          </button>
+        </div>
+        <p class="mb-4 text-sm text-ink-500 dark:text-ink-400">
+          Folio keeps the last 15 autosaved versions of
+          <strong id="history-name" class="text-ink-800 dark:text-ink-100"></strong>, at most one per minute.
+        </p>
+        <ol id="history-list" class="max-h-80 space-y-2 overflow-y-auto"></ol>
+      </div>
+    </dialog>
+
+    <dialog id="dlg-shortcuts" class="dialog" aria-labelledby="dlg-shortcuts-title">
+      <div class="p-6">
+        <div class="mb-4 flex items-center justify-between">
+          <h2 id="dlg-shortcuts-title" class="font-serif text-2xl">Keyboard shortcuts</h2>
+          <button type="button" class="icon-btn" data-close aria-label="Close">
+            <span data-icon="x"></span>
+          </button>
+        </div>
+        <dl class="divide-y divide-ink-100 text-sm dark:divide-ink-800" id="shortcut-list"></dl>
+      </div>
+    </dialog>
+
+    <dialog id="dlg-confirm" class="dialog max-w-sm" aria-labelledby="dlg-confirm-title">
+      <form method="dialog" class="p-6">
+        <h2 id="dlg-confirm-title" class="mb-2 text-lg font-semibold"></h2>
+        <p id="dlg-confirm-body" class="mb-6 text-sm text-ink-600 dark:text-ink-300"></p>
+        <div class="flex justify-end gap-2">
+          <button value="cancel" class="btn-secondary">Cancel</button>
+          <button value="ok" class="btn-primary" id="dlg-confirm-ok">Confirm</button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>

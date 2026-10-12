@@ -1,0 +1,297 @@
+@import '@fontsource-variable/plus-jakarta-sans/wght.css';
+@import '@fontsource/newsreader/400.css';
+@import '@fontsource/newsreader/400-italic.css';
+@import '@fontsource/newsreader/500.css';
+@import '@fontsource/newsreader/600.css';
+@import '@fontsource-variable/jetbrains-mono/wght.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Utility classes like `flex` must not override the hidden attribute. */
+  [hidden] {
+    display: none !important;
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-amber-500 ring-offset-2 ring-offset-white dark:ring-offset-ink-900;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* ---- Buttons ----------------------------------------------------------- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold
+      transition active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-amber-500 text-ink-950 shadow-sm hover:bg-amber-400;
+  }
+  .btn-secondary {
+    @apply btn bg-ink-100 text-ink-900 hover:bg-ink-200 dark:bg-ink-800 dark:text-ink-100 dark:hover:bg-ink-700;
+  }
+  .btn-outline {
+    @apply btn border border-ink-200 text-ink-700 hover:border-amber-500 hover:text-amber-700
+      dark:border-ink-700 dark:text-ink-200 dark:hover:border-amber-500 dark:hover:text-amber-400;
+  }
+  .btn-danger {
+    @apply btn border border-red-200 bg-red-50 text-red-700 hover:bg-red-100
+      dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-300 dark:hover:bg-red-900/40;
+  }
+  .btn-ghost {
+    @apply btn px-2.5 text-ink-600 hover:bg-ink-100 hover:text-ink-900
+      dark:text-ink-300 dark:hover:bg-ink-800 dark:hover:text-white;
+  }
+  .icon-btn {
+    @apply inline-flex h-8 w-8 items-center justify-center rounded-md text-ink-500 transition
+      hover:bg-ink-100 hover:text-ink-900 disabled:pointer-events-none disabled:opacity-30
+      dark:text-ink-400 dark:hover:bg-ink-800 dark:hover:text-white;
+  }
+  .icon-btn svg,
+  .btn svg {
+    @apply h-4 w-4 shrink-0;
+  }
+
+  /* ---- Form fields ------------------------------------------------------- */
+  .field {
+    @apply relative flex flex-col gap-1.5;
+  }
+  .field-label {
+    @apply text-sm font-semibold text-ink-700 dark:text-ink-200;
+  }
+  .field-hint {
+    @apply text-xs text-ink-500 dark:text-ink-400;
+  }
+  .field-error {
+    @apply text-xs font-medium text-red-600 dark:text-red-400;
+  }
+  .input {
+    @apply w-full rounded-lg border border-ink-200 bg-white px-3.5 py-2.5 text-[0.9375rem] text-ink-900
+      shadow-sm transition placeholder:text-ink-400
+      focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/30
+      dark:border-ink-700 dark:bg-ink-800 dark:text-ink-50 dark:placeholder:text-ink-500;
+  }
+  .input[aria-invalid='true'] {
+    @apply border-red-400 focus:border-red-500 focus:ring-red-500/30 dark:border-red-500/70;
+  }
+  textarea.input {
+    @apply min-h-[5rem] resize-y leading-relaxed;
+  }
+  select.input {
+    @apply cursor-pointer pr-8;
+  }
+  .counter {
+    @apply self-end text-xs tabular-nums text-ink-400;
+  }
+  .counter[data-state='warn'] {
+    @apply text-amber-600;
+  }
+  .counter[data-state='over'] {
+    @apply font-semibold text-red-600;
+  }
+
+  /* ---- Editor panels ----------------------------------------------------- */
+  .panel {
+    @apply scroll-mt-6;
+  }
+  .panel-title {
+    @apply mb-5 flex items-center gap-2.5 border-b border-ink-100 pb-3 font-serif text-2xl font-medium
+      text-ink-900 dark:border-ink-800 dark:text-white;
+  }
+  .panel-title svg {
+    @apply h-5 w-5 text-amber-500;
+  }
+  .entry {
+    @apply rounded-xl border border-ink-200 bg-ink-50/70 transition
+      dark:border-ink-800 dark:bg-ink-800/40;
+  }
+  .entry[data-dragging='true'] {
+    @apply opacity-40;
+  }
+  .entry[data-drop-target='true'] {
+    @apply border-amber-400 ring-2 ring-amber-400/30;
+  }
+  .entry-head {
+    @apply flex items-center gap-1 border-b border-ink-200/70 px-3 py-2 dark:border-ink-800;
+  }
+  .entry-title {
+    @apply min-w-0 flex-1 truncate px-1 text-sm font-semibold text-ink-700 dark:text-ink-200;
+  }
+  .drag-handle {
+    @apply icon-btn cursor-grab touch-none active:cursor-grabbing;
+  }
+  .add-btn {
+    @apply mt-3 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-ink-200 py-3
+      text-sm font-semibold text-ink-500 transition hover:border-amber-500 hover:bg-amber-50 hover:text-amber-700
+      dark:border-ink-700 dark:text-ink-400 dark:hover:bg-amber-500/10 dark:hover:text-amber-400;
+  }
+
+  /* ---- Autocomplete ------------------------------------------------------ */
+  .ac-list {
+    @apply absolute inset-x-0 top-full z-30 mt-1 max-h-64 overflow-y-auto rounded-lg border border-ink-200
+      bg-white py-1 shadow-xl dark:border-ink-700 dark:bg-ink-800;
+  }
+  .ac-option {
+    @apply cursor-pointer px-3.5 py-2 text-sm text-ink-700 dark:text-ink-200;
+  }
+  .ac-option[aria-selected='true'] {
+    @apply bg-amber-50 text-ink-950 dark:bg-amber-500/15 dark:text-white;
+  }
+  .ac-option mark {
+    @apply bg-transparent font-bold text-amber-700 dark:text-amber-400;
+  }
+
+  /* ---- Dialogs ----------------------------------------------------------- */
+  .dialog {
+    @apply m-auto w-[calc(100%-2rem)] max-w-lg rounded-2xl border border-ink-200 bg-white p-0 text-ink-900 shadow-2xl
+      dark:border-ink-800 dark:bg-ink-900 dark:text-ink-50;
+  }
+  .dialog[open] {
+    @apply animate-scale-in;
+  }
+  .dialog::backdrop {
+    @apply bg-ink-950/50 backdrop-blur-sm;
+  }
+
+  /* ---- Toasts ------------------------------------------------------------ */
+  .toast {
+    @apply pointer-events-auto flex items-center gap-3 rounded-xl border border-ink-200 bg-white px-4 py-3 text-sm
+      font-medium text-ink-800 shadow-lg animate-toast-in dark:border-ink-700 dark:bg-ink-800 dark:text-ink-100;
+  }
+  .toast::before {
+    content: '';
+    @apply h-2 w-2 shrink-0 rounded-full bg-sky-500;
+  }
+  .toast[data-type='success']::before {
+    @apply bg-emerald-500;
+  }
+  .toast[data-type='error']::before {
+    @apply bg-red-500;
+  }
+  .toast[data-type='warning']::before {
+    @apply bg-amber-500;
+  }
+
+  /* ---- Landing page ------------------------------------------------------ */
+  .feature-icon {
+    @apply mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-amber-100 bg-amber-50 text-amber-600
+      dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-400;
+  }
+  .feature-icon svg {
+    @apply h-5 w-5;
+  }
+  .hero-sheet,
+  .gallery-sheet {
+    @apply overflow-hidden rounded-md bg-white shadow-[0_30px_60px_-25px_rgba(0,0,0,0.35)] ring-1 ring-black/5;
+  }
+  .hero-sheet {
+    width: calc(794px * var(--s, 0.42));
+    height: calc(1123px * var(--s, 0.42));
+  }
+  @media (min-width: 640px) {
+    .hero-sheet {
+      --s: 0.5;
+    }
+  }
+  .sheet-inner {
+    width: 794px;
+    min-height: 1123px;
+    transform: scale(var(--s, 0.42));
+    transform-origin: top left;
+  }
+  .sheet-inner > .resume {
+    min-height: 1123px;
+  }
+
+  /* ---- Preview "paper" --------------------------------------------------- */
+  .paper {
+    @apply relative bg-white shadow-[0_20px_50px_-20px_rgba(0,0,0,0.25)] ring-1 ring-black/5;
+    width: var(--page-w);
+    min-height: var(--page-h);
+    transform-origin: top left;
+  }
+  .paper > .resume {
+    min-height: var(--page-h);
+  }
+  .paper.is-exporting {
+    min-height: 0;
+    box-shadow: none;
+  }
+  /* A hair under one page, so a one-page resume never spills a blank second page. */
+  .paper.is-exporting > .resume {
+    min-height: calc(var(--page-h) - 2px);
+  }
+  .paper.is-exporting::after {
+    display: none;
+  }
+  /* Dashed line where each printed page ends. */
+  .paper::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(var(--page-h) - 1px),
+      rgba(217, 119, 6, 0.55) calc(var(--page-h) - 1px),
+      rgba(217, 119, 6, 0.55) var(--page-h)
+    );
+    mask: repeating-linear-gradient(to right, #000 0 6px, transparent 6px 12px);
+  }
+}
+
+/* ---- Print: only the resume -------------------------------------------- */
+/* #print-root is a direct child of <body>, filled on `beforeprint`. */
+#print-root {
+  display: none;
+}
+
+@media print {
+  @page {
+    margin: 0;
+  }
+  html,
+  body {
+    height: auto !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+  body > *:not(#print-root) {
+    display: none !important;
+  }
+  #print-root {
+    display: block;
+  }
+  #print-root .paper {
+    width: auto;
+    min-height: 0;
+    box-shadow: none;
+    transform: none !important;
+  }
+  #print-root .paper::after {
+    display: none;
+  }
+  #print-root .resume {
+    min-height: calc(var(--page-h) - 2px);
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+}

@@ -1,179 +1,122 @@
-# Professional Resume Builder
+<div align="center">
 
-Create a professional resume in minutes with our easy-to-use resume builder application.
+# Folio
+
+**A private, open-source resume builder with live preview, six print-ready templates and ATS-friendly PDF export.**
+Runs entirely in your browser: no account, no server, no tracking.
+
+[![CI](https://github.com/ahm3d777/Trial4/actions/workflows/ci.yml/badge.svg)](https://github.com/ahm3d777/Trial4/actions/workflows/ci.yml)
+[![Deploy](https://github.com/ahm3d777/Trial4/actions/workflows/deploy.yml/badge.svg)](https://github.com/ahm3d777/Trial4/actions/workflows/deploy.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-amber.svg)](LICENSE)
+![Dependencies](<https://img.shields.io/badge/runtime%20deps-1%20(lazy)-brightgreen>)
+
+[**Live demo →**](https://ahm3d777.github.io/Trial4/) · [Case study: how this was rebuilt](docs/case-study/README.md) · [Architecture](docs/ARCHITECTURE.md)
+
+<img src="docs/screenshots/editor-light.png" alt="Folio editor: form on the left, live A4 preview of a resume with a dark sidebar on the right" width="100%">
+
+</div>
 
 ## Features
 
-### 🎨 Multiple Professional Templates
-- **Template 1 - Classic Professional**: Traditional layout with centered header and clean sections
-- **Template 2 - Modern Minimal**: Sidebar layout with bold design elements
-- **Template 3 - Creative Bold**: Eye-catching design with bold headers and gradient accents
+|                                   |                                                                                                                                                                                     |
+| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **True-to-print live preview**    | Real A4 / US Letter dimensions, a page counter and dashed guides where each printed page ends.                                                                                      |
+| **Six templates, one data model** | Classic, Modern, Bold, Executive, Technical and Academic all render the same content, so switching designs never loses a word.                                                      |
+| **ATS-readable PDF**              | “Save as PDF” goes through the browser's print engine, producing vector, selectable text that applicant-tracking systems can parse. A one-click image PDF is offered as a fallback. |
+| **Shrink to fit one page**        | Binary-searches the smallest scale (down to 72%) at which the resume fits on one page, and only kicks in when it's needed.                                                          |
+| **Coaching, not just fields**     | A resume-strength score suggests the single most useful next improvement. Accessible autocomplete covers hundreds of job titles, degrees and skills, with typo tolerance.           |
+| **Arrange everything**            | Reorder entries by drag (mouse or touch), arrow buttons or <kbd>Alt</kbd>+<kbd>↑</kbd>/<kbd>↓</kbd>. Reorder or hide whole sections.                                                |
+| **Autosave and history**          | Saves as you type, keeps the last 15 versions of each resume (max one per minute) and restores any of them. Undo for deleted entries.                                               |
+| **Multiple resumes**              | A dashboard with live thumbnails: duplicate, delete, import and export JSON backups, and see how much storage you're using.                                                         |
+| **Accessible**                    | Semantic forms with labels and error messages, WAI-ARIA combobox and tabs, native `<dialog>` focus handling, visible focus rings, reduced-motion support and keyboard shortcuts.    |
+| **Private by design**             | Data lives in `localStorage`. Fonts are bundled, so the app makes no third-party requests.                                                                                          |
 
-### ✨ Core Features
-- **Real-time Preview**: See your resume update as you type
-- **Multiple Entries**: Add multiple work experiences, education entries, and skills
-- **Auto-save**: Your resumes are automatically saved in your browser
-- **PDF Export**: Download your resume as a professional PDF document
-- **Print**: A dedicated "Print" button + print stylesheet gives a clean, native browser print of just the resume (separate from the PDF button, which rasterizes the preview)
-- **Shrink to fit one page**: An optional toggle that automatically scales down type and spacing - but only when your resume would otherwise spill onto a second page
-- **Dashboard**: Manage all your saved resumes in one place
-- **Smart Suggestions**: Get autocomplete suggestions for common fields
-- **Light / Dark theme**: A toggle in the header switches the editor between a dark and a light, paper-like look; your choice is remembered
+<table>
+  <tr>
+    <td width="66%"><img src="docs/screenshots/editor-dark.png" alt="Design tab in dark mode with the Executive template selected"></td>
+    <td width="34%"><img src="docs/screenshots/mobile-preview.png" alt="Live preview on a phone"></td>
+  </tr>
+  <tr>
+    <td><sub>Design tab in dark mode: templates, paper size, shrink-to-fit and section order.</sub></td>
+    <td><sub>On phones the editor and preview switch with a tab.</sub></td>
+  </tr>
+</table>
 
-### 🧩 Arrange Your Resume
-- **Reorder & hide sections**: An "Arrange Your Sections" panel lets you drag (or use the ▲/▼ buttons) to reorder Professional Summary, Education, Work Experience, Projects, Skills, Certifications, and Languages, and uncheck any of them to leave it off the resume entirely. Two-column templates (Modern Minimal, Executive) keep sidebar/main grouping but still follow your order within each column.
-- **Drag-and-drop entries**: Every entry (education, experience, skills, projects, certifications, languages) - including the first one in each section - has a drag handle plus ▲/▼ buttons, so you can put your most recent job or degree on top.
+<img src="docs/screenshots/templates.png" alt="All six templates rendered from the same sample resume" width="100%">
 
-### 💾 Data Management
-- **Local Storage**: All data is stored locally in your browser
-- **Create Multiple Resumes**: Build and save as many resumes as you need
-- **Edit Anytime**: Load and edit your saved resumes whenever you want
-- **Delete Resumes**: Remove resumes you no longer need
-- **Storage usage**: The dashboard shows how much of this browser's storage your resumes (and their history) are using, with one-click **Export All** (every resume as one JSON backup) and **Delete All** (double-confirmed) actions
-- **Autosave history**: Each resume keeps a capped, throttled history of earlier autosaved versions - open "History" on a dashboard card to preview timestamps and restore an earlier version into the editor
+## Quick start
 
-## How to Use
+Requires **Node.js 20.19+** (22 recommended, see `.nvmrc`).
 
-### Getting Started
-1. Open `index.html` in your web browser
-2. Click "Get Started" to go to the resume editor
-3. Fill in your information in the form
-4. Select a template from the dropdown
-5. Watch your resume preview update in real-time
-
-### Adding Information
-
-#### Personal Information
-- Fill in your full name, email, and phone number
-
-#### Education
-- Add your degree, major, school, and graduation year
-- Click "+ Add Another Education" to add multiple education entries
-- Remove entries using the "Remove" button
-
-#### Work Experience
-- Add your position, company, duration, and job description
-- Click "+ Add Another Experience" to add multiple work experiences
-- Remove entries using the "Remove" button
-
-#### Skills
-- Add your skills one by one
-- Click "+ Add Another Skill" to add more skills
-- Remove skills using the "×" button
-
-### Saving Your Resume
-- Click "Save Resume" to save your current resume
-- Your resume is automatically saved to your browser's local storage
-- You can create multiple resumes and switch between them
-
-### Managing Resumes
-1. Click "My Resumes" to view your dashboard
-2. From the dashboard you can:
-   - **Edit**: Load a resume for editing
-   - **Download**: Export the resume as a PDF
-   - **Delete**: Remove the resume permanently
-
-### Downloading as PDF
-1. Complete your resume
-2. Click "Download" from the dashboard, or
-3. Use the download button on the preview page
-4. Your resume will be downloaded as a PDF file
-
-## Technical Details
-
-### Technologies Used
-- **HTML5**: Structure and layout
-- **CSS3**: Styling and responsive design
-- **JavaScript (ES6+)**: Interactive functionality
-- **html2pdf.js**: PDF generation
-- **localStorage API**: Data persistence
-
-### Browser Compatibility
-- Chrome (recommended)
-- Firefox
-- Safari
-- Edge
-- Any modern browser with JavaScript enabled
-
-### File Structure
-```
-├── index.html              # Landing page
-├── Resume-Editor.html      # Main resume editor
-├── styles.css              # Landing page styles
-├── Resume-Editor.css       # Editor page styles
-├── templates.js            # Resume template generators + live preview
-├── suggestions.js          # Autocomplete functionality
-├── resume-builder.js       # Main app functionality (forms, save/load, PDF export)
-└── assets/                 # Images and resources
+```bash
+git clone https://github.com/ahm3d777/Trial4.git folio
+cd folio
+npm install
+npm run dev          # http://localhost:5173
 ```
 
-There's no build step and no server — it's plain HTML/CSS/JS. Open `index.html` (or serve the folder with any static file server) and it works.
+| Script                            | What it does                                      |
+| --------------------------------- | ------------------------------------------------- |
+| `npm run dev`                     | Start the Vite dev server with hot reload         |
+| `npm run build`                   | Production build to `dist/`                       |
+| `npm run preview`                 | Serve the production build locally                |
+| `npm test`                        | Unit tests (Vitest)                               |
+| `npm run test:coverage`           | Unit tests with coverage thresholds               |
+| `npm run test:e2e`                | End-to-end tests (Playwright, desktop and mobile) |
+| `npm run lint` / `npm run format` | ESLint / Prettier                                 |
+| `npm run check`                   | Everything CI runs, except e2e                    |
 
-## Features in Detail
+> First e2e run: `npx playwright install chromium`.
 
-### Real-time Preview
-As you type in the form, your resume preview updates immediately, allowing you to see exactly how your resume will look.
+## Tech stack
 
-### Template Selection
-Choose from three professionally designed templates:
-- Each template has a unique layout and color scheme
-- Templates are optimized for professional appearance
-- Easy to switch between templates
+- **Vanilla JavaScript (ES modules)** with JSDoc types. No framework, so the editor bundle is about **19 kB gzipped**.
+- **Vite** for dev server and multi-page build; **Tailwind CSS** for the app UI; plain CSS for the resume templates.
+- **Vitest** for unit tests (96% line coverage of the core, enforced in CI) and **Playwright** for end-to-end tests.
+- **GitHub Actions** for lint, tests and build on every PR, plus automatic deployment to **GitHub Pages**.
+- `html2pdf.js` is the only runtime dependency, and it's lazy-loaded only when someone chooses the image-PDF download.
 
-### Dynamic Fields
-- Add as many education entries as needed
-- Add multiple work experiences
-- Add unlimited skills
-- Remove any entry you don't want
+## Project structure
 
-### Local Storage
-- All resumes are saved in your browser
-- No server required - works completely offline
-- Your data never leaves your computer
-- Privacy-focused design
+```
+src/
+├── core/          Pure logic: no DOM, fully unit-tested
+│   ├── schema.js      Single declarative description of a resume
+│   ├── resume.js      Data model, v1 → v2 migration, completeness score
+│   ├── storage.js     ResumeStore: CRUD, version history, import/export
+│   ├── validation.js  Forgiving email / phone / URL validators
+│   ├── suggest.js     Autocomplete ranking (prefix → word → fuzzy)
+│   ├── escape.js      HTML escaping and safe rich-text rendering
+│   └── sections.js    Section ordering helpers
+├── templates/     Six templates sharing one escaped markup layer
+├── editor/        Editor page: form builder, preview, export, dashboard
+├── ui/            Reusable widgets: autocomplete, sortable, dialogs, toasts, theme
+├── styles/        main.css (Tailwind app UI) · resume.css (templates)
+└── data/          Suggestion vocabulary and the fictional sample resume
+tests/
+├── unit/          Vitest
+└── e2e/           Playwright
+```
 
-### PDF Export
-- High-quality PDF generation
-- Professional formatting maintained
-- Download with one click
-- Filename based on your name
+More detail on data flow and design decisions is in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-## Tips for Best Results
+## Privacy and security
 
-1. **Be Concise**: Keep descriptions clear and to the point
-2. **Use Action Verbs**: Start experience descriptions with strong action verbs
-3. **Quantify Achievements**: Include numbers and metrics where possible
-4. **Proofread**: Check for spelling and grammar errors
-5. **Choose the Right Template**: Select a template that matches your industry
-6. **Update Regularly**: Keep your resume current with your latest experiences
+- Nothing is sent anywhere. There is no backend, there are no analytics, and fonts are bundled.
+- Every user-supplied value is HTML-escaped at render time. Each template has an XSS regression test, and imported JSON goes through the same normaliser as everything else.
+- See [SECURITY.md](SECURITY.md) to report a vulnerability.
 
-## Privacy & Data
+## Roadmap
 
-- All data is stored locally in your browser
-- No data is sent to any server
-- Your information is completely private
-- Clear your browser data to remove all saved resumes
+- [ ] DOCX export
+- [ ] Custom accent colour per template
+- [ ] Translations of the UI (the resume itself already accepts any language)
+- [ ] Installable PWA with offline cache
 
-## Support
+## Contributing
 
-If you encounter any issues or have suggestions:
-- Check the browser console for error messages
-- Ensure JavaScript is enabled
-- Try refreshing the page
-- Clear browser cache if experiencing issues
+Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md). The short version: `npm run check && npm run test:e2e` before opening a PR.
 
-## Future Enhancements
+## License
 
-Potential features for future versions:
-- More template options
-- Import from LinkedIn
-- Export to different formats (Word, etc.)
-- Cloud storage integration
-- Resume scoring and tips
-- Collaboration features
-
----
-
-**Created with ❤️ for job seekers everywhere**
-
-Start building your professional resume today!
+[MIT](LICENSE) © 2024–2026 ahm3d777
